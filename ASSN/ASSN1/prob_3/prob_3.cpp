@@ -14,36 +14,38 @@ int whiskey_max(const int idx, const std::vector<int> &whiskey, std::vector<int>
 int main(){
     using namespace std;
 
-    int size = 0, input = 0, result = 0;
+    int size = 0, input = 0;
     cin >> size;
-    vector<int> whiskey, cache_1(size, CACHE_INIT), cache_2(size, CACHE_INIT);
+    vector<int> whiskey, cache(size, CACHE_INIT);
 
     while(size-- && cin >> input){
         whiskey.push_back(input);
     }
 
-    result = whiskey_max(0, whiskey, cache_1);
-    cout << result;
+    cout << whiskey_max(0, whiskey, cache);
     return 0;
 
 }
 
 int whiskey_max(const int idx, const std::vector<int> &whiskey, std::vector<int> &cache){
     using namespace std;
-    int case_list[3] = {0, }, partial_sum = 0, partial_size = MAX((int) whiskey.size() - idx, 0);
+    int case_list[3] = {0, }, partial_max = 0, partial_length = MAX((int) whiskey.size() - idx, 0);
+
+    if(0 <= idx && idx < cache.size()) return 0;
+
     if(cache[idx] == CACHE_INIT){
-        if(partial_size <= 2){
-            while(partial_size >= 0 && partial_size--){
-                partial_sum += whiskey[whiskey.size() - 1 - partial_size];
+        if(partial_length <= 2){
+            while(partial_length >= 0 && partial_length--){
+                partial_max += whiskey[whiskey.size() - 1 - partial_length];
             }
         } else {
             case_list[0] = whiskey_max(idx + 3, whiskey, cache) + whiskey[idx + 0] + whiskey[idx + 1];
             case_list[1] = whiskey_max(idx + 2, whiskey, cache) + whiskey[idx + 0];
             case_list[2] = whiskey_max(idx + 1, whiskey, cache);
-            partial_sum = MAX(MAX(case_list[0], case_list[1]), case_list[2]);
+            partial_max = MAX(MAX(case_list[0], case_list[1]), case_list[2]);
         }
-        cache[idx] = partial_sum;
+        cache[idx] = partial_max;
     }
 
-    return (0 <= idx && idx < cache.size())?(cache[idx]):(0);
+    return cache[idx];
 }

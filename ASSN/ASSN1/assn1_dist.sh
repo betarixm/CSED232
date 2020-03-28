@@ -9,3 +9,4 @@ do
 done
 
 cp ./Makefile ./dist/20190084/Makefile
+cp ./20190084.pdf ./dist/20190084/20190084.pdf
