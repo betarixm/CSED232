@@ -3,7 +3,9 @@
 #define MAX(X, Y) ((X>Y)?(X):(Y))
 #define CACHE_INIT -1
 
-int whiskey_max(const int idx, const std::vector<int> &whiskey, std::vector<int> &cache);
+using namespace std;
+
+int whiskey_max(const int idx, const vector<int> &whiskey, vector<int> &cache);
 
 /*
  * 명예서약 (Honor Code)
@@ -12,7 +14,7 @@ int whiskey_max(const int idx, const std::vector<int> &whiskey, std::vector<int>
  */
 
 int main(){
-    using namespace std;
+
 
     int size = 0, input = 0;
     cin >> size;
@@ -27,11 +29,11 @@ int main(){
 
 }
 
-int whiskey_max(const int idx, const std::vector<int> &whiskey, std::vector<int> &cache){
+int whiskey_max(const int idx, const vector<int> &whiskey, vector<int> &cache){
     using namespace std;
     int case_list[3] = {0, }, partial_max = 0, partial_length = MAX((int) whiskey.size() - idx, 0);
 
-    if(0 <= idx && idx < cache.size()) return 0;
+    if(!(0 <= idx && idx < cache.size())) return 0;
 
     if(cache[idx] == CACHE_INIT){
         if(partial_length <= 2){
