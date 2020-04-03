@@ -1,9 +1,7 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
-
-int recorder_max(vector<int> &students); // greedy하게 리코더를 가져갈 수 있는 최대의 학생 수를 구하는 함수
+int recorder_max(std::vector<int> &student_v); // 리코더를 가져갈 최대 학생 수를 구하는 함수.
 
 /*
  * 명예서약 (Honor Code)
@@ -12,40 +10,36 @@ int recorder_max(vector<int> &students); // greedy하게 리코더를 가져갈 
  */
 
 int main(){
-    int student_num = 0, loss_num = 0, extra_num = 0, result_num = 0; // 학생 수 정보들을 담을 변수들 선언
-    int idx = 0; // 인덱스를 위한 임시 변수.
-    cin >> student_num >> loss_num >> extra_num; // 학생 수 정보들을 입력받는다.
-    vector<int> students(student_num, 0); // 전체 학생 수 크기의 벡터를 선언하고 0으로 초기화한다.
+    using namespace std;
+    int student_num = 0, lost = 0, extra = 0, result = 0; // 차례대로 학생 수, 도난 당한 학생 수, 여분 리코더가 있는 학생 수, 결과 값을 담는 변수이다.
+    int idx = 0; // 입력을 받기 위한 임시변수이다.
+    cin >> student_num >> lost >> extra; // 변수에 값을 입력한다.
+    vector<int> student_v(student_num, 0); // 전체 학생 수 크기의 벡터를 선언하고 0으로 초기화한다.
 
-    while(loss_num-- && cin >> idx){ // 잃어버린 학생 수 만큼 반복
-        students[idx-1]--; // 학생 벡터에서 잃어버린 학생 번호를 참조하여 1을 뺀다.
+    while(lost-- && cin >> idx){ // 리코더를 도난 당한 학생 번호들을 입력받는다.
+        student_v[idx - 1]--; // 도난당한 학생에게서 1을 뺀다.
     }
 
-    while(extra_num-- && cin >> idx){ // 여분이 있는 학생 수 만큼 반복
-        students[idx-1]++; // 학생 벡터에서 여분이 있는 학생 번호를 참조하여 1을 더한다.
+    while(extra-- && cin >> idx){ // 여분 리코더가 있는 학생 번호들을 입력받는다.
+        student_v[idx - 1]++; // 여분의 리코더가 있는 학생에게 1을 더한다.
     }
 
-    result_num = recorder_max(students); // 리코더를 가져갈 수 있는 최대 학생 수를 구하는 함수 recorder_max 호출.
+    result = recorder_max(student_v); // recorder_max를 호출하여 리코더를 가져갈 학생 수를 구한다.
 
-    cout << result_num; // 최대 값 출력
+    cout << result; // 결과 값을 출력한다.
 
     return 0;
 }
 
-int recorder_max(vector<int>& students){ // greedy하게 리코더를 가져갈 수 있는 최대의 학생 수를 구하는 함수
-    int idx = 0, result_num = 0; // 인덱스 임시 변수와 결과값을 담을 변수 선언.
-    for(idx = 0; idx < students.size(); idx++){ // 학생 벡터 iterate.
-        if(students[idx] < 0) { // 어떤 학생의 값이 0보다 작다면, 즉 리코더를 도난당했다면,
-            if (idx >= 1 && students[idx - 1] > 0) { // 그런데 앞 번호 친구에게 여분의 리코더가 있다면,
-                students[idx - 1]--; // 여분의 리코더를
-                students[idx]++; // 도난 당한 친구에게 대여
-            } else if (idx <= students.size() && students[idx + 1] > 0) { // 앞 번호 친구에게는 없고, 뒷번호 친구에게 있다면,
-                students[idx + 1]--; // 여분의 리코더를
-                students[idx]++; // 도난 당한 친구에게 대여
-            }
-        }
-        result_num += (students[idx] >= 0); // 모든 대여 과정이 종료된 후, 학생의 값이 0 이상이라면 리코더를 가져갈 수 있는 학생으로 추가한다.
+int recorder_max(std::vector<int>& student_v){ // 리코더를 가져갈 최대 학생 수를 구하는 함수.
+    using namespace std;
+    int result = 0; // result: 결과 값을 저장하는 변수.
+
+    for(auto iter = student_v.begin(); iter != student_v.end(); iter++) { // 학생 벡터를 순회한다.
+        if (*iter >= 0 && result++) continue;
+        if (iter != student_v.begin() && iter[-1] > 0 && result++) continue;
+        (iter != student_v.end() && iter[1] > 0) && (result++, iter[1]--);
     }
 
-    return result_num; // 결과 값 반환.
+    return result; // 결과 값 반환.
 }

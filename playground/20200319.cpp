@@ -1,17 +1,14 @@
 #include <iostream>
-
+#include <vector>
+#include <typeinfo>
 using namespace std;
 
-void wow(int& a){
-    cout << a;
-}
 
 
 int main(){
-    using namespace std;
-    int b = 1;
+    int a = 0, b = -1;
 
-    wow(b);
-
-    return 0;
+    if((a--, b++)){
+        cout << "T";
+    }
 }
