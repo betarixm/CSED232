@@ -39,7 +39,10 @@ int recorder_max(std::vector<int>& student_v){ // 리코더를 가져갈 최대 
         // 학생의 값이 0 이상이면 리코더를 가져갈 학생으로 추가하고 continue 한다.
         if (*iter >= 0 && result++) continue;
         // 도난 당한 학생이 앞 번호 친구에게 빌리면 리코더를 가져갈 학생으로 추가하고 continue 한다.
-        if (iter != student_v.begin() && iter[-1] > 0 && result++) continue;
+        if (iter != student_v.begin() && iter[-1] > 0){
+            result++;
+            continue;
+        }
         // 도난 당한 학생이 뒷 번호 친구에게 빌리면 리코더를 가져갈 학생으로 추가하고, 뒷 번호 친구의 값에서 1을 뺀다.
         (iter != student_v.end() && iter[1] > 0) && (result++, iter[1]--);
     }
