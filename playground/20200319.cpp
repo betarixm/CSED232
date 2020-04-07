@@ -3,12 +3,19 @@
 #include <typeinfo>
 using namespace std;
 
-
-
 int main(){
-    int a = 0, b = -1;
+    int a = 1;
+    int* test[5] = {&a, &a, &a, &a, &a};
+    *(test[1]) = 1;
 
-    if((a--, b++)){
-        cout << "T";
+    for(auto& i : test){
+        i = nullptr;
     }
+
+    for(auto&i : test){
+        if (i == nullptr){
+            cout << "wow";
+        }
+    }
+
 }
