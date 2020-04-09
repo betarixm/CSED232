@@ -17,10 +17,10 @@ int main() {
     };
 
     Mode mode = MENU_MAIN;
-    MainMenu mainMenu = MainMenu();
-    FriendsMenu friendsMenu = FriendsMenu();
-    MyPageMenu myPageMenu = MyPageMenu();
-    FeedMenu feedMenu = FeedMenu();
+    MainMenu mainMenu;
+    FriendsMenu friendsMenu;
+    MyPageMenu myPageMenu;
+    FeedMenu feedMenu;
 
     Node<User>* user = nullptr;
     UserList userList = UserList();
