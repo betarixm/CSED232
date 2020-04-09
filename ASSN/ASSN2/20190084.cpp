@@ -1,5 +1,10 @@
+#include <iostream>
+#include "Contents.h"
+#include "List.h"
+#include "Menu.h"
+#include "IO.h"
 
-
+using namespace std;
 
 int main() {
     bool isLogin = false;
@@ -17,7 +22,7 @@ int main() {
     MyPageMenu myPageMenu = MyPageMenu();
     FeedMenu feedMenu = FeedMenu();
 
-    User* user = nullptr;
+    Node<User>* user = nullptr;
     UserList userList = UserList();
 
     auto cin_backup = cin.rdbuf();
@@ -27,11 +32,11 @@ int main() {
 
     while(true){
         if(mode == MENU_MAIN){
-            input = mainMenu.input(user, s);
+            input = mainMenu.input(user->data, s);
             if(input == 0){
                 continue;
             } else if (input == 1){
-                userList.signUp(s);
+                userList.addUser(s);
             } else if (input == 2){
                 user = userList.signIn(s);
                 if(user != nullptr){
@@ -43,7 +48,7 @@ int main() {
                 break;
             }
         } else if (mode == MENU_MY_PAGE) {
-            input = myPageMenu.input(user, s);
+            input = myPageMenu.input(user->data, s);
             if(input == 0){
                 continue;
             } else if (input == 1){
@@ -57,7 +62,7 @@ int main() {
                 mode = MENU_MAIN;
             }
         } else if (mode == MENU_FRIENDS) {
-            input = friendsMenu.input(user, s);
+            input = friendsMenu.input(user->data, s);
             if(input == 0){
                 continue;
             } else if (input == 1){
@@ -70,7 +75,7 @@ int main() {
                 mode = MENU_MY_PAGE;
             }
         } else if (mode == MENU_FEED) {
-            input = feedMenu.input(user, s);
+            input = feedMenu.input(user->data, s);
             if(input == 0){
                 continue;
             } else if (input == 1){

@@ -1,9 +1,11 @@
 #ifndef CSED232_IO_H
 #define CSED232_IO_H
-#include <fstream>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
+
+class Stream;
 
 class Stream {
 public:

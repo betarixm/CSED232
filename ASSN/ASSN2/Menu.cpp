@@ -1,7 +1,3 @@
-//
-// Created by PBS on 2020-04-08.
-//
-
 #include "Menu.h"
 
 void Menu::show(const User *user) {
@@ -11,12 +7,6 @@ void Menu::show(const User *user) {
         cout << text << endl;
     }
     printLine();
-}
-
-void Menu::setTexts(string s[4]) {
-    for (int i = 0; i < 4; i++) {
-        texts[i].assign(s[i]);
-    }
 }
 
 int Menu::input(User *user, Stream &s) {
@@ -32,35 +22,13 @@ int Menu::input(User *user, Stream &s) {
     return num;
 }
 
-
-MainMenu::MainMenu() {
-    type = "Main";
-    setTexts(mainText);
-}
-
 void MyPageMenu::show(const User *user) {
     printLine();
     cout << "Menu - " << type << endl;
     // cout << "@" << user.id << " - " << user.name << " " << user.birth.year << "." << user.birth.month << "." << user.birth.date << endl;
-    cout << "@" << user->id << " - " << user->name << " " << user->birth_str << endl;
+    cout << "@" << user->id << " - " << user->name << " " << user->birthday << endl;
     for (const auto &text : texts) {
         cout << text << endl;
     }
     printLine();
-}
-
-MyPageMenu::MyPageMenu() {
-    type = "My page";
-    setTexts(myTexts);
-}
-
-FriendsMenu::FriendsMenu() {
-    type = "Friends";
-    setTexts(myTexts);
-}
-
-
-FeedMenu::FeedMenu() {
-    type = "Feed";
-    setTexts(myTexts);
 }

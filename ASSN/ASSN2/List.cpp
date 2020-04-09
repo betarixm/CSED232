@@ -26,7 +26,7 @@ Node<T>* List<T>::add(T* data){
             list[i].prev = last;
             last = &(list[i]);
             size++;
-            return &list[i];
+            return &(list[i]);
         }
     }
     return nullptr;
