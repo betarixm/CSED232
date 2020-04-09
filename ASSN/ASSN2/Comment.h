@@ -3,19 +3,26 @@
 
 #include "20190084.h"
 
-using namespace std;
-
 class Comment {
 public:
     string content;
     User* user;
     Post* post;
-    Comment(User* user, Post* post, string& content);
+
+    List* listRef;
+    List* postRef;
+    List* userRef;
+
+    Comment(User *user, Post *post, string &content);
+    ~Comment();
 };
 
 class CommentList{
 private:
     int num_comments;
+    Comment* first;
+    Comment* last;
+
 public:
     Comment* comments[MAX_COMMENT] = {};
 

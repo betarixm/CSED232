@@ -10,6 +10,7 @@
 #include "Post.h"
 #include "User.h"
 #include "Utils.h"
+#include "List.h"
 
 #define MAX_USER 50
 #define MAX_POST 100

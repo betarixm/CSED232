@@ -1,29 +1,4 @@
-#include <iostream>
-
-using namespace std;
-
-template <typename T>
-class Node {
-public:
-    T* data;
-    Node<T>* next;
-    Node<T>* prev;
-};
-
-template <typename T>
-class List{
-public:
-    Node<T>* list = nullptr;
-    Node<T>* first = nullptr;
-    Node<T>* last = nullptr;
-    int size = 0;
-    int max = 0;
-
-    List(int size);
-
-    Node<T>* add(T* data);
-    Node<T>* drop(Node<T>* node);
-};
+#include "List.h"
 
 template <typename T>
 List<T>::List(int max){
@@ -35,7 +10,6 @@ List<T>::List(int max){
         list[i].prev = nullptr;
         list[i].next = nullptr;
     }
-
 }
 
 template <typename T>
@@ -46,10 +20,8 @@ Node<T>* List<T>::add(T* data){
     for(int i = 0; i< max; i++){
         if(list[i].data == nullptr){
             list[i].data = data;
-            if(last == nullptr){
+            if(size == 0){
                 first = &(list[i]);
-            } else {
-                last->next = &(list[i]);
             }
             list[i].prev = last;
             last = &(list[i]);
@@ -73,19 +45,4 @@ Node<T>* List<T>::drop(Node<T>* node){
     node->next = nullptr;
     size--;
     return node;
-}
-int main(){
-    List<int> l = List<int>(50);
-    int* a = new int;
-    int* b = new int;
-    *a = 1;
-    *b = 2;
-    Node<int>* x = l.add(a);
-    Node<int>* y = l.add(b);
-    l.drop(x);
-    l.drop(x);
-    cout << *a << endl;
-    int * c = new int;
-    *c = 3;
-    Node<int>* z = l.add(c);
 }

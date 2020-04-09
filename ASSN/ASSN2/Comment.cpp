@@ -1,9 +1,7 @@
 #include "Comment.h"
 
-Comment::Comment(User* user, Post* post, string& content){
-    this->user = user;
-    this->post = post;
-    this->content.assign(content);
+Comment::Comment(User *user, Post *post, string &content) {
+
 }
 
 CommentList::CommentList() {
@@ -17,9 +15,7 @@ Comment * CommentList::addComment(User *user, Post *post, string content) {
     if(num_comments >= MAX_COMMENT){
         return nullptr;
     } else {
-        auto* comment = new Comment(user, post, content);
-        comments[num_comments++] = comment;
-        return comment;
+
     }
 }
 
