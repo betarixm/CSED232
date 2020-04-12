@@ -38,22 +38,40 @@ public:
 class Post {
 public:
     List<Comment>* commentCache = new List<Comment>(MAX_COMMENT);
-    string title;
     string content;
+    int like = 0;
     User* user;
 
     Node<Post>* baseCache_p = nullptr;
     Node<Post>* userCache_p = nullptr;
 
-    Post(User *user, string& title, string& content);
+    Post(User *user, string& content);
     ~Post();
 };
 
 class PostList {
 public:
     List<Post>* list = new List<Post>(MAX_POST);
-    Post* addPost(User* user, string& title, string& content);
+    Post* addPost(User* user, string& content);
     void removePost(Post* target);
+    void printPost(Node<Post>* nodePost){
+        Post* post = nodePost->data;
+        cout << "@" << post->user->id << "(Like: " << post->like << ")" << endl;
+        cout << "- " << post->content << endl;
+    }
+    void printAllPost(){
+        int idx = 0;
+        for(auto node = list->last; node != nullptr; node=node->prev){
+            cout << idx++ << ". ";
+            printPost(node);
+        }
+    }
+    void inputPost(Stream& s, Node<User>* userNode){
+        cout << "Post: ";
+        string content;
+        content.assign(s.in<string>());
+        addPost(userNode->data, content);
+    }
 };
 class Comment {
 public:

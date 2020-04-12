@@ -31,9 +31,8 @@ void CommentList::removeComment(Comment* target) {
 }
 
 
-Post::Post(User *user, string &title, string &content) {
+Post::Post(User *user, string &content) {
     this->user = user;
-    this->title.assign(title);
     this->content.assign(content);
 }
 
@@ -42,8 +41,8 @@ Post::~Post() {
     (userCache_p != nullptr) && (userCache_p->parent->drop(userCache_p));
 }
 
-Post *PostList::addPost(User *user, string &title, string &content) {
-    auto* tmp = new Post(user, title, content);
+Post *PostList::addPost(User *user, string &content) {
+    auto* tmp = new Post(user, content);
     tmp->baseCache_p = list->add(tmp);
     if(tmp->baseCache_p == nullptr){
         delete tmp;
@@ -94,7 +93,7 @@ Node<User>* UserList::signIn(Stream &s) {
     cout << "Password: ";
     password.assign(s.in<string>());
 
-    for(auto user = list->first; user != nullptr; user = user->next){
+    for(Node<User>* user = list->first; user != nullptr; user = user->next){
         if(user->data->id == id && user->data->password == password){
             return user;
         }

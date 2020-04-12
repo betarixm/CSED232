@@ -19,36 +19,67 @@ protected:
     string texts[4];
     string type;
 
-    virtual void show(const User* user);
-
+    virtual void show(const Node<User>* user);
+    void setMenu(string* msgs, string& target);
 public:
-    int input(User* user, Stream& s);
+    int input(Node<User>* user, Stream& s);
 };
 
 class MainMenu : public Menu {
-private:
-    string texts[4] = {"1. Sign up", "2. Sign in", "3. Load command", "4. Program exit"};
-    string type="Main";
+public:
+    MainMenu();
+    void selector(Stream& s, Node<User>*& user, UserList& userList, int& mode);
 };
 
 class MyPageMenu : public Menu {
-private:
-    string texts[4] = {"1. Friends", "2. Feed", "3. Sign out", "4. Delete my account"};
-    string type="My Page";
 protected:
-    void show(const User* user) override;
+    void show(const Node<User>* user) override;
+
+public:
+    MyPageMenu();
+    void selector(Stream& s, Node<User>*& user, UserList& userList, int& mode){
+        int input = this->input(user, s);
+        if(input == 0){
+            return;
+        } else if (input == 1){
+            mode = MENU_FRIENDS;
+        } else if (input == 2){
+            mode = MENU_FEED;
+        } else if (input == 3){
+            user = nullptr;
+            mode = MENU_MAIN;
+        } else if (input == 4){
+            userList.removeUser(user);
+            mode = MENU_MAIN;
+        }
+    }
 };
 
 class FriendsMenu : public Menu {
-private:
-    string texts[4] = {"1. Add friends", "2. Delete friends", "3. My friends", "4. Previous menu"};
-    string type="Friends";
+public:
+    FriendsMenu();
 };
 
 class FeedMenu : public Menu {
-private:
-    string texts[4] = {"1. All Feed", "2. Post", "3. My posting", "4. Previous menu"};
-    string type="Feed";
+public:
+    FeedMenu();
+    void selector(Stream& s, Node<User>*& user, PostList& postList, int& mode){
+        int input = this->input(user, s);
+        if(input == 0){
+            return;
+        } else if (input == 1){
+            postList.printAllPost();
+            mode = MENU_FEED;
+        } else if (input == 2){
+            postList.inputPost(s, user);
+            mode = MENU_FEED;
+        } else if (input == 3){
+            user = nullptr;
+            mode = MENU_FEED;
+        } else if (input == 4){
+            mode = MENU_MY_PAGE;
+        }
+    }
 };
 
 #endif //CSED232_MENU_H

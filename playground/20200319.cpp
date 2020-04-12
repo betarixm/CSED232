@@ -11,7 +11,7 @@ public:
 };
 
 template <typename T>
-class List{
+class cList{
 public:
     Node<T>* list = nullptr;
     Node<T>* first = nullptr;
@@ -19,14 +19,14 @@ public:
     int size = 0;
     int max = 0;
 
-    List(int size);
+    cList(int size);
 
     Node<T>* add(T* data);
     Node<T>* drop(Node<T>* node);
 };
 
 template <typename T>
-List<T>::List(int max){
+cList<T>::cList(int max){
     list = new Node<T>[max];
     this->max = max;
 
@@ -39,7 +39,7 @@ List<T>::List(int max){
 }
 
 template <typename T>
-Node<T>* List<T>::add(T* data){
+Node<T>* cList<T>::add(T* data){
     if (size >= max){
         return nullptr;
     }
@@ -61,7 +61,7 @@ Node<T>* List<T>::add(T* data){
 }
 
 template <typename T>
-Node<T>* List<T>::drop(Node<T>* node){
+Node<T>* cList<T>::drop(Node<T>* node){
     if(node->prev == nullptr){
         first=node->next;
     } else {
@@ -75,7 +75,7 @@ Node<T>* List<T>::drop(Node<T>* node){
     return node;
 }
 int main(){
-    List<int> l = List<int>(50);
+    cList<int> l = cList<int>(50);
     int* a = new int;
     int* b = new int;
     *a = 1;
