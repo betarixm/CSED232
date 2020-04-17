@@ -36,34 +36,40 @@ public:
     User* removeUser(Node<User>* user);
 };
 class Post {
-public:
+private:
     List<Comment>* commentCache = new List<Comment>(MAX_COMMENT);
     string content;
-    int like = 0;
     User* user;
-
+public:
+    int like = 0;
     Node<Post>* baseCache_p = nullptr;
     Node<Post>* userCache_p = nullptr;
 
     Post(User *user, string& content);
     ~Post();
+    void printPost(){
+        cout << "@" << user->id << "(Like: " << like << ")" << endl;
+        cout << "- " << content << endl;
+    }
+
+
 };
 
 class PostList {
+private:
+    int num_post;
 public:
     List<Post>* list = new List<Post>(MAX_POST);
     Post* addPost(User* user, string& content);
     void removePost(Post* target);
-    void printPost(Node<Post>* nodePost){
-        Post* post = nodePost->data;
-        cout << "@" << post->user->id << "(Like: " << post->like << ")" << endl;
-        cout << "- " << post->content << endl;
-    }
+
     void printAllPost(){
         int idx = 0;
+        auto p_list = new Post*[num_post];
         for(auto node = list->last; node != nullptr; node=node->prev){
             cout << idx++ << ". ";
-            printPost(node);
+            node->data->printPost();
+            p_list[idx] = node->data;
         }
     }
     void inputPost(Stream& s, Node<User>* userNode){
@@ -71,6 +77,7 @@ public:
         string content;
         content.assign(s.in<string>());
         addPost(userNode->data, content);
+        num_post++;
     }
 };
 class Comment {
