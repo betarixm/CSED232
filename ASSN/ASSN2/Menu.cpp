@@ -1,87 +1,118 @@
 #include "Menu.h"
+#include "User.h"
+#include "Post.h"
 
-void Menu::show(const Node<User> *user) {
-    printLine();
-    cout << "Menu - " << type << endl;
-    for (const auto &text : texts) {
-        cout << text << endl;
-    }
-    printLine();
-}
-
-void Menu::setMenu(string* msgs, string &target) {
-    for(int i = 0; i < 4; i++){
-        this->texts[i].assign(msgs[i]);
-    }
-    this->type.assign(target);
-}
-int Menu::input(Node<User>* user, Stream &s) {
-    int num;
-    show(user);
-    cout << "Select Menu:";
-    num = s.in<int>();
-    if (!(0 < num && num < 5)) {
-        num = 0, cout << "Invalid input." << endl;
-    } else {
-        cout << "Selected Menu: " << texts[num - 1] << endl;
-    }
-    return num;
-}
-
-void MyPageMenu::show(const Node<User> *user) {
-    if (user == nullptr){
-        return;
-    }
-    printLine();
-    cout << "Menu - " << type << endl;
-    // cout << "@" << user.id << " - " << user.name << " " << user.birth.year << "." << user.birth.month << "." << user.birth.date << endl;
-    cout << "@" << user->data->id << " - " << user->data->name << " " << user->data->birthday << endl;
-    for (const auto &text : texts) {
-        cout << text << endl;
-    }
-    printLine();
-}
-
-MainMenu::MainMenu(){
-    string _texts[4] = {"1. Sign up", "2. Sign in", "3. Load command", "4. Program exit"};
-    string _type="Main";
-
-    this->setMenu(_texts, _type);
-}
-
-void MainMenu::selector(Stream& s, Node<User>*& user, UserList& userList, int& mode){
-    int input = this->input(user, s);
-    if(input == 0){
-        return;
-    } else if (input == 1){
-        userList.addUser(s);
-    } else if (input == 2){
-        user = userList.signIn(s);
-        if(user != nullptr){
-            mode = MENU_MY_PAGE;
+int Menu::show(string &type, string texts[], User *user, bool isProfile,  Stream &s) {
+    int input = 0;
+    while(true){
+        printLine();
+        cout << "Menu - " << type << endl;
+        if(isProfile){
+            user->printProfile();
         }
-    } else if (input == 3){
-        // LOAD COMMAND
-    } else if (input == 4){
-        mode = MENU_EXIT;
+        for(int i = 0; i < 4; i++){
+            cout << texts[i] << endl;
+        }
+        printLine();
+
+        cout << "Select Menu: ";
+
+        s.in<int>(input);
+        if(input < 1 || input > 4){
+            cout << "Invalid Input!" << endl;
+            cin.clear();
+            cin.ignore();
+        } else {
+            return input;
+        }
     }
-
 }
-MyPageMenu::MyPageMenu(){
-    string _texts[4] = {"1. Friends", "2. Feed", "3. Sign out", "4. Delete my account"};
-    string _type="My Page";
 
-    this->setMenu(_texts, _type);
+Menu::Menu(User *user, UserList *userList, CommentList *commentList, PostList *postList) {
+    this->user = user;
+    this->userList = userList;
+    this->commentList = commentList;
+    this->postList = postList;
 }
-FriendsMenu::FriendsMenu(){
-    string _texts[4] = {"1. Add friends", "2. Delete friends", "3. My friends", "4. Previous menu"};
-    string _type="Friends";
+void Menu::main(Stream& s){
+    string type ="Main";
+    int input = 0;
+    while (true){
 
-    this->setMenu(_texts, _type);
+        input = show(type,mainTexts, user, false, s);
+        if(input == 1){
+            userList->addUser(s);
+        } else if (input == 2){
+            this->node_user = userList->signIn(s);
+            if(node_user == nullptr){
+                cout << "Failed to Sign In!" << endl;
+            } else {
+                this->user = node_user->data();
+                this->myPage(s);
+            }
+        } else if (input == 3){
+            userList->removeUser(node_user, commentList, postList);
+        } else if (input == 4){
+            return;
+        }
+    }
 }
-FeedMenu::FeedMenu(){
-    string _texts[4] = {"1. All Feed", "2. Post", "3. My posting", "4. Previous menu"};
-    string _type="Feed";
 
-    this->setMenu(_texts, _type);
+void Menu::myPage(Stream& s) {
+    string type="My Page";
+    int input = 0;
+    while (true){
+        input = show(type, myPageTexts, user, true, s);
+        if(input == 1){
+            this->friends(s);
+        } else if (input == 2){
+            this->feed(s);
+        } else if (input == 3){
+            this->user = nullptr;
+            return;
+        } else if (input == 4){
+            userList->removeUser(node_user, commentList, postList);
+            return;
+        }
+    }
+}
+
+void Menu::friends(Stream &s) {
+    string type="Friends";
+    int input = 0;
+    while(true){
+        input = show(type, friendsTexts, user, false, s);
+        if(input == 1){
+            user->friends().addFriend(s, userList);
+        } else if (input == 2){
+            user->friends().removeFriendById(s, userList);
+        } else if (input == 3){
+            user->friends().printFriends();
+        } else if (input == 4){
+            return;
+        }
+    }
+}
+
+void Menu::feed(Stream &s){
+    string type="Feed";
+    int input = 0;
+    while(true){
+        input = show(type, feedTexts, user, false, s);
+        if(input == 1){
+            postList->printPostList(s, user, commentList, user->friends().list());
+        } else if (input == 2){
+            postList->addPost(user, s);
+        } else if (input == 3){
+            auto me = new List<User>(1);
+            me->add(this->user);
+            postList->printPostList(s, user, commentList, *me);
+        } else if (input == 4){
+            return;
+        }
+    }
+}
+
+void Menu::setUser(User* pUser){
+    this->user = pUser;
 }

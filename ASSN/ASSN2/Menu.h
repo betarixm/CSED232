@@ -5,81 +5,34 @@
 #include <iostream>
 #include "IO.h"
 #include "Utils.h"
-#include "Contents.h"
+#include "List.h"
 using namespace std;
+class User;
+class UserList;
+class CommentList;
+class PostList;
 
-class Menu;
-class MainMenu;
-class MyPageMenu;
-class FriendsMenu;
-class FeedMenu;
 
 class Menu {
-protected:
-    string texts[4];
-    string type;
+private:
+    string mainTexts[4] = {"1. Sign up", "2. Sign in", "3. Load command", "4. Program exit"};
+    string myPageTexts[4] = {"1. Friends", "2. Feed", "3. Sign out", "4. Delete my account"};
+    string friendsTexts[4] = {"1. Add friends", "2. Delete friends", "3. My friends", "4. Previous menu"};
+    string feedTexts[4] = {"1. All Feed", "2. Post", "3. My posting", "4. Previous menu"};
+    User* user;
+    Node<User>* node_user;
+    UserList* userList;
+    CommentList* commentList;
+    PostList* postList;
 
-    virtual void show(const Node<User>* user);
-    void setMenu(string* msgs, string& target);
+    int show(string& type, string texts[], User* user, bool isProfile, Stream& s);
 public:
-    int input(Node<User>* user, Stream& s);
-};
-
-class MainMenu : public Menu {
-public:
-    MainMenu();
-    void selector(Stream& s, Node<User>*& user, UserList& userList, int& mode);
-};
-
-class MyPageMenu : public Menu {
-protected:
-    void show(const Node<User>* user) override;
-
-public:
-    MyPageMenu();
-    void selector(Stream& s, Node<User>*& user, UserList& userList, int& mode){
-        int input = this->input(user, s);
-        if(input == 0){
-            return;
-        } else if (input == 1){
-            mode = MENU_FRIENDS;
-        } else if (input == 2){
-            mode = MENU_FEED;
-        } else if (input == 3){
-            user = nullptr;
-            mode = MENU_MAIN;
-        } else if (input == 4){
-            userList.removeUser(user);
-            mode = MENU_MAIN;
-        }
-    }
-};
-
-class FriendsMenu : public Menu {
-public:
-    FriendsMenu();
-};
-
-class FeedMenu : public Menu {
-public:
-    FeedMenu();
-    void selector(Stream& s, Node<User>*& user, PostList& postList, int& mode){
-        int input = this->input(user, s);
-        if(input == 0){
-            return;
-        } else if (input == 1){
-            postList.printAllPost();
-            mode = MENU_FEED;
-        } else if (input == 2){
-            postList.inputPost(s, user);
-            mode = MENU_FEED;
-        } else if (input == 3){
-            user = nullptr;
-            mode = MENU_FEED;
-        } else if (input == 4){
-            mode = MENU_MY_PAGE;
-        }
-    }
+    Menu(User* user, UserList* userList, CommentList* commentList, PostList* postList);
+    void main(Stream& s);
+    void myPage(Stream& s);
+    void friends(Stream& s);
+    void feed(Stream& s);
+    void setUser(User* pUser);
 };
 
 #endif //CSED232_MENU_H

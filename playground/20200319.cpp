@@ -5,9 +5,9 @@ using namespace std;
 template <typename T>
 class Node {
 public:
-    T* data;
-    Node<T>* next;
-    Node<T>* prev;
+    T* node_data;
+    Node<T>* node_next;
+    Node<T>* node_prev;
 };
 
 template <typename T>
@@ -31,9 +31,9 @@ cList<T>::cList(int max){
     this->max = max;
 
     for(int i=0; i<max; i++){
-        list[i].data = nullptr;
-        list[i].prev = nullptr;
-        list[i].next = nullptr;
+        list[i].node_data = nullptr;
+        list[i].node_prev = nullptr;
+        list[i].node_next = nullptr;
     }
 
 }
@@ -44,14 +44,14 @@ Node<T>* cList<T>::add(T* data){
         return nullptr;
     }
     for(int i = 0; i< max; i++){
-        if(list[i].data == nullptr){
-            list[i].data = data;
+        if(list[i].node_data == nullptr){
+            list[i].node_data = data;
             if(last == nullptr){
                 first = &(list[i]);
             } else {
-                last->next = &(list[i]);
+                last->node_next = &(list[i]);
             }
-            list[i].prev = last;
+            list[i].node_prev = last;
             last = &(list[i]);
             size++;
             return &list[i];
@@ -62,15 +62,15 @@ Node<T>* cList<T>::add(T* data){
 
 template <typename T>
 Node<T>* cList<T>::drop(Node<T>* node){
-    if(node->prev == nullptr){
-        first=node->next;
+    if(node->node_prev == nullptr){
+        first=node->node_next;
     } else {
-        (node->prev)->next = node->next;
+        (node->node_prev)->node_next = node->node_next;
     }
-    delete node->data;
-    node->data = nullptr;
-    node->prev = nullptr;
-    node->next = nullptr;
+    delete node->node_data;
+    node->node_data = nullptr;
+    node->node_prev = nullptr;
+    node->node_next = nullptr;
     size--;
     return node;
 }

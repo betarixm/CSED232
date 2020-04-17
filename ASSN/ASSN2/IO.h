@@ -15,17 +15,30 @@ public:
     explicit Stream(streambuf* _cin){
         this->_cin = _cin;
     }
-    template <typename T> T in(){
+    template <typename T> void in(T& input){
         if(_in.is_open()){
             cin.rdbuf(_in.rdbuf());
         } else {
             cin.rdbuf(_cin);
         }
 
-        T input;
         cin >> input;
         _out << input << endl;
-        return input;
+        cin.ignore();
+    }
+
+    void getline(string& input){
+        if(_in.is_open()){
+            cin.rdbuf(_in.rdbuf());
+        } else {
+            cin.rdbuf(_cin);
+        }
+        std::getline(cin, input);
+        _out << input << endl;
+    }
+
+    void ignore(){
+        cin.ignore();
     }
 };
 
