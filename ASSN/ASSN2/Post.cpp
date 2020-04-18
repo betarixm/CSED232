@@ -46,7 +46,7 @@ bool Post::isLiked(User* target){
 void Post::add_like(User *target, Stream& s) {
     string input;
     cout << "Do you like it? (y/n): ";
-    s.getline(input);
+    s.getLine(input);
     if(input == "y"){
         likeList->add(target);
     }
@@ -58,8 +58,10 @@ User* Post::user() {
 Node<Post>* PostList::addPost(User *user,  Stream& s)  {
     cout << "Post: ";
     string input;
-    s.getline(input);
-
+    s.getLine(input);
+    if(input.empty()){
+        return nullptr;
+    }
     Post* tmp = new Post(user, input);
     return this->list->add(tmp);
 }
@@ -95,12 +97,13 @@ void PostList::printPostList(Stream& s, User* user, CommentList* commentList, Li
         }
         printLine();
         cout << "Select number: ";
-        s.in<int>(input);
+        if(!s.getInt(input)){
+            cout << "Invalid input!" << endl;
+            return;
+        }
 
         if(!(-2 < input && input < idx)){
             cout << "Invalid input!" << endl;
-            cin.clear();
-            cin.ignore();
             return;
         }
         if(input == -1){

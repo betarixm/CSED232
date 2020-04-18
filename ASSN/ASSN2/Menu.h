@@ -25,7 +25,7 @@ private:
     CommentList* commentList;
     PostList* postList;
 
-    int show(string& type, string texts[], User* user, bool isProfile, Stream& s);
+    int show(string& type, string texts[], User* pUser, bool isProfile, Stream& s);
 public:
     Menu(User* user, UserList* userList, CommentList* commentList, PostList* postList);
     void main(Stream& s);

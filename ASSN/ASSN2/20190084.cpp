@@ -20,9 +20,8 @@ int main() {
     CommentList commentList;
 
     Stream s = Stream(cin.rdbuf());
-    s._out.open("command.txt", ios::app);
 
-    Menu menu = Menu(user, &userList, &commentList, &postList);
+    Menu menu = Menu(nullptr, &userList, &commentList, &postList);
     menu.main(s);
     return 0;
 

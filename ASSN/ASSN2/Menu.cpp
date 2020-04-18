@@ -2,13 +2,14 @@
 #include "User.h"
 #include "Post.h"
 
-int Menu::show(string &type, string texts[], User *user, bool isProfile,  Stream &s) {
+int Menu::show(string &type, string texts[], User *pUser, bool isProfile, Stream &s) {
     int input = 0;
+
     while(true){
         printLine();
         cout << "Menu - " << type << endl;
         if(isProfile){
-            user->printProfile();
+            pUser->printProfile();
         }
         for(int i = 0; i < 4; i++){
             cout << texts[i] << endl;
@@ -17,12 +18,12 @@ int Menu::show(string &type, string texts[], User *user, bool isProfile,  Stream
 
         cout << "Select Menu: ";
 
-        s.in<int>(input);
-        if(input < 1 || input > 4){
+        if(!s.getInt(input)){
             cout << "Invalid Input!" << endl;
-            cin.clear();
-            cin.ignore();
+        } else if(input < 1 || input > 4){
+            cout << "Invalid Input!" << endl;
         } else {
+            cout << "Selected Menu: " << texts[input - 1]<< endl;
             return input;
         }
     }
@@ -51,7 +52,12 @@ void Menu::main(Stream& s){
                 this->myPage(s);
             }
         } else if (input == 3){
-            userList->removeUser(node_user, commentList, postList);
+            if(s.isLoadingCommand()){
+                cout << "Additional 'Load Command' is Detected." << endl
+                << "It will be ignored to protect program." << endl;
+            } else {
+                s.loadCommand();
+            }
         } else if (input == 4){
             return;
         }

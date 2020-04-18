@@ -4,7 +4,7 @@
 void Friends::addFriend(Stream &s, UserList *userList) {
     string id;
     cout << "Input ID: ";
-    s.getline(id);
+    s.getLine(id);
     Node<User>* target = userList->getUserById(id);
     if(target == nullptr){
         cout << id << " is not exist user." << endl;
@@ -28,7 +28,7 @@ void Friends::addFriend(Stream &s, UserList *userList) {
 void Friends::removeFriendById(Stream &s, UserList *userList) {
     string id;
     cout << "Input ID: ";
-    s.getline(id);
+    s.getLine(id);
     Node<User>* target = userList->getUserById(id);
     if(target == nullptr){
         cout << id <<" is not exist user." << endl;

@@ -17,7 +17,7 @@ void Comment::show() {
 Node<Comment> * CommentList::addComment(User *user, Post *post, Stream& s) {
     string input;
     cout << "Write Comment: ";
-    s.getline(input);
+    s.getLine(input);
     if(input.empty())
         return nullptr;
     auto* tmp = new Comment(user, input, post);

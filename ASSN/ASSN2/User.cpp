@@ -36,7 +36,7 @@ Node<User>* UserList::addUser(Stream &s)  {
 
     for(int i = 0; i < 4; i++){
         cout << msgs[i];
-        s.getline(infos[i]);
+        s.getLine(infos[i]);
     }
 
     for(auto user = list->begin(); user != nullptr; user = user->next()){
@@ -56,9 +56,9 @@ Node<User>* UserList::addUser(Stream &s)  {
 Node<User>* UserList::signIn(Stream &s) {
     string id, password;
     cout << "ID: ";
-    s.getline(id);
+    s.getLine(id);
     cout << "Password: ";
-    s.getline(password);
+    s.getLine(password);
 
     for(Node<User>* user = list->begin(); user != nullptr; user = user->next()){
         if(user->data()->auth(id, password)){
@@ -75,7 +75,7 @@ void UserList::removeUser(Node<User> *user, CommentList* commentList, PostList* 
         tmp->data()->friends().removeFriendByUser(user->data());
     }
     list->drop(user);
-    delete user;
+    delete user->data();
 }
 
 Node<User>* UserList::getUserById(string& id){
