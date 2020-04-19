@@ -3,6 +3,12 @@
 #include "Comment.h"
 #include "Post.h"
 
+/*
+ * 명예서약 (Honor Code)
+ * 나는 이 프로그래밍 과제를 다른 사람의 부적절한 도움 없이 완수하였습니다.
+ * I completed this programming task without the improper help of others.
+ */
+
 User::User(string &id, string &name, string &birthday, string &password)  {
     this->user_id.assign(id);
     this->name.assign(name);
@@ -85,4 +91,12 @@ Node<User>* UserList::getUserById(string& id){
         }
     }
     return nullptr;
+}
+
+UserList::~UserList() {
+    for(auto tmp=list->begin(); tmp != nullptr; tmp=tmp->next()){
+        delete tmp->data();
+        list->drop(tmp);
+    }
+    delete list;
 }

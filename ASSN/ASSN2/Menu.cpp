@@ -2,14 +2,20 @@
 #include "User.h"
 #include "Post.h"
 
-int Menu::show(string &type, string texts[], User *pUser, bool isProfile, Stream &s) {
+/*
+ * 명예서약 (Honor Code)
+ * 나는 이 프로그래밍 과제를 다른 사람의 부적절한 도움 없이 완수하였습니다.
+ * I completed this programming task without the improper help of others.
+ */
+
+int Menu::show(string &type, string texts[], bool isProfile, Stream &s) {
     int input = 0;
 
     while(true){
         printLine();
         cout << "Menu - " << type << endl;
         if(isProfile){
-            pUser->printProfile();
+            this->user->printProfile();
         }
         for(int i = 0; i < 4; i++){
             cout << texts[i] << endl;
@@ -29,8 +35,9 @@ int Menu::show(string &type, string texts[], User *pUser, bool isProfile, Stream
     }
 }
 
-Menu::Menu(User *user, UserList *userList, CommentList *commentList, PostList *postList) {
-    this->user = user;
+Menu::Menu(Node<User>*&node_user, UserList *userList, CommentList *commentList, PostList *postList) {
+    this->node_user = node_user;
+    this->user = nullptr;
     this->userList = userList;
     this->commentList = commentList;
     this->postList = postList;
@@ -40,7 +47,7 @@ void Menu::main(Stream& s){
     int input = 0;
     while (true){
 
-        input = show(type,mainTexts, user, false, s);
+        input = show(type, mainTexts, false, s);
         if(input == 1){
             userList->addUser(s);
         } else if (input == 2){
@@ -68,7 +75,7 @@ void Menu::myPage(Stream& s) {
     string type="My Page";
     int input = 0;
     while (true){
-        input = show(type, myPageTexts, user, true, s);
+        input = show(type, myPageTexts, true, s);
         if(input == 1){
             this->friends(s);
         } else if (input == 2){
@@ -87,9 +94,9 @@ void Menu::friends(Stream &s) {
     string type="Friends";
     int input = 0;
     while(true){
-        input = show(type, friendsTexts, user, false, s);
+        input = show(type, friendsTexts, false, s);
         if(input == 1){
-            user->friends().addFriend(s, userList);
+            user->friends().addFriend(s, user, userList);
         } else if (input == 2){
             user->friends().removeFriendById(s, userList);
         } else if (input == 3){
@@ -104,7 +111,7 @@ void Menu::feed(Stream &s){
     string type="Feed";
     int input = 0;
     while(true){
-        input = show(type, feedTexts, user, false, s);
+        input = show(type, feedTexts, false, s);
         if(input == 1){
             postList->printPostList(s, user, commentList, user->friends().list());
         } else if (input == 2){
@@ -117,8 +124,4 @@ void Menu::feed(Stream &s){
             return;
         }
     }
-}
-
-void Menu::setUser(User* pUser){
-    this->user = pUser;
 }

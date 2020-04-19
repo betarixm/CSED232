@@ -6,6 +6,13 @@
 #include "IO.h"
 #include "Utils.h"
 #include "List.h"
+
+/*
+ * 명예서약 (Honor Code)
+ * 나는 이 프로그래밍 과제를 다른 사람의 부적절한 도움 없이 완수하였습니다.
+ * I completed this programming task without the improper help of others.
+ */
+
 using namespace std;
 class User;
 class UserList;
@@ -25,14 +32,13 @@ private:
     CommentList* commentList;
     PostList* postList;
 
-    int show(string& type, string texts[], User* pUser, bool isProfile, Stream& s);
+    int show(string &type, string texts[], bool isProfile, Stream &s);
 public:
-    Menu(User* user, UserList* userList, CommentList* commentList, PostList* postList);
+    Menu(Node<User>*& user, UserList* userList, CommentList* commentList, PostList* postList);
     void main(Stream& s);
     void myPage(Stream& s);
     void friends(Stream& s);
     void feed(Stream& s);
-    void setUser(User* pUser);
 };
 
 #endif //CSED232_MENU_H

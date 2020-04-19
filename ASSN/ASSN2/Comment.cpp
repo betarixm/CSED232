@@ -3,11 +3,17 @@
 #include "Post.h"
 #include "IO.h"
 
+/*
+ * 명예서약 (Honor Code)
+ * 나는 이 프로그래밍 과제를 다른 사람의 부적절한 도움 없이 완수하였습니다.
+ * I completed this programming task without the improper help of others.
+ */
+
 Comment::Comment(User *user, string &content, Post* post) {
     this->comment_user = user;
     this->comment_content.assign(content);
     this->comment_post = post;
-};
+}
 
 void Comment::show() {
     cout << "@" << this->comment_user->id() << " - " << this->comment_content << endl;
@@ -27,8 +33,8 @@ Node<Comment> * CommentList::addComment(User *user, Post *post, Stream& s) {
 void CommentList::removeUserComment(User* target) {
     for(auto tmp=list->begin(); tmp != nullptr; tmp=tmp->next()){
         if(tmp->data()->user() == target || tmp->data()->post()->user() == target){
-            list->drop(tmp);
             delete tmp->data();
+            list->drop(tmp);
         }
     }
 }
@@ -42,4 +48,12 @@ void CommentList::printComment(Post* target) {
 
 int CommentList::size() {
     return list->size();
+}
+
+CommentList::~CommentList() {
+    for(auto tmp = list->begin(); tmp != nullptr; tmp=tmp->next()){
+        delete tmp->data();
+        list->drop(tmp);
+    }
+    delete list;
 }

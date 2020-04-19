@@ -4,6 +4,12 @@
 #include "Utils.h"
 #include "IO.h"
 
+/*
+ * 명예서약 (Honor Code)
+ * 나는 이 프로그래밍 과제를 다른 사람의 부적절한 도움 없이 완수하였습니다.
+ * I completed this programming task without the improper help of others.
+ */
+
 Post::Post(User *user, string &content)  {
     this->post_user = user;
     this->content.assign(content);
@@ -93,17 +99,20 @@ void PostList::printPostList(Stream& s, User* user, CommentList* commentList, Li
         }
         if(idx == 0){
             cout << "There's nothing to show you." << endl;
+            delete[] p_list;
             return;
         }
         printLine();
         cout << "Select number: ";
         if(!s.getInt(input)){
             cout << "Invalid input!" << endl;
+            delete[] p_list;
             return;
         }
 
         if(!(-2 < input && input < idx)){
             cout << "Invalid input!" << endl;
+            delete[] p_list;
             return;
         }
         if(input == -1){
@@ -114,4 +123,12 @@ void PostList::printPostList(Stream& s, User* user, CommentList* commentList, Li
         }
     }
 
+}
+
+PostList::~PostList() {
+    for(auto tmp=list->begin(); tmp != nullptr; tmp=tmp->next()){
+        delete tmp->data();
+        list->drop(tmp);
+    }
+    delete list;
 }
