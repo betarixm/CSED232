@@ -16,7 +16,7 @@ using namespace std;
 
 int main() {
 
-    Node<User>* node_user;
+    Node<User> *node_user;
     UserList userList;
     PostList postList;
     CommentList commentList;

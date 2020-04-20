@@ -14,9 +14,13 @@
  */
 
 using namespace std;
+
 class User;
+
 class UserList;
+
 class CommentList;
+
 class PostList;
 
 
@@ -26,19 +30,24 @@ private:
     string myPageTexts[4] = {"1. Friends", "2. Feed", "3. Sign out", "4. Delete my account"};
     string friendsTexts[4] = {"1. Add friends", "2. Delete friends", "3. My friends", "4. Previous menu"};
     string feedTexts[4] = {"1. All Feed", "2. Post", "3. My posting", "4. Previous menu"};
-    User* user;
-    Node<User>* node_user;
-    UserList* userList;
-    CommentList* commentList;
-    PostList* postList;
+    User *user;
+    Node<User> *node_user;
+    UserList *userList;
+    CommentList *commentList;
+    PostList *postList;
 
     int show(string &type, string texts[], bool isProfile, Stream &s);
+
 public:
-    Menu(Node<User>*& user, UserList* userList, CommentList* commentList, PostList* postList);
-    void main(Stream& s);
-    void myPage(Stream& s);
-    void friends(Stream& s);
-    void feed(Stream& s);
+    Menu(Node<User> *&user, UserList *userList, CommentList *commentList, PostList *postList);
+
+    void main(Stream &s);
+
+    void myPage(Stream &s);
+
+    void friends(Stream &s);
+
+    void feed(Stream &s);
 };
 
 #endif //CSED232_MENU_H

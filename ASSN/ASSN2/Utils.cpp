@@ -1,6 +1,4 @@
 #include "Utils.h"
-#include <iostream>
-using namespace std;
 
 /*
  * 명예서약 (Honor Code)
@@ -9,5 +7,5 @@ using namespace std;
  */
 
 void printLine() {
-    cout << "=======================" << endl;
+    std::cout << "=======================" << std::endl;
 }

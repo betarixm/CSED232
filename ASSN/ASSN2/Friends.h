@@ -16,22 +16,29 @@
  */
 
 class User;
+
 class UserList;
 
-template <typename T>
+template<typename T>
 class List;
+
 class Friends {
 private:
-    List<User>* friendsList = new List<User>(MAX_USER);
+    List<User> *friendsList = new List<User>(MAX_USER);
 
 public:
-    void addFriend(Stream& s, User* user, UserList *userList);
+    void addFriend(Stream &s, User *user, UserList *userList);
+
     void removeFriendById(Stream &s, UserList *userList);
-    void removeFriendByUser(User* user);
+
+    void removeFriendByUser(User *user);
+
     void printFriends();
-    List<User>& list(){
+
+    List<User> &list() {
         return *friendsList;
     }
+
     ~Friends();
 };
 

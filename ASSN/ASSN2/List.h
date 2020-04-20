@@ -11,79 +11,81 @@
 
 using namespace std;
 
-template <typename T>
+template<typename T>
 class List;
-template <typename T>
+
+template<typename T>
 class Node;
 
-template <typename T>
+template<typename T>
 class Node {
 private:
-    T* node_data = nullptr;
-    Node<T>* node_next = nullptr;
-    Node<T>* node_prev = nullptr;
-    List<T>* list_parent = nullptr;
+    T *node_data = nullptr;
+    Node<T> *node_next = nullptr;
+    Node<T> *node_prev = nullptr;
+    List<T> *list_parent = nullptr;
 public:
 
-    void setData(T* data){
+    void setData(T *data) {
         this->node_data = data;
     }
 
-    T* data(){
+    T *data() {
         return this->node_data;
     }
 
-    void setNext(Node<T>* next){
+    void setNext(Node<T> *next) {
         this->node_next = next;
     }
-    Node<T>* next(){
+
+    Node<T> *next() {
         return this->node_next;
     }
 
-    void setPrev(Node<T>* prev){
+    void setPrev(Node<T> *prev) {
         this->node_prev = prev;
     }
 
-    Node<T>* prev(){
+    Node<T> *prev() {
         return this->node_prev;
     }
 
-    void setParent(List<T>* parent){
+    void setParent(List<T> *parent) {
         this->list_parent = parent;
     }
 
-    List<T>* parent(){
+    List<T> *parent() {
         return this->list_parent;
     }
 };
 
-template <typename T>
-class List{
+template<typename T>
+class List {
 private:
-    Node<T>* list = nullptr;
+    Node<T> *list = nullptr;
     int list_size = 0;
     int max = 0;
-    Node<T>* first = nullptr;
-    Node<T>* last = nullptr;
+    Node<T> *first = nullptr;
+    Node<T> *last = nullptr;
 
 public:
-    explicit List(int max){
+    explicit List(int max) {
         list = new Node<T>[max];
         this->max = max;
     }
 
-    ~List(){
+    ~List() {
         delete list;
     }
 
-    Node<T>* add(T* data){
-        if (list_size >= max){
+    Node<T> *add(T *data) {
+        if (list_size >= max) {
             return nullptr;
         }
-        for(int i = 0; i< max; i++){
-            if(list[i].data() == nullptr){
+        for (int i = 0; i < max; i++) {
+            if (list[i].data() == nullptr) {
                 list[i].setData(data);
-                if(list_size == 0){
+                if (list_size == 0) {
                     first = &(list[i]);
                 } else {
                     last->setNext(&(list[i]));
@@ -96,13 +98,14 @@ public:
         }
         return nullptr;
     }
-    Node<T>* drop(Node<T>* node){
-        if(node->prev() == nullptr){
-            first=node->next();
+
+    Node<T> *drop(Node<T> *node) {
+        if (node->prev() == nullptr) {
+            first = node->next();
         } else {
             (node->prev())->setNext(node->next());
         }
-        if(node->next() == nullptr){
+        if (node->next() == nullptr) {
             last = node->prev();
         } else {
             (node->next())->setPrev(node->prev());
@@ -115,19 +118,19 @@ public:
         return node;
     }
 
-    Node<T>* insert(Node<T>* node, T* data){
-        if (list_size >= max){
+    Node<T> *insert(Node<T> *node, T *data) {
+        if (list_size >= max) {
             return nullptr;
         }
-        for(int i = 0; i< max; i++){
-            if(list[i].data() == nullptr){
-                Node<T>* tmp = &(list[i]);
+        for (int i = 0; i < max; i++) {
+            if (list[i].data() == nullptr) {
+                Node<T> *tmp = &(list[i]);
                 tmp->setData(data);
                 tmp->setPrev(node);
-                if(node == last){
+                if (node == last) {
                     last = tmp;
                 }
-                if(node == nullptr){
+                if (node == nullptr) {
                     tmp->setNext(first);
                     first = tmp;
                 } else {
@@ -139,30 +142,31 @@ public:
         }
         return nullptr;
     }
-    int size(){
+
+    int size() {
         return list_size;
     }
 
-    Node<T>* begin(){
+    Node<T> *begin() {
         return first;
     }
 
-    Node<T>* end(){
+    Node<T> *end() {
         return last;
     }
 
-    bool exist(T* data){
-        for(auto tmp=begin(); tmp != nullptr; tmp=tmp->next()){
-            if(data == tmp->data()){
+    bool exist(T *data) {
+        for (auto tmp = begin(); tmp != nullptr; tmp = tmp->next()) {
+            if (data == tmp->data()) {
                 return true;
             }
         }
         return false;
     }
 
-    Node<T>* find(T* data){
-        for(auto tmp=begin(); tmp != nullptr; tmp=tmp->next()){
-            if(data == tmp->data()){
+    Node<T> *find(T *data) {
+        for (auto tmp = begin(); tmp != nullptr; tmp = tmp->next()) {
+            if (data == tmp->data()) {
                 return tmp;
             }
         }

@@ -9,7 +9,7 @@
  * I completed this programming task without the improper help of others.
  */
 
-Comment::Comment(User *user, string &content, Post* post) {
+Comment::Comment(User *user, string &content, Post *post) {
     this->comment_user = user;
     this->comment_content.assign(content);
     this->comment_post = post;
@@ -20,27 +20,28 @@ void Comment::show() {
 }
 
 
-Node<Comment> * CommentList::addComment(User *user, Post *post, Stream& s) {
+Node<Comment> *CommentList::addComment(User *user, Post *post, Stream &s) {
     string input;
     cout << "Write Comment: ";
     s.getLine(input);
-    if(input.empty())
+    if (input.empty())
         return nullptr;
-    auto* tmp = new Comment(user, input, post);
+    auto *tmp = new Comment(user, input, post);
     return this->list->add(tmp);
 }
 
-void CommentList::removeUserComment(User* target) {
-    for(auto tmp=list->begin(); tmp != nullptr; tmp=tmp->next()){
-        if(tmp->data()->user() == target || tmp->data()->post()->user() == target){
+void CommentList::removeUserComment(User *target) {
+    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
+        if (tmp->data()->user() == target || tmp->data()->post()->user() == target) {
             delete tmp->data();
             list->drop(tmp);
         }
     }
 }
-void CommentList::printComment(Post* target) {
-    for(auto tmp = list->end(); tmp != nullptr; tmp=tmp->prev()){
-        if(tmp->data()->post() == target){
+
+void CommentList::printComment(Post *target) {
+    for (auto tmp = list->end(); tmp != nullptr; tmp = tmp->prev()) {
+        if (tmp->data()->post() == target) {
             tmp->data()->show();
         }
     }
@@ -51,7 +52,7 @@ int CommentList::size() {
 }
 
 CommentList::~CommentList() {
-    for(auto tmp = list->begin(); tmp != nullptr; tmp=tmp->next()){
+    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
         delete tmp->data();
         list->drop(tmp);
     }

@@ -7,6 +7,8 @@
  * I completed this programming task without the improper help of others.
  */
 
+#include <iostream>
+
 void printLine();
 
 #endif //CSED232_UTILS_H

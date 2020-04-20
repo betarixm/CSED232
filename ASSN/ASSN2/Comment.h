@@ -1,5 +1,6 @@
 #ifndef CSED232_COMMENT_H
 #define CSED232_COMMENT_H
+
 #include "20190084.h"
 #include "List.h"
 #include <iostream>
@@ -11,7 +12,9 @@
  */
 
 class User;
+
 class Post;
+
 class Stream;
 
 using namespace std;
@@ -19,30 +22,36 @@ using namespace std;
 class Comment {
 private:
     string comment_content;
-    User* comment_user;
-    Post* comment_post;
+    User *comment_user;
+    Post *comment_post;
 
 public:
-    Comment(User *user, string& content, Post* post);
+    Comment(User *user, string &content, Post *post);
+
     void show();
 
-    User* user(){
+    User *user() {
         return comment_user;
     }
 
-    Post* post(){
+    Post *post() {
         return comment_post;
     }
 };
 
-class CommentList{
+class CommentList {
 private:
-    List<Comment>* list = new List<Comment>(MAX_COMMENT);
+    List<Comment> *list = new List<Comment>(MAX_COMMENT);
 public:
     ~CommentList();
-    Node<Comment> * addComment(User *user, Post *post, Stream& s);
-    void removeUserComment(User* target);
-    void printComment(Post* target);
+
+    Node<Comment> *addComment(User *user, Post *post, Stream &s);
+
+    void removeUserComment(User *target);
+
+    void printComment(Post *target);
+
     int size();
 };
+
 #endif //CSED232_COMMENT_H

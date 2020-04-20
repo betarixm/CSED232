@@ -7,22 +7,23 @@
  * I completed this programming task without the improper help of others.
  */
 
-void Friends::addFriend(Stream &s, User* user, UserList *userList) {
+void Friends::addFriend(Stream &s, User *user, UserList *userList) {
     string id;
     cout << "Input ID: ";
     s.getLine(id);
-    Node<User>* target = userList->getUserById(id);
-    if(target == nullptr){
+    Node<User> *target = userList->getUserById(id);
+    if (target == nullptr) {
         cout << id << " is not exist user." << endl;
     } else {
-        if(friendsList->exist(target->data())){
+        if (friendsList->exist(target->data())) {
             cout << id << " is already your friend." << endl;
-        } else if (target){
+        } else if (target->data() == user) {
             cout << "You can't add yourself as a friend." << endl;
-        } else  {
+        } else {
             auto tmp = friendsList->begin();
-            for(; tmp!=nullptr; tmp=tmp->next()){
-                if( tmp->data()->id() <= id && ((tmp->next() == nullptr)||(tmp->next() != nullptr && id < tmp->next()->data()->id()))){
+            for (; tmp != nullptr; tmp = tmp->next()) {
+                if (tmp->data()->id() <= id &&
+                    ((tmp->next() == nullptr) || (tmp->next() != nullptr && id < tmp->next()->data()->id()))) {
                     break;
                 }
             }
@@ -37,12 +38,12 @@ void Friends::removeFriendById(Stream &s, UserList *userList) {
     string id;
     cout << "Input ID: ";
     s.getLine(id);
-    Node<User>* target = userList->getUserById(id);
-    if(target == nullptr){
-        cout << id <<" is not exist user." << endl;
+    Node<User> *target = userList->getUserById(id);
+    if (target == nullptr) {
+        cout << id << " is not exist user." << endl;
     } else {
         target = friendsList->find(target->data());
-        if(target != nullptr){
+        if (target != nullptr) {
             friendsList->drop(target);
             cout << id << " is deleted from your friend list." << endl;
         } else {
@@ -52,18 +53,18 @@ void Friends::removeFriendById(Stream &s, UserList *userList) {
 }
 
 void Friends::printFriends() {
-    if(friendsList->size() == 0){
+    if (friendsList->size() == 0) {
         cout << "You have not any friends... :(" << endl;
         return;
     }
-    for(auto tmp=friendsList->begin(); tmp != nullptr; tmp=tmp->next()){
+    for (auto tmp = friendsList->begin(); tmp != nullptr; tmp = tmp->next()) {
         tmp->data()->printProfile();
     }
 }
 
 void Friends::removeFriendByUser(User *user) {
-    for(auto tmp=friendsList->begin(); tmp!=nullptr; tmp=tmp->next()){
-        if(tmp->data() == user){
+    for (auto tmp = friendsList->begin(); tmp != nullptr; tmp = tmp->next()) {
+        if (tmp->data() == user) {
             friendsList->drop(tmp);
         }
     }

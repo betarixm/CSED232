@@ -10,7 +10,7 @@
  * I completed this programming task without the improper help of others.
  */
 
-Post::Post(User *user, string &content)  {
+Post::Post(User *user, string &content) {
     this->post_user = user;
     this->content.assign(content);
 }
@@ -22,100 +22,102 @@ Post::~Post() {
 int Post::num_like() {
     return likeList->size();
 }
+
 void Post::printPost() {
     cout << "@" << post_user->id() << " (Like: " << num_like() << ")" << endl;
     cout << "- " << content << endl;
 }
 
-void Post::printPostWrapper(User* user, CommentList* commentList, Stream& s) {
+void Post::printPostWrapper(User *user, CommentList *commentList, Stream &s) {
     this->printPost();
-    if(commentList->size() != 0){
+    if (commentList->size() != 0) {
         cout << "Reply: " << endl;
         commentList->printComment(this);
     }
     printLine();
-    if(!isLiked(user)){
+    if (!isLiked(user)) {
         add_like(user, s);
     }
     commentList->addComment(user, this, s);
 }
 
-bool Post::isLiked(User* target){
-    for(auto tmp=likeList->begin(); tmp != nullptr; tmp=tmp->next()){
-        if(tmp->data() == target){
+bool Post::isLiked(User *target) {
+    for (auto tmp = likeList->begin(); tmp != nullptr; tmp = tmp->next()) {
+        if (tmp->data() == target) {
             return true;
         }
     }
     return false;
 }
 
-void Post::add_like(User *target, Stream& s) {
+void Post::add_like(User *target, Stream &s) {
     string input;
     cout << "Do you like it? (y/n): ";
     s.getLine(input);
-    if(input == "y"){
+    if (input == "y") {
         likeList->add(target);
     }
 }
 
-User* Post::user() {
+User *Post::user() {
     return this->post_user;
 }
-Node<Post>* PostList::addPost(User *user,  Stream& s)  {
+
+Node<Post> *PostList::addPost(User *user, Stream &s) {
     cout << "Post: ";
     string input;
     s.getLine(input);
-    if(input.empty()){
+    if (input.empty()) {
         return nullptr;
     }
-    Post* tmp = new Post(user, input);
+    Post *tmp = new Post(user, input);
     return this->list->add(tmp);
 }
 
-void PostList::removeUserPost(User* target){
-    for(auto tmp=list->begin(); tmp != nullptr; tmp=tmp->next()){
-        if(tmp->data()->user() == target){
+void PostList::removeUserPost(User *target) {
+    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
+        if (tmp->data()->user() == target) {
             delete tmp->data();
             list->drop(tmp);
         }
     }
 }
 
-void PostList::printPostList(Stream& s, User* user, CommentList* commentList, List<User>& target) {
-    if(target.size() == 0){
+void PostList::printPostList(Stream &s, User *user, CommentList *commentList, List<User> &target) {
+    if (target.size() == 0) {
         cout << "There's nothing to show you." << endl;
         return;
     }
-    while(true){
+    while (true) {
         int idx = 0;
         int input = -1;
-        auto p_list = new Post*[this->size()];
-        for(auto tmp=list->end(); tmp!=nullptr; tmp=tmp->prev()){
-            if(target.exist(tmp->data()->user())){
+        auto p_list = new Post *[this->size()];
+        for (auto tmp = list->end(); tmp != nullptr; tmp = tmp->prev()) {
+            if (target.exist(tmp->data()->user())) {
                 cout << idx << ". ";
                 tmp->data()->printPost();
                 p_list[idx++] = tmp->data();
             }
         }
-        if(idx == 0){
+        if (idx == 0) {
             cout << "There's nothing to show you." << endl;
             delete[] p_list;
             return;
         }
         printLine();
         cout << "Select number: ";
-        if(!s.getInt(input)){
+        if (!s.getInt(input)) {
             cout << "Invalid input!" << endl;
             delete[] p_list;
             return;
         }
 
-        if(!(-2 < input && input < idx)){
+        if (!(-2 < input && input < idx)) {
             cout << "Invalid input!" << endl;
             delete[] p_list;
             return;
         }
-        if(input == -1){
+        if (input == -1) {
             delete[] p_list;
             return;
         } else {
@@ -126,7 +128,7 @@ void PostList::printPostList(Stream& s, User* user, CommentList* commentList, Li
 }
 
 PostList::~PostList() {
-    for(auto tmp=list->begin(); tmp != nullptr; tmp=tmp->next()){
+    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
         delete tmp->data();
         list->drop(tmp);
     }
