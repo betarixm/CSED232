@@ -66,6 +66,7 @@ void Friends::removeFriendByUser(User *user) {
     for (auto tmp = friendsList->begin(); tmp != nullptr; tmp = tmp->next()) {
         if (tmp->data() == user) {
             friendsList->drop(tmp);
+            break;
         }
     }
 }

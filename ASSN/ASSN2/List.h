@@ -75,7 +75,7 @@ public:
     }
 
     ~List() {
-        delete list;
+        delete[] list;
     }
 
     Node<T> *add(T *data) {
@@ -100,6 +100,7 @@ public:
     }
 
     Node<T> *drop(Node<T> *node) {
+        Node<T>* backup = node->next();
         if (node->prev() == nullptr) {
             first = node->next();
         } else {
@@ -115,7 +116,7 @@ public:
         node->setPrev(nullptr);
         node->setNext(nullptr);
         list_size--;
-        return node;
+        return backup;
     }
 
     Node<T> *insert(Node<T> *node, T *data) {

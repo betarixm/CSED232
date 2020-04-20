@@ -53,7 +53,7 @@ Node<User> *UserList::addUser(Stream &s) {
         }
     }
 
-    auto *tmp = new User(infos[0], infos[1], infos[2], infos[3]);
+    auto tmp = new User(infos[0], infos[1], infos[2], infos[3]);
     Node<User> *user = list->add(tmp);
     cout << "Registration Done!" << endl;
     return user;
@@ -81,8 +81,8 @@ void UserList::removeUser(Node<User> *user, CommentList *commentList, PostList *
     for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
         tmp->data()->friends().removeFriendByUser(user->data());
     }
-    list->drop(user);
     delete user->data();
+    list->drop(user);
 }
 
 Node<User> *UserList::getUserById(string &id) {
@@ -95,9 +95,8 @@ Node<User> *UserList::getUserById(string &id) {
 }
 
 UserList::~UserList() {
-    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
+    for (auto tmp = list->begin(); tmp != nullptr; tmp = list->drop(tmp)) {
         delete tmp->data();
-        list->drop(tmp);
     }
     delete list;
 }

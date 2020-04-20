@@ -75,10 +75,12 @@ Node<Post> *PostList::addPost(User *user, Stream &s) {
 }
 
 void PostList::removeUserPost(User *target) {
-    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
+    for (auto tmp = list->begin(); tmp != nullptr;) {
         if (tmp->data()->user() == target) {
             delete tmp->data();
-            list->drop(tmp);
+            tmp = list->drop(tmp);
+        } else {
+            tmp = tmp->next();
         }
     }
 }
@@ -128,9 +130,8 @@ void PostList::printPostList(Stream &s, User *user, CommentList *commentList, Li
 }
 
 PostList::~PostList() {
-    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
+    for (auto tmp = list->begin(); tmp != nullptr; tmp = list->drop(tmp)) {
         delete tmp->data();
-        list->drop(tmp);
     }
     delete list;
 }

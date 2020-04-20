@@ -31,10 +31,12 @@ Node<Comment> *CommentList::addComment(User *user, Post *post, Stream &s) {
 }
 
 void CommentList::removeUserComment(User *target) {
-    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
+    for (auto tmp = list->begin(); tmp != nullptr;) {
         if (tmp->data()->user() == target || tmp->data()->post()->user() == target) {
             delete tmp->data();
-            list->drop(tmp);
+            tmp = list->drop(tmp);
+        } else {
+            tmp = tmp->next();
         }
     }
 }
@@ -52,9 +54,8 @@ int CommentList::size() {
 }
 
 CommentList::~CommentList() {
-    for (auto tmp = list->begin(); tmp != nullptr; tmp = tmp->next()) {
+    for (auto tmp = list->begin(); tmp != nullptr; tmp = list->drop(tmp)) {
         delete tmp->data();
-        list->drop(tmp);
     }
     delete list;
 }
