@@ -31,7 +31,7 @@ private:
     string user_id;
     string name;
     string birthday;
-    string user_password;
+    size_t user_password;
     Friends *friendList;
 
 public:

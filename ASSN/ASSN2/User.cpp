@@ -13,7 +13,7 @@ User::User(string &id, string &name, string &birthday, string &password) {
     this->user_id.assign(id);
     this->name.assign(name);
     this->birthday.assign(birthday);
-    this->user_password.assign(password);
+    this->user_password = hash<string>{}(password);
     friendList = new Friends;
 }
 
@@ -30,7 +30,7 @@ string &User::id() {
 }
 
 bool User::auth(string &id, string &password) {
-    return (this->user_id == id && this->user_password == password);
+    return (this->user_id == id && this->user_password == hash<string>{}(password));
 }
 
 Friends &User::friends() {

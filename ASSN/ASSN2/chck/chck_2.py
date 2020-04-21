@@ -1,3 +1,11 @@
+#
+# POSTECH CSED232 ASSN2 CMD GENERATOR
+# Python 3.7+
+#
+# by beta@plus, minjae gwon.
+# github.com/beta-lux
+#
+
 import random
 import string
 
