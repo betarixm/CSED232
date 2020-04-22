@@ -8,6 +8,8 @@
 
 import random
 import string
+from functools import partial
+from operator import is_not
 
 USER_NUM = 0
 POST_NUM = 0
@@ -105,6 +107,7 @@ def delete_my_account() -> str:
     global current_user
     context.set(MAIN)
     user_list.remove(current_user)
+    filter(partial(is_not, None), user_list)
     return f"4\n"
 
 
@@ -221,25 +224,28 @@ def simulate():
     context.set(MAIN)
     res = ""
 
-    # you can make a lot of users...
+    for j in range(5):
+        for i in range(50):
+            res += sign_up()
+
+        b = user_list.copy()
+
+        for i in b:
+            res += sign_in(i)
+            res += delete_my_account()
+
     for i in range(50):
         res += sign_up()
 
-    # login!
     res += sign_in(user_list[0])
-
-    # delete!
-    res += delete_my_account()
-
-    # new user!
-    res += sign_up()
-
-    res += sign_in(user_list[1])
     res += menu_my_page_to_feed()
     res += post("wow")
 
     # put this output to command.txt
     print(res)
 
+    f = open("command.txt", "w")
+    f.write(res)
+    f.close()
 
 simulate()

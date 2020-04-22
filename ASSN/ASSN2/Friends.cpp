@@ -7,21 +7,27 @@
  * I completed this programming task without the improper help of others.
  */
 
-void Friends::addFriend(Stream &s, User *user, UserList *userList) {
+void Friends::addFriend(Stream &s, User *user, UserList *userList) { // 친구를 추가하는 메서드
     string id;
+
+    // 사용자로부터 친구 아이디 입력 받음
     cout << "Input ID: ";
     s.getLine(id);
+
+    // getUserID를 통해 유저를 찾음
     Node<User> *target = userList->getUserById(id);
-    if (target == nullptr) {
+
+    if (target == nullptr) { // 만약 유저가 없다면 오류 메세지 출력
         cout << id << " is not exist user." << endl;
     } else {
-        if (friendsList->exist(target->data())) {
-            cout << id << " is already your friend." << endl;
-        } else if (target->data() == user) {
-            cout << "You can't add yourself as a friend." << endl;
-        } else {
+        if (friendsList->exist(target->data())) { // 이미 존재하는 친구인지 확인
+            cout << id << " is already your friend." << endl; // 오류 메세지 출력
+        } else if (target->data() == user) { // 자기 자신인지 확인
+            cout << "You can't add yourself as a friend." << endl; // 오류 메세지 출력
+        } else { // 친구를 추가할 수 있는 조건일 때
             auto tmp = friendsList->begin();
-            for (; tmp != nullptr; tmp = tmp->next()) {
+            for (; tmp != nullptr; tmp = tmp->next()) { // 친구 리스트를 탐색한다
+                //
                 if (tmp->data()->id() <= id &&
                     ((tmp->next() == nullptr) || (tmp->next() != nullptr && id < tmp->next()->data()->id()))) {
                     break;

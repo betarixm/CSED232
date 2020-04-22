@@ -10,4 +10,5 @@ add_executable(ASSN1_3 ASSN/ASSN1/prob_3/prob_3.cpp)
 
 file(GLOB ASSN2_CPP ASSN/ASSN2/*.cpp)
 file(GLOB ASSN2_H ASSN/ASSN2/*.h)
-add_executable(ASSN2 ${ASSN2_CPP} ${ASSN2_H} ASSN/ASSN2/Post.cpp ASSN/ASSN2/Post.h ASSN/ASSN2/Comment.cpp ASSN/ASSN2/Comment.h ASSN/ASSN2/User.cpp ASSN/ASSN2/User.h ASSN/ASSN2/Friends.cpp ASSN/ASSN2/Friends.h)
+file(COPY ASSN/ASSN2/command.txt DESTINATION ${CMAKE_BINARY_DIR})
+add_executable(ASSN2 ASSN/ASSN2/20190084.cpp ${ASSN2_CPP} ${ASSN2_H})

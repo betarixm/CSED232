@@ -7,8 +7,8 @@
  * I completed this programming task without the improper help of others.
  */
 
-#define MAX_USER 50
-#define MAX_POST 100
-#define MAX_COMMENT 1000
+#define MAX_USER 50 // 최대한 저장할 수 있는 유저의 수
+#define MAX_POST 100 // 최대한 저장할 수 있는 게시물의 수
+#define MAX_COMMENT 1000 // 최대한 저장할 수 있는 댓글의 수
 
 #endif //CSED232_20190084_H
