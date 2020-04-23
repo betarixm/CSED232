@@ -60,6 +60,7 @@ void Stream::removeLastLog() {
         stringstream buffer; // 버퍼 스트링 스트림을 생성한다
         // 스트링스트림 버퍼를 이용하여 문자열로 로그를 저장한다.
         buffer << _in.rdbuf();
+        _in.close();
         string strResult = buffer.str();
 
         // 삭제하고자 하는 맨 마지막 로그 '3\n'을 삭제한다.
