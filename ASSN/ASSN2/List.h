@@ -127,11 +127,11 @@ public:
 template<typename T>
 class List {
 private:
-    Node<T> *list = nullptr; /// 노드 배열이 저장될 포인터
-    int list_size = 0; /// 리스트에 값이 있는 노드의 개수
-    int max = 0; /// 리스트가 최대한 저장할 수 있는 노드의 크기
-    Node<T> *first = nullptr; /// 리스트의 첫번째 노드 주소
-    Node<T> *last = nullptr; /// 리스트의 마지막 노드 주소
+    Node<T> *list = nullptr; /// @brief 노드 배열이 저장될 포인터
+    int list_size = 0; /// @brief 리스트에 값이 있는 노드의 개수
+    int max = 0; /// @brief 리스트가 최대한 저장할 수 있는 노드의 크기
+    Node<T> *first = nullptr; /// @brief 리스트의 첫번째 노드 주소
+    Node<T> *last = nullptr; /// @brief 리스트의 마지막 노드 주소
 
 public:
     /**
@@ -195,7 +195,7 @@ public:
      * @return 삭제된 노드의 다음 노드의 주소
      */
     Node<T> *drop(Node<T> *node) {
-        Node<T>* backup = node->next(); /// 삭제된 노드의 다음 노드의 주소를 백업한다.
+        Node<T>* backup = node->next(); // 삭제된 노드의 다음 노드의 주소를 백업한다.
         if (node->prev() == nullptr) {
             // 주어진 노드가 첫번째 노드일 경우, 리스트의 첫번째 노드를 그 다음 노드로 갱신한다.
             first = node->next();

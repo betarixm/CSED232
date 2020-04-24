@@ -35,7 +35,10 @@ class UserList; // 유저 클래스 프로토타이핑
 template<typename T>
 class List; // 리스트 클래스 프로토 타이핑
 
-class Friends { ///@brief 친구 목록을 관리하는 클래스
+/**
+ * @brief 친구 목록을 관리하는 클래스
+ */
+class Friends {
 private:
     List<User> *friendsList = new List<User>(MAX_USER); // 친구 목록을 저장하기 위한 리스트를 동적 할당
 
