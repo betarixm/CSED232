@@ -211,7 +211,7 @@ void PostList::printPostList(Stream &s, User *user, CommentList *commentList, Li
 
         // 게시글 번호를 선택하게 한다.
         cout << "Select number: ";
-        if (!(s.getInt(input)) && (-2 < input && input < idx)) {
+        if (!((s.getInt(input)) && (-2 < input && input < idx))) {
             // 잘못된 문자 입력일 경우 메시지를 출력시키고 피드를 종료한다.
             cout << "Invalid input!" << endl;
             delete[] p_list; // 캐시 할당 해제

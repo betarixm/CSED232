@@ -62,17 +62,17 @@ current_user: User = None
 context = Context()
 
 
-def py_gen_user():
+def py_gen_user(info=f"beta_{USER_NUM}"):
     global USER_NUM
     USER_NUM += 1
-    return User(f"beta_{USER_NUM}", f"name_{USER_NUM}", f"2000/12/{USER_NUM}", f"beta_{USER_NUM}")
+    return User(info, f"name_{USER_NUM}", f"2000/12/{USER_NUM}", info)
 
 
-def sign_up() -> str:
+def sign_up(info=f"beta_{USER_NUM}") -> str:
     if not context.status(MAIN):
         return ""
 
-    user = py_gen_user()
+    user = py_gen_user(info)
     user_list.append(user)
     return f"1\n" \
            f"{user.id}\n" \
@@ -218,29 +218,25 @@ def comment(com): # context-check will be disabled here, because of diversity.
     return f"{com}\n"
 
 
+def make_rnd_name():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
+
 # enjoy here!
 # some example of using this.
 def simulate():
     context.set(MAIN)
     res = ""
 
-    for j in range(5):
+    for j in range(1):
         for i in range(50):
-            res += sign_up()
-
-        b = user_list.copy()
-
-        for i in b:
-            res += sign_in(i)
-            res += delete_my_account()
-
-    for i in range(50):
-        res += sign_up()
+            res += sign_up(make_rnd_name())
 
     res += sign_in(user_list[0])
-    res += menu_my_page_to_feed()
-    res += post("wow")
-
+    res += menu_my_page_to_friends()
+    for u in user_list:
+        res += add_friends(u.id)
+    for _ in range(10):
+        res += delete_friends(random.choice(user_list).id)
     # put this output to command.txt
     print(res)
 
