@@ -45,6 +45,7 @@ class Context:
 
     def status(self, target):
         if not self.c[target]:
+
             print("context error!")
         return self.c[target]
 
@@ -179,7 +180,7 @@ def post(content):
     if not context.status(FEED):
         return ""
     return f"2\n" \
-           f"{content}"
+           f"{content}\n"
 
 
 def my_posting():
@@ -201,7 +202,7 @@ def select_post_number(n): # context-check will be disabled here, because of div
     #    return ""
     #
     # context.set(POST)
-    return n
+    return str(n) + '\n'
 
 
 def like(y): # context-check will be disabled here, because of diversity.
@@ -226,17 +227,30 @@ def simulate():
     context.set(MAIN)
     res = ""
 
-    for j in range(1):
-        for i in range(50):
-            res += sign_up(make_rnd_name())
+    for _ in range(50):
+        res += sign_up(make_rnd_name())
 
     res += sign_in(user_list[0])
-    res += menu_my_page_to_friends()
-    for u in user_list:
-        res += add_friends(u.id)
-        res += my_friends()
-    # for _ in range(10):
-     #   res += delete_friends(random.choice(user_list).id)
+    res += menu_my_page_to_feed()
+    res += post(make_rnd_name())
+    res += menu_feed_to_my_page()
+    res += sign_out()
+
+    for u in user_list[1:]:
+        res += sign_in(u)
+        res += menu_my_page_to_friends()
+        res += add_friends(user_list[0].id)
+        res += menu_friends_to_my_page()
+        res += menu_my_page_to_feed()
+        res += all_feed()
+        res += select_post_number(0)
+        res += like("y")
+        res += comment(make_rnd_name())
+        res += select_post_number(-1)
+        context.set(FEED)
+        res += menu_feed_to_my_page()
+        res += sign_out()
+
     # put this output to command.txt
     print(res)
 

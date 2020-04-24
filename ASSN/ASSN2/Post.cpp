@@ -202,7 +202,7 @@ void PostList::printPostList(Stream &s, User *user, CommentList *commentList, Li
         }
 
         if (idx == 0) {
-            // 타겟에 맞는 게시글을 하나도 찾지 못할 경우 메시지를 출력한다.0
+            // 타겟에 맞는 게시글을 하나도 찾지 못할 경우 메시지를 출력한다.
             cout << "There's nothing to show you." << endl;
             delete[] p_list; // 캐시 할당 해제
             return;
@@ -212,13 +212,10 @@ void PostList::printPostList(Stream &s, User *user, CommentList *commentList, Li
         // 게시글 번호를 선택하게 한다.
         cout << "Select number: ";
         if (!((s.getInt(input)) && (-2 < input && input < idx))) {
-            // 잘못된 문자 입력일 경우 메시지를 출력시키고 피드를 종료한다.
+            // 잘못된 문자 입력일 경우 메시지를 출력시키고 다시 입력받는다.
             cout << "Invalid input!" << endl;
             delete[] p_list; // 캐시 할당 해제
-            return;
-        }
-
-        if (input == -1) {
+        } else if (input == -1) {
             // 입력이 -1일 경우 피드를 종료한다.
             delete[] p_list; // 캐시 할당 해제
             return;
