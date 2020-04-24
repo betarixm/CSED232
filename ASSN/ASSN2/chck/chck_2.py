@@ -249,7 +249,7 @@ def simulate():
         res += select_post_number(-1)
         context.set(FEED)
         res += menu_feed_to_my_page()
-        res += sign_out()
+        res += delete_my_account()
 
     # put this output to command.txt
     print(res)

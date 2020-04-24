@@ -222,6 +222,7 @@ void PostList::printPostList(Stream &s, User *user, CommentList *commentList, Li
         } else {
             // 캐시로부터 게시글을 조회해서 출력한다.
             p_list[input]->printPostWrapper(user, commentList, s);
+            delete[] p_list;
         }
     }
 
