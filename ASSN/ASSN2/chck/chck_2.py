@@ -133,8 +133,8 @@ def add_friends(fid) -> str:
         fid = user_list[random.randint(0, len(user_list))].id
 
     for key in user_list:
-        if user_list[key].id == fid and user_list[key] not in current_user.friends:
-            current_user.friends.append(user_list[key])
+        if key.id == fid and key not in current_user.friends:
+            current_user.friends.append(key)
             break
 
     return f"1\n" \
@@ -149,11 +149,10 @@ def delete_friends(fid) -> str:
         fid = user_list[random.randint(0, len(user_list))].id
 
     for key in user_list:
-        if user_list[key].id == fid and user_list[key] in current_user.friends:
-            current_user.friends.remove(user_list[key])
+        if key.id == fid and key in current_user.friends:
+            current_user.friends.remove(key)
             break
-    return f"2\n" \
-           f"{fid}"
+    return f"2\n{fid}\n"
 
 
 def my_friends() -> str:
@@ -235,8 +234,9 @@ def simulate():
     res += menu_my_page_to_friends()
     for u in user_list:
         res += add_friends(u.id)
-    for _ in range(10):
-        res += delete_friends(random.choice(user_list).id)
+        res += my_friends()
+    # for _ in range(10):
+     #   res += delete_friends(random.choice(user_list).id)
     # put this output to command.txt
     print(res)
 

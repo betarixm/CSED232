@@ -105,7 +105,7 @@ Node<User> *UserList::addUser(Stream &s) {
     for (auto user = list->begin(); user != nullptr; user = user->next()) {
         if (user->data()->id() == infos[0]) {
             // 이미 존재하는 아이디라면 에러 메시지를 띄우고 회원 가입을 취소한다.
-            cout << infos[0] << "is already exist id." << endl;
+            cout << infos[0] << " is already exist id." << endl;
             return nullptr;
         }
     }

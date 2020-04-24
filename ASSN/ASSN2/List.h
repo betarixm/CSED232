@@ -256,6 +256,7 @@ public:
                     // 주어진 노드의 뒤에 삽입하는 경우이므로,
                     // 주어진 노드의 다음 노드의 값을 새로운 노드의 다음 노드 값으로 취한다.
                     tmp->setNext(node->next());
+                    node->setNext(tmp);
                 }
                 list_size++; // 리스트 사이즈 갱신
                 return &(list[i]); // 새로 추가된 노드의 주소 반환
