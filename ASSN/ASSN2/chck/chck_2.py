@@ -45,6 +45,7 @@ class Context:
 
     def status(self, target):
         if not self.c[target]:
+
             print("context error!")
         return self.c[target]
 
@@ -62,17 +63,17 @@ current_user: User = None
 context = Context()
 
 
-def py_gen_user():
+def py_gen_user(info=f"beta_{USER_NUM}"):
     global USER_NUM
     USER_NUM += 1
-    return User(f"beta_{USER_NUM}", f"name_{USER_NUM}", f"2000/12/{USER_NUM}", f"beta_{USER_NUM}")
+    return User(info, f"name_{USER_NUM}", f"2000/12/{USER_NUM}", info)
 
 
-def sign_up() -> str:
+def sign_up(info=f"beta_{USER_NUM}") -> str:
     if not context.status(MAIN):
         return ""
 
-    user = py_gen_user()
+    user = py_gen_user(info)
     user_list.append(user)
     return f"1\n" \
            f"{user.id}\n" \
@@ -133,8 +134,8 @@ def add_friends(fid) -> str:
         fid = user_list[random.randint(0, len(user_list))].id
 
     for key in user_list:
-        if user_list[key].id == fid and user_list[key] not in current_user.friends:
-            current_user.friends.append(user_list[key])
+        if key.id == fid and key not in current_user.friends:
+            current_user.friends.append(key)
             break
 
     return f"1\n" \
@@ -149,11 +150,10 @@ def delete_friends(fid) -> str:
         fid = user_list[random.randint(0, len(user_list))].id
 
     for key in user_list:
-        if user_list[key].id == fid and user_list[key] in current_user.friends:
-            current_user.friends.remove(user_list[key])
+        if key.id == fid and key in current_user.friends:
+            current_user.friends.remove(key)
             break
-    return f"2\n" \
-           f"{fid}"
+    return f"2\n{fid}\n"
 
 
 def my_friends() -> str:
@@ -180,7 +180,7 @@ def post(content):
     if not context.status(FEED):
         return ""
     return f"2\n" \
-           f"{content}"
+           f"{content}\n"
 
 
 def my_posting():
@@ -202,7 +202,7 @@ def select_post_number(n): # context-check will be disabled here, because of div
     #    return ""
     #
     # context.set(POST)
-    return n
+    return str(n) + '\n'
 
 
 def like(y): # context-check will be disabled here, because of diversity.
@@ -218,28 +218,38 @@ def comment(com): # context-check will be disabled here, because of diversity.
     return f"{com}\n"
 
 
+def make_rnd_name():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
+
 # enjoy here!
 # some example of using this.
 def simulate():
     context.set(MAIN)
     res = ""
 
-    for j in range(5):
-        for i in range(50):
-            res += sign_up()
-
-        b = user_list.copy()
-
-        for i in b:
-            res += sign_in(i)
-            res += delete_my_account()
-
-    for i in range(50):
-        res += sign_up()
+    for _ in range(50):
+        res += sign_up(make_rnd_name())
 
     res += sign_in(user_list[0])
     res += menu_my_page_to_feed()
-    res += post("wow")
+    res += post(make_rnd_name())
+    res += menu_feed_to_my_page()
+    res += sign_out()
+
+    for u in user_list[1:]:
+        res += sign_in(u)
+        res += menu_my_page_to_friends()
+        res += add_friends(user_list[0].id)
+        res += menu_friends_to_my_page()
+        res += menu_my_page_to_feed()
+        res += all_feed()
+        res += select_post_number(0)
+        res += like("y")
+        res += comment(make_rnd_name())
+        res += select_post_number(-1)
+        context.set(FEED)
+        res += menu_feed_to_my_page()
+        res += delete_my_account()
 
     # put this output to command.txt
     print(res)

@@ -30,7 +30,7 @@ using namespace std;
 
 /*
  * 템플릿 클래스를 .h 파일과 .cpp 파일에 분리해서 작성할 경우,
- * 링크 에러가 발생하기에 .h 파일에만 작성하였다.
+ * 링크 에러가 발생하기에 .h 파일에만 작성하였습니다.
  */
 
 template<typename T>
@@ -256,6 +256,7 @@ public:
                     // 주어진 노드의 뒤에 삽입하는 경우이므로,
                     // 주어진 노드의 다음 노드의 값을 새로운 노드의 다음 노드 값으로 취한다.
                     tmp->setNext(node->next());
+                    node->setNext(tmp);
                 }
                 list_size++; // 리스트 사이즈 갱신
                 return &(list[i]); // 새로 추가된 노드의 주소 반환

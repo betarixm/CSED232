@@ -95,9 +95,6 @@ def class_parser(s: str, tmp) -> Class:
     return tmp
 
 
-class_list = []
-
-
 def parser(s: str):
     class_str_list: list = s.split("/**")[1:]
     for class_str in class_str_list:
@@ -119,15 +116,14 @@ def gen_table() -> str:
     return res
 
 
-final = ""
-
-target_text = ""
 filenames = ["Comment.h", "Friends.h", "IO.h", "List.h", "Menu.h", "Post.h", "User.h", "Utils.h"]
 
 for i in filenames:
-    f = open("../" + i)
-    target_text += f.read()
-
-parser(target_text)
-
-print(gen_table())
+    class_list = []
+    target_text = ""
+    f = open("../" + i, encoding="UTF8")
+    target_text += (f.read() + '\n')
+    parser(target_text)
+    r = gen_table()
+    f = open(i + ".tsv", "w")
+    f.write(r)
