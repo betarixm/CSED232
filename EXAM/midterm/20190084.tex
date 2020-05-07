@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{fontspec}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{stackengine}
+\usepackage{minted}
+\usepackage{mathtools}
+\usepackage{graphicx,wrapfig,tikz}
+\usepackage{physics}
+\setlength\intextsep{0pt}
+\usetikzlibrary{calc,hobby}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{xargs}
+\usepackage{kotex}
+\usepackage{mathrsfs} %fourier transform
+\usetikzlibrary{external}
+\usetikzlibrary{arrows}
+\usepackage{setspace}
+\usetikzlibrary{arrows}
+\usepackage{tabstackengine}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{listings}
+\setlist[enumerate]{itemsep=0mm}
+\setlist[enumerate]{label={\arabic*.}}
+
+\definecolor{beta-gray}{rgb}{0.9,0.9,0.9}
+
+\newcommand{\lt}{\;\,}
+\newcommand{\ft}{\quad\!}
+\newcommand{\ot}{\quad\;}
+\newcommand{\dt}{\;\,\;\,}
+\newcommand{\plm}[1]{\setcounter{enumi}{#1 - 1}}
+\newcommand{\nd}{\quad \text{and} \quad}
+\newcommand{\inline}[1]{%
+    \colorbox{beta-gray}{\lstinline[language=C++]{#1}}%
+}
+
+\newenvironment{code}[5]{
+    {
+        \usemintedstyle{xcode}
+        \fontspec{Menlo}
+        \begin{spacing}{1.0}
+            \let\itshape\relax
+            \inputminted[frame=single, firstline=#3, lastline=#4]{#1}{#2}
+        \end{spacing}
+        \vspace{#5}
+    }
+
+}
+
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+    \author{권민재, 20190084}
+    \title{CSED232: Object-Oriented Programming Midterm Exam}
+    \date{May 7, 2020}
+    \maketitle
+
+    \setstretch{1.5}
+
+    \begin{enumerate}[itemsep=30pt]
+        \item 다음은 객체지향 프로그래밍의 중요한 개념들이다. 각각의 개념들이 무엇을 뜻하는지 자세히 기술하시오.
+              \begin{enumerate}[label={\alph*.}]
+                  \item Encapsulation
+                  \item Information hiding (or data hiding)
+              \end{enumerate}
+        \item 아래와 같은 코드가 있다. MyNameSpace 안의 func2 에서 MyNameSpace 밖의 func 함수를 호출하기 위해서는 어떤 식으로 호출해야 하는지 빈 칸 (a)에 들어갈 코드를 작성하시오.
+              \code{cpp}{02.cpp}{4}{18}{15pt}
+        \item 아래와 같은 코드가 있다. 아래 코드에서 Namespace1 에 정의된 함수인 func()를 Namespace2 에 포함시켜서 Namespace2::func() 와 같이 사용하고 싶다. 이때 필요한 코드를 빈칸 (a)에 작성하시오.
+              \code{cpp}{03.cpp}{3}{}{15pt}
+        \item 아래의 코드는 main.cpp 를 컴파일할 때 에러가 발생한다. 이 원인은 무엇이고 이를 해결하기 위해서는 어떻게 해야 하는지 기술하시오.
+              \code{cpp}{04/polar.h}{}{}{0cm}
+              \code{cpp}{04/polar_ops.h}{}{}{0cm}
+              \code{cpp}{04/main.cpp}{}{}{15pt}
+              주어진 코드는 크게 두 가지 문제를 가지고 있다. \\
+              첫째, 함수 \inline{rect polar_to_rect(polar p)}\text{와 }\inline{polar rect_to_polar(rect r)}가 프로토타입만 선언되어 있다.
+              하지만\; main.cpp에서 함수 \inline{polar_to_rect(polar p)}를 사용하고 있기 때문에, 각 함수에 대한 내용을 작성하여 문제를 해결해야한다. \\
+              둘째, \inline{polar.h}가 중복되어 include 되고 있다. 이는 \inline{polar}와 \inline{rect}가 중복되어 선언되는 문제를 야기할 수 있기 때문에
+              \begin{itemize}
+                  \item 각 헤더에 \inline{#pragma once}를 추가하거나,
+                  \item 각 헤더에 \inline{#ifndef UNIQUE_NAME}\\\inline{#define UNIQUE_NAME}\\\inline{... // Content of existing header}\\\inline{#endif}를 추가하거나,
+                  \item main.cpp에서 \inline{#include "polar_ops.h"}만 include해서
+              \end{itemize}해서 문제를 해결할 수 있다. \inline{UNIQUE_NAME}은 각 헤더 별로 들어갈 unique한 이름을 의미하며, \inline{...}은 각 헤더의 기존 내용이 들어갈 자리이다. 그리고, \inline{#pragma once}는 이를 지원하는 컴파일러에서만 작동함을 유의해야 한다.
+
+        \item 다음과 같이 class 와 static method 를 이용하면 namespace 와 비슷한 기능을 흉내 낼 수 있다. 그렇다면 class 와 static method 를 사용하는 것과 비교하였을 때 namespace 를 사용하는 장점은 무엇인가? Namespace 의 장점들을 최대한 많이 기술하시오.
+              \code{cpp}{05.cpp}{}{}{15pt}
+        \item 아래의 코드는 문자열을 다루기 위한 간단한 String 클래스이다. main 함수에 있는 예제와 같이 이 클래스의 객체를 기존의 C-style 문자열을 처리하기 위한 strcpy 와 같은 함수에 바로 사용하고 싶다. 그러나 현재에는 이런 것을 가능하게 하는 코드가 빠져 있어서 아래의 코드는 컴파일 에러가 난다. String 객체를 C-style 문자열처럼 다룰 수 있게 하기 위해서 String 클래스에 무엇을 추가해야 하는가? 추가해야 하는 코드를 작성하시오.
+              \code{cpp}{06.cpp}{}{}{15pt}
+        \item 다음 코드에서 Derived 클래스의 constructor 의 파라미터 중 v\_는 Base 클래스로부터 상속받은 v 를 초기화하기 위한 값이고, vv\_는 Derived 클래스의 멤버인 vv 를 초기화하기 위한 값이다. 빈 칸 (a) 에 들어갈 코드를 작성하시오.
+              \code{cpp}{07.cpp}{}{}{15pt}
+        \item 아래의 코드는 빨간 색으로 표시된 부분에서 컴파일 에러가 발생한다. 이를 수정하기 위해서는 어떻게 해야 하는가? 빈칸 (a)에 들어갈 컴파일 에러를 피하기 위한 코드를 작성하시오.
+              \code{cpp}{08.cpp}{4}{}{15pt}
+        \item C++에서 클래스의 상속을 통해 구현되는 다형성이 무엇인지 자세히 기술하시오. 그리고 이 때 virtual method 를 왜 사용해야 하는지 설명하시오.
+        \item 다음 코드를 실행하면 코드의 아래에 있는 것과 같은 내용이 출력된다. 빈 칸 (a), (b), (c)에 들어갈 적절한 코드를 작성하시오.
+              \code{cpp}{10.cpp}{}{}{15pt}
+    \end{enumerate}
+\end{document}
