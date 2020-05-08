@@ -66,9 +66,19 @@
 
     \begin{enumerate}[itemsep=30pt]
         \item 다음은 객체지향 프로그래밍의 중요한 개념들이다. 각각의 개념들이 무엇을 뜻하는지 자세히 기술하시오.
-              \begin{enumerate}[label={\alph*.}]
-                  \item Encapsulation
-                  \item Information hiding (or data hiding)
+              \begin{enumerate}[label={\alph*.}, itemsep=15pt]
+                  \item Encapsulation \\
+                  Encapsulation은 기본적으로 데이터와, 그 데이터에 연관된 메서드들을 하나로 묶는 것을 의미한다.
+                  그렇게 묶은 데이터와 메소드들의 접근을 제한함으로써 데이터와 상관 없는 외부 코드가 데이터를 함부로 수정하는 것을 막아서 데이터의 안정성을 확보하고,
+                  데이터와 유관한 메서드들을 한 곳에 묶어둠으로써 코드의 가독성을 늘린다.
+                  \item Information hiding (or data hiding) \\
+                  Information hiding이란, 객체의 구체적인 정보를 노출하지 않는 것을 일컫는다.
+                  Information hiding은 Encapsulation을 위한 한 가지 방법으로도 생각할 수도 있다.
+                  왜냐하면 객체가 서로에 대한 정보가 없는 상태를 만듬으로써 각 객체에 대한 독립적인 코드를 작성할 수 있기 때문이다. 물론, information hiding이 객체 간의 그 어떤 정보 교환도 금지하겠다는 규칙은 아니다.
+                  이를 모두 금지시키면 객체들이 모여서 프로그램을 구성하고 실행시킨다는 객체지향 프로그래밍의 근본적인 개념을 해칠 수 있기 때문이다.
+                  그렇기 때문에 information hiding은, 정보를 무조건적으로 숨기는 것이 아닌, 메소드의 노출을 최소화하는 등의 방법으로 정보 노출을 최소화한다는 개념이라는 것을 알 수 있다.
+                  즉, 객체 간의 정보 노출을 최소화 시킴으로서 객체 간의 독립성을 확보해서 기능을 자유롭게 추가, 수정, 삭제할 수 있도록 코드의 유연성을 향상시키는 것이
+                  information hiding의 목적이라고 말할 수 있다.
               \end{enumerate}
         \item 아래와 같은 코드가 있다. MyNameSpace 안의 func2 에서 MyNameSpace 밖의 func 함수를 호출하기 위해서는 어떤 식으로 호출해야 하는지 빈 칸 (a)에 들어갈 코드를 작성하시오.
               \code{cpp}{02.cpp}{4}{18}{15pt}
@@ -90,6 +100,16 @@
 
         \item 다음과 같이 class 와 static method 를 이용하면 namespace 와 비슷한 기능을 흉내 낼 수 있다. 그렇다면 class 와 static method 를 사용하는 것과 비교하였을 때 namespace 를 사용하는 장점은 무엇인가? Namespace 의 장점들을 최대한 많이 기술하시오.
               \code{cpp}{05.cpp}{}{}{15pt}
+              class는 객체지향 프로그래밍에서 Encapsulation을 달성하기 위한 오브젝트이고, namespace는 코드를 논리적으로 분리하는 단위라는 점에서 근본적인 차이가 있다.
+              class와 비교하였을 때 namespace가 가지는 장점은 크게 3가지가 있다. 우선 using을 사용하여 코드를 줄일 수 있다.
+              예를 들어, 우리가 std의 namespace에 있는 코드들과 이름이 겹치는 코드가 없다면, \inline{using namespace std;}와 같이 using을 사용하여 일일이 \inline{std::}를 입력하지 않아도 된다.
+              물론, 여러 namespace의 코드를 이용하는데 이름이 겹치는 코드가 있다면 using의 사용을 자제해야 한다. 하지만, using이라는 keyword를 쓸 수 있으면서 조건부로 못쓰는 경우(namespace)와, 어떠한 경우에도 못쓰는 경우(class) 중에서는 분명히 전자가 장점이 될 수 있다고 생각한다. \\
+              둘째, 자유롭게 코드를 추가할 수 있다. namespace 처럼 쓰기 위한 class를 정의했다고 해보자.
+              이때, class에는 자유롭게 함수나 변수 등의 메서드를 추가할 수 없다. 같은 이름의 클래스를 다시 정의하는 것이 불가능하기 때문이다.
+              하지만 namespace는 이와 달리 자유롭게 열고 닫는 것이 가능하기 때문에 함수나 변수 등의 메서드를 비교적 자유롭게 추가할 수 있다.\\
+              셋째, 익명 namespace를 만들 수 있다.
+              class와 달리, 익명으로 namespace를 만들 수 있는 옵션을 제공함으로써, 이를 특정 코드의 접근을 힘들게 만드는 등의 특수한 경우에 활용할 수 있다.\\
+              게다가 근본적으로, class는 어떠한 데이터와 그 데이터에 유관한 메서드들의 집합이지, 단순한 메서드의 세트가 아니므로 class를 namespace처럼 쓰는 것은 피해야 할 것이다.
         \item 아래의 코드는 문자열을 다루기 위한 간단한 String 클래스이다. main 함수에 있는 예제와 같이 이 클래스의 객체를 기존의 C-style 문자열을 처리하기 위한 strcpy 와 같은 함수에 바로 사용하고 싶다. 그러나 현재에는 이런 것을 가능하게 하는 코드가 빠져 있어서 아래의 코드는 컴파일 에러가 난다. String 객체를 C-style 문자열처럼 다룰 수 있게 하기 위해서 String 클래스에 무엇을 추가해야 하는가? 추가해야 하는 코드를 작성하시오.
               \code{cpp}{06.cpp}{}{}{15pt}
         \item 다음 코드에서 Derived 클래스의 constructor 의 파라미터 중 v\_는 Base 클래스로부터 상속받은 v 를 초기화하기 위한 값이고, vv\_는 Derived 클래스의 멤버인 vv 를 초기화하기 위한 값이다. 빈 칸 (a) 에 들어갈 코드를 작성하시오.
