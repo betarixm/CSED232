@@ -101,8 +101,8 @@
         \item 다음과 같이 class 와 static method 를 이용하면 namespace 와 비슷한 기능을 흉내 낼 수 있다. 그렇다면 class 와 static method 를 사용하는 것과 비교하였을 때 namespace 를 사용하는 장점은 무엇인가? Namespace 의 장점들을 최대한 많이 기술하시오.
               \code{cpp}{05.cpp}{}{}{15pt}
               class는 객체지향 프로그래밍에서 Encapsulation을 달성하기 위한 오브젝트이고, namespace는 코드를 논리적으로 분리하는 단위라는 점에서 근본적인 차이가 있다.
-              class와 비교하였을 때 namespace가 가지는 장점은 크게 3가지가 있다. 우선 using을 사용하여 코드를 줄일 수 있다.
-              예를 들어, 우리가 std의 namespace에 있는 코드들과 이름이 겹치는 코드가 없다면, \inline{using namespace std;}와 같이 using을 사용하여 일일이 \inline{std::}를 입력하지 않아도 된다.
+              class와 비교하였을 때 namespace가 가지는 장점은 크게 3가지가 있다.\\
+              우선 using을 사용하여 코드를 줄일 수 있다. 예를 들어, 우리가 std의 namespace에 있는 코드들과 이름이 겹치는 코드가 없다면, \inline{using namespace std;}와 같이 using을 사용하여 일일이 \inline{std::}를 입력하지 않아도 된다.
               물론, 여러 namespace의 코드를 이용하는데 이름이 겹치는 코드가 있다면 using의 사용을 자제해야 한다. 하지만, using이라는 keyword를 쓸 수 있으면서 조건부로 못쓰는 경우(namespace)와, 어떠한 경우에도 못쓰는 경우(class) 중에서는 분명히 전자가 장점이 될 수 있다고 생각한다. \\
               둘째, 자유롭게 코드를 추가할 수 있다. namespace 처럼 쓰기 위한 class를 정의했다고 해보자.
               이때, class에는 자유롭게 함수나 변수 등의 메서드를 추가할 수 없다. 같은 이름의 클래스를 다시 정의하는 것이 불가능하기 때문이다.
@@ -116,7 +116,26 @@
               \code{cpp}{07.cpp}{}{}{15pt}
         \item 아래의 코드는 빨간 색으로 표시된 부분에서 컴파일 에러가 발생한다. 이를 수정하기 위해서는 어떻게 해야 하는가? 빈칸 (a)에 들어갈 컴파일 에러를 피하기 위한 코드를 작성하시오.
               \code{cpp}{08.cpp}{4}{}{15pt}
-        \item C++에서 클래스의 상속을 통해 구현되는 다형성이 무엇인지 자세히 기술하시오. 그리고 이 때 virtual method 를 왜 사용해야 하는지 설명하시오.
+        \item C++에서 클래스의 상속을 통해 구현되는 다형성이 무엇인지 자세히 기술하시오. 그리고 이 때 virtual method 를 왜 사용해야 하는지 설명하시오. \\
+              우선 다형성은 기본적으로 변수, 오브젝트, 함수 등이 다양한 자료형에 속할 수 있다는 특징을 말한다.
+              특히, C++에서는 어떤 클래스의 포인터 변수에 어떤 클래스의 자식 클래스들의 주소를 할당하는 upcasting을 통해 다형성을 이끌어냈다.
+              예를 들어, 클래스 Base가 있고, Base에서 derive된 클래스 ChildA와 ChildB가 있다고 해보자.
+              이때, Base에 \inline{v\_a()}라는 virtual method가 있다면, Base 클래스 형의 포인터 변수 \inline{Base* ptr_class}에
+              Base, ChildA, ChildB 중 어떤 클래스의 인스턴스의 주소가 할당된 것에 상관 없이 \inline{ptr_class->v\_a()}와 같이 사용할 수 있는 것이다.
+              이 경우, v\_a()가 Base, ChildA, ChildB 등 다양한 클래스에서 사용될 수 있기 때문에, 다형성이 실현되었다고 볼 수 있다. 즉, C++에서 다형성이란,
+              upcasting을 통해 자식 클래스들이 virtual 메서드들을 각각 수정하고 사용할 수 있게 함으로서 virtual 요소가 다양한 자료형에 속할 수 있게 만든 것이라고 말할 수 있다. \\
+              이 때, virtual method를 사용하는 이유를 알기 위해서는 vtable에 대해 알아볼 필요가 있다. 모든 컴파일러에서 vtable을 이용하여 virtual method를 구현하는 것은 아니지만, 많은 컴파일러가 vtable을 활용하기 때문에 이를 이용하여 virtual method의 필요성을 설명하고자 한다.
+              vtable은 오브젝트가 만들어질 때 생성되는 오브젝트 고유의 가상 메서드 테이블이다.
+              위 문단의 Base, ChildA, ChildB라는 클래스가 있는 상황에서, ChildB가 v\_a()라는 메서드를 override해서 수정했다고 해보자.
+              이 때, Base와 ChildA 오브젝트의 vtable에서 v\_a()가 가리키는 주소는 같고, ChildB 오브젝트의 vtable에서  v\_a() 주소는 달라지게 된다.
+              즉, upcasting 하여 같은 v\_a()를 호출해도, ChildB의 오브젝트인지 아닌지에 따라서 실제로 호출되는 함수가 달라지는 것이다.
+              C++에서는 이 vtable을 통해 여러 상속된 클래스들 사이에서 같은 이름의 메서드가 호출되어도 다양한 활동을 할 수 있도록 다형성을 이끌어냈고,
+              이 vtable에 메서드를 추가하기 위해 키워드 \inline{virtual}를 사용하여 virtual method로 만들어야 하는 것이다.
+              즉, virtual method는 컴파일러에게 이 메서드가 여러 클래스에서 다형성을 가지고 실행될 수 있음을 알려주기 위해 필요한 것이고, 이를 많은 컴파일러에서 vtable을 이용해 구현했다는 것을 말하고자 하였다.\\
+              하지만, 단순히 코딩의 편의를 위해 모든 메서드를 virtual로 선언하는 것을 권장하지는 않는다.
+              왜냐하면 virtual일 필요가 없는 메서드까지 vtable에 추가하게 되면 메모리와 실행 속도에 있어서 손해를 볼 수 있으며,
+              vtable의 주소와 오프셋이 leak 되었을 때 virtual일 필요가 없었던 함수들까지 임의로 실행시킬 수 있기 때문이다. 이 때문에, 꼭 필요한 함수들만 virtual로 할당하는 것을 권장하는 편이다.
+
         \item 다음 코드를 실행하면 코드의 아래에 있는 것과 같은 내용이 출력된다. 빈 칸 (a), (b), (c)에 들어갈 적절한 코드를 작성하시오.
               \code{cpp}{10.cpp}{}{}{15pt}
     \end{enumerate}

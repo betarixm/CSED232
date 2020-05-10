@@ -13,4 +13,6 @@ file(GLOB ASSN2_H ASSN/ASSN2/*.h)
 file(COPY ASSN/ASSN2/command.txt DESTINATION ${CMAKE_BINARY_DIR})
 add_executable(ASSN2 ASSN/ASSN2/20190084.cpp ${ASSN2_CPP} ${ASSN2_H})
 
-add_executable(ASSN3 ASSN/ASSN3/Block.cpp ASSN/ASSN3/Block.h ASSN/ASSN3/Point.cpp ASSN/ASSN3/Point.h ASSN/ASSN3/Position.cpp ASSN/ASSN3/Position.h ASSN/ASSN3/const.h ASSN/ASSN3/20190084.cpp)
+file(GLOB ASSN3_H ASSN/ASSN3/*.h)
+file(GLOB ASSN3_CPP ASSN/ASSN3/*.cpp)
+add_executable(ASSN3 ${ASSN3_H} ${ASSN3_CPP})

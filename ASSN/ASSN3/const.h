@@ -14,4 +14,6 @@
 #define CW 100
 #define CCW 200
 
+#define MAX_BLOCK 1000
+
 #endif //CSED232_CONST_H
