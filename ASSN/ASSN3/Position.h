@@ -8,6 +8,11 @@ private:
     int pos_x = 0;
     int pos_y = 0;
 public:
+    Position() = default;
+    Position(int x, int y){
+        pos_x = x;
+        pos_y = y;
+    }
     int& x();
     int& y();
     void setPosition(int x, int y);
@@ -15,13 +20,20 @@ public:
         pos_x = p.x();
         pos_y = p.y();
     }
-    Position& operator+(Position& param);
+
+    void swap(){
+        int tmp = pos_x;
+        pos_x = pos_y;
+        pos_y = tmp;
+    }
+
+    Position& operator+(Position param);
 
     Position& operator=(Position param);
 
-    Position&operator-(Position& param);
+    Position&operator-(Position param);
 
-    Position&operator+=(Position& param);
+    Position&operator+=(Position param);
 
     Position&operator-=(Position& param);
 

@@ -11,8 +11,8 @@
 #define WHITE 37
 #define RESET 0
 
-#define CW 100
-#define CCW 200
+#define CW 1
+#define CCW -1
 
 #define MAX_BLOCK 1000
 

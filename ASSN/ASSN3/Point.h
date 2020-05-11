@@ -3,7 +3,7 @@
 #define CSED232_POINT_H
 
 #include "Position.h"
-
+#include "const.h"
 class Position;
 
 class Point {
@@ -32,11 +32,20 @@ public:
         relative.setPosition(p);
     }
 
+    void rotate(int direction){
+        relative.swap();
+        if(direction == CW){
+            relative.y() *= -1;
+        } else if (direction == CCW) {
+            relative.x() *= -1;
+        }
+    }
+
     Point&operator+(Position& param);
 
     Point&operator-(Position& param);
 
-    Point&operator+=(Position& param);
+    Point&operator+=(Position param);
 
     Point&operator-=(Position& param);
 

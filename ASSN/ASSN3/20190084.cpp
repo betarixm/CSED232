@@ -1,16 +1,25 @@
 #include <iostream>
+#include <thread>
 #include "Block.h"
 #include "BlockList.h"
 #include "Board.h"
 #include "const.h"
 #include "Tetromino.h"
+#include "Stack.h"
+#include "IO.h"
+#include "Game.h"
 
 using namespace std;
 
 int main(){
     BlockList blockList;
     Board board(blockList);
-    Tetromino test(0, 0, blockList);
+    Stack<char> inputStack;
+    mutex m;
+    thread thInput(input, ref(inputStack), ref(m));
 
-    board.render();
+    Game game(&blockList, &board, &inputStack, &m);
+
+    game.run();
+    thInput.join();
 }

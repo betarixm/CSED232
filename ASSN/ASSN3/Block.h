@@ -11,6 +11,7 @@ private:
     Point p {0, 0, 0, 0};
     int color;
     string str = "■";
+    bool isStoppedBlock = false;
 
 public:
     Block(int axis_x, int axis_y, int relative_x, int relative_y, int color);
@@ -33,8 +34,8 @@ public:
         p.setRelative(_p);
     }
 
-    void setColor(int color){
-        this->color = color;
+    void setColor(int _color){
+        this->color = _color;
     }
 
     int x(){
@@ -43,6 +44,24 @@ public:
 
     int y(){
         return p.y();
+    }
+
+    void rotate(int direction){
+        p.rotate(direction);
+    }
+
+    bool& isStop(){
+        return isStoppedBlock;
+    }
+
+    Block&operator+=(Position param){
+        p += param;
+        return *this;
+    }
+
+    Block&operator-=(Position param){
+        p -= param;
+        return *this;
     }
 };
 
