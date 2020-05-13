@@ -9,6 +9,17 @@
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-msys2" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="PLUS-BETA (4643658b-d47c-4b5e-9607-87996c850714)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.yeLlJ3fYOm" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
           </excludedPaths>
         </serverdata>
       </paths>

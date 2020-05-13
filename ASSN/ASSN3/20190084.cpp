@@ -1,5 +1,7 @@
 #include <iostream>
 #include <thread>
+#include <cstdlib>
+#include <ctime>
 #include "Block.h"
 #include "BlockList.h"
 #include "Board.h"
@@ -12,6 +14,7 @@
 using namespace std;
 
 int main(){
+    srand((int)time(0));
     BlockList blockList;
     Board board(blockList);
     Stack<char> inputStack;

@@ -3,6 +3,7 @@
 
 #include <mutex>
 #include <iostream>
+#include <random>
 #include "Block.h"
 #include "BlockList.h"
 #include "Board.h"
@@ -10,6 +11,7 @@
 #include "Tetromino.h"
 #include "const.h"
 
+#define NUM_TETROMINO 7
 using namespace std;
 
 class Game {
@@ -23,7 +25,61 @@ private:
     Stack<Tetromino*> minoStack;
     mutex* m;
     Tetromino* t;
+    bool isUsed[NUM_TETROMINO] {false, };
 
+    void initUsedArray(){
+        for(auto& i: isUsed){
+             i = false;
+        }
+    }
+
+    bool isAllUsed(){
+        for(auto& i : isUsed){
+            if(!i) return false;
+        }
+        return true;
+    }
+    Tetromino* getTetrimino(){
+        int num = 0;
+
+        do {
+            if(isAllUsed()){ initUsedArray(); }
+            num = rand() % NUM_TETROMINO;
+        } while(isUsed[num]);
+
+        isUsed[num] = true;
+
+        Tetromino* result;
+        switch(num){
+            case MINO_I:
+                result = new Mino_I(COL / 2, ROW - 1, *blockList, board);
+                break;
+            case MINO_O:
+                result = new Mino_O(COL / 2, ROW - 1, *blockList, board);
+                break;
+            case MINO_T:
+                result = new Mino_T(COL / 2, ROW - 1, *blockList, board);
+                break;
+            case MINO_L:
+                result = new Mino_L(COL / 2, ROW - 1, *blockList, board);
+                break;
+            case MINO_J:
+                result = new Mino_J(COL / 2, ROW - 1, *blockList, board);
+                break;
+            case MINO_S:
+                result = new Mino_S(COL / 2, ROW - 1, *blockList, board);
+                break;
+            case MINO_Z:
+                result = new Mino_Z(COL / 2, ROW - 1, *blockList, board);
+                break;
+            default:
+                result = nullptr;
+                break;
+        }
+
+        return result;
+
+    }
     char getInput(){
         char tmp = 0;
         m->lock();
@@ -51,7 +107,7 @@ private:
         } else if (input == 'm') {
 
         } else if (input == ' ') {
-
+            t->hardDrop();
         } else {
             return false;
         }
@@ -60,11 +116,10 @@ private:
     }
 
     void setTetromino(){
-        // Todo:  not random!
         if(t != nullptr){
             minoStack.push(t);
         }
-        t = new Tetromino(1, 18, *blockList, board);
+        t = getTetrimino();
     }
 
 public:

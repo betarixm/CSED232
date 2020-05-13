@@ -14,6 +14,14 @@
 #define CW 1
 #define CCW -1
 
+#define MINO_I 0
+#define MINO_O 1
+#define MINO_T 2
+#define MINO_L 3
+#define MINO_J 4
+#define MINO_S 5
+#define MINO_Z 6
+
 #define MAX_BLOCK 1000
 
 #endif //CSED232_CONST_H

@@ -6,8 +6,9 @@
 #include "BlockList.h"
 #include <iostream>
 #define ROW 20
-#define COL 3
+#define COL 10
 #define SEP ("■")
+#define BLK (" ")
 
 class Block;
 class BlockList;
