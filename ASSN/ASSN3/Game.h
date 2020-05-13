@@ -18,6 +18,7 @@ class Game {
 private:
     int unitTick = 100000000;
     int inputTick = 100000;
+    int score = 0;
     unsigned int process = 0;
     BlockList* blockList;
     Board* board;
@@ -25,6 +26,7 @@ private:
     Stack<Tetromino*> minoStack;
     mutex* m;
     Tetromino* t;
+    Tetromino* next_t;
     bool isUsed[NUM_TETROMINO] {false, };
 
     void initUsedArray(){
@@ -52,25 +54,25 @@ private:
         Tetromino* result;
         switch(num){
             case MINO_I:
-                result = new Mino_I(COL / 2, ROW - 1, *blockList, board);
+                result = new Mino_I(COL / 2, ROW, *blockList, board);
                 break;
             case MINO_O:
-                result = new Mino_O(COL / 2, ROW - 1, *blockList, board);
+                result = new Mino_O(COL / 2, ROW + 1, *blockList, board);
                 break;
             case MINO_T:
-                result = new Mino_T(COL / 2, ROW - 1, *blockList, board);
+                result = new Mino_T(COL / 2, ROW, *blockList, board);
                 break;
             case MINO_L:
-                result = new Mino_L(COL / 2, ROW - 1, *blockList, board);
+                result = new Mino_L(COL / 2, ROW, *blockList, board);
                 break;
             case MINO_J:
-                result = new Mino_J(COL / 2, ROW - 1, *blockList, board);
+                result = new Mino_J(COL / 2, ROW, *blockList, board);
                 break;
             case MINO_S:
-                result = new Mino_S(COL / 2, ROW - 1, *blockList, board);
+                result = new Mino_S(COL / 2, ROW, *blockList, board);
                 break;
             case MINO_Z:
-                result = new Mino_Z(COL / 2, ROW - 1, *blockList, board);
+                result = new Mino_Z(COL / 2, ROW, *blockList, board);
                 break;
             default:
                 result = nullptr;
@@ -95,17 +97,17 @@ private:
     bool parseInput(){
         char input = getInput();
         if(input == 'a'){
-            t->move(-1, 0);
+            t->move(-1, 0, false);
         } else if (input == 'd') {
-            t->move(1, 0);
+            t->move(1, 0, false);
         } else if (input == 's') {
-            t->move(0, -1);
+            t->move(0, -1, false);
         } else if (input == 'w') {
             t->rotate(CW);
         } else if (input == 'x') {
             t->rotate(CCW);
         } else if (input == 'm') {
-
+            board->shadowSwitch();
         } else if (input == ' ') {
             t->hardDrop();
         } else {
@@ -119,7 +121,8 @@ private:
         if(t != nullptr){
             minoStack.push(t);
         }
-        t = getTetrimino();
+        t = next_t;
+        next_t = getTetrimino();
     }
 
 public:
@@ -129,6 +132,7 @@ public:
         inputStack = _inputStack;
         m = _m;
         t = nullptr;
+        next_t = getTetrimino();
         setTetromino();
     }
 
@@ -136,13 +140,13 @@ public:
         while(++process){
             if(process % inputTick == 0){
                 if(parseInput()){
-                    board->render();
+                    board->render(t, next_t, score);
                 }
             }
 
             if(process % unitTick == 0){
                 t->onTick();
-                board->render();
+                board->render(t, next_t, score);
                 process = 0;
                 if(t->isStop()){
                     setTetromino();

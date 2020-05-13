@@ -47,9 +47,11 @@ Point &Point::operator-=(Position &param) {
     return *this;
 }
 
-Point &Point::operator=(Point param) {
-    relative = param.relative;
-    axis = param.axis;
+Point &Point::operator=(const Point& param) {
+    if(&param != this) {
+        relative = param.relative;
+        axis = param.axis;
+    }
     return *this;
 }
 

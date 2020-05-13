@@ -12,9 +12,10 @@ private:
     int color;
     string str = "■";
     bool isStoppedBlock = false;
+    bool isShadowBlock = false;
 
 public:
-    Block(int axis_x, int axis_y, int relative_x, int relative_y, int color);
+    Block(int axis_x=0, int axis_y=0, int relative_x=0, int relative_y=0, int color=RESET);
     Block(Position axis, Position relative, int color){
         p.setAxis(axis);
         p.setRelative(relative);
@@ -22,6 +23,7 @@ public:
 
     }
     void show();
+    string toString();
     void setAxis(int x, int y){
         p.setAxis(x, y);
     }
@@ -46,6 +48,14 @@ public:
         return p.y();
     }
 
+    int rel_x(){
+        return p.rel_x();
+    }
+
+    int rel_y(){
+        return p.rel_y();
+    }
+
     void rotate(int direction){
         p.rotate(direction);
     }
@@ -62,6 +72,24 @@ public:
     Block&operator-=(Position param){
         p -= param;
         return *this;
+    }
+
+    Block& operator=(const Block& param){
+        if (&param != this) {
+            color = param.color;
+            p = param.p;
+            color = param.color;
+            isStoppedBlock = param.isStoppedBlock;
+        }
+        return *this;
+    }
+
+    void setStr(string& s){
+        this->str.assign(s);
+    }
+
+    bool& isShadow(){
+        return isShadowBlock;
     }
 };
 

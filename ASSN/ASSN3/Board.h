@@ -1,86 +1,67 @@
 #ifndef CSED232_BOARD_H
 #define CSED232_BOARD_H
 
-#include "const.h"
-#include "Block.h"
-#include "BlockList.h"
 #include <iostream>
+
 #define ROW 20
 #define COL 10
 #define SEP ("■")
 #define BLK (" ")
 
+#define INFO_LEN 7
+#define INFO_HEIGHT 5
+
+#define CONVERT_Y(Y) (ROW-Y-1)
+
+
 class Block;
 class BlockList;
+class Tetromino;
 
 using namespace std;
 
 class Board {
 private:
     Block* gameBoard[ROW][COL]{};
+    Tetromino* shadow;
+    Block* shadowBlocks[4];
+
     BlockList* blockList;
-    void reset(){
-        for(auto& i : gameBoard){
-            for(auto& j: i){
-                j = nullptr;
-            }
-        }
-    }
 
-    void printLine(bool isEndl){
-        for(int i=0; i < (COL + 2); i++){
-            cout << SEP;
-        }
-        if(isEndl) cout << endl;
-    }
+    string infoTable[INFO_HEIGHT][INFO_LEN];
+
+    void reset();
+
+    void printLine(bool isEndl, int num);
+
+    bool isShadowOn = true;
+
+    void getCurrentBlocks(Block* currentBlocks[4]);
+
+    int getHeight(int x);
+
 public:
-    explicit Board(BlockList& list){
-        this->blockList = &list;
-        for(auto & i : gameBoard){
-            for(auto & j : i){
-                j = nullptr;
-            }
-        }
-    }
+    explicit Board(BlockList& list);
 
-    void set(){
-        reset();
-        for(int i = 0; i < MAX_BLOCK; i++){
-            auto tmp = blockList->at(i);
-            if(tmp != nullptr){
-                int y = ROW - tmp->y() - 1;
-                if((0 <= y && y < ROW) && (0 <= tmp->x() && tmp->x() < COL)){
-                    gameBoard[y][tmp->x()] = tmp;
-                }
-            }
-        }
-    }
+    void set();
 
-    void render(){
-        this->set();
-        system("clear");
-        printLine(true);
-        for(auto& i : gameBoard){
-            cout << SEP;
-            for(auto& j: i){
-                if(j == nullptr){
-                    cout << " ";
-                } else {
-                    j->show();
-                }
-            }
-            cout << SEP << endl;
-        }
-        printLine(true);
-    }
+    void setOneBlock(Block* target, int x, int y);
 
-    Block* XY(int x, int y){
-        if((0 <= x && x < COL) && (0 <= y && y < ROW)){
-            return (gameBoard[ROW - y - 1][x]);
-        } else {
-            return nullptr;
-        }
-    }
+    void render(Tetromino *currentMino, Tetromino *nextMino, int score);
+
+    void renderInfoBoard(Tetromino* nextMino, int Score);
+
+    Block* XY(int x, int y);
+
+    void setShadowOn(bool isOn);
+
+    void shadowSwitch();
+
+    void makeShadow(Tetromino* currentMino);
+
+    void deleteShadow();
+
+    void initInfoBoard();
 };
 
 

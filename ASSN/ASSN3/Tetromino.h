@@ -5,6 +5,7 @@
 #include "const.h"
 #include "Board.h"
 #include "unistd.h"
+#include "BlockList.h"
 
 class Block;
 class BlockList;
@@ -17,13 +18,13 @@ private:
 
     Position blockPosition[4];
 
-    bool isHit(int dx, int dy){
+    bool isHit(int dx, int dy, bool checkCeiling){
         for(auto& i: blocks){
             int x = i->x() + dx;
             int y = i->y() + dy;
 
-            if((!((0 <= x && x < COL) && (0 <= y && y < ROW))) || (board->XY(x, y) != nullptr && board->XY(x, y)->isStop())){
-                return true;
+            if((!((0 <= x && x < COL) && (0 <= y))) || (board->XY(x, y) != nullptr && board->XY(x, y)->isStop())){
+                return !(checkCeiling && y >= ROW);
             }
         }
         return false;
@@ -77,14 +78,43 @@ protected:
         return WHITE;
     }
 
-    int axis_idx = 0;
 public:
+    Block& getBlockByIdx(int i){
+        return *blocks[i];
+    }
+    void setStr(string& target){
+        for(auto&i : blocks){
+            i->setStr(target);
+        }
+    }
+    void setShadowMino(bool isShadow){
+        for(auto&i : blocks){
+            i->isShadow() = isShadow;
+        }
+    }
+
+    Tetromino&operator=(const Tetromino& param){
+        if(&param != this){
+            for(int i = 0; i < 4; i++){
+                *blocks[i] = *(param.blocks[i]);
+                board = param.board;
+            }
+        }
+        return *this;
+    }
     Tetromino() = default;
     Tetromino(BlockList& blockList, Board* _board){
         for(auto& i: blocks){
             i = blockList.add();
         }
-        this->axis_idx = 0;
+        this->board = _board;
+    }
+
+    Tetromino(BlockList& blockList, Board* _board, Block* customBlocks[4]) {
+        for(int i = 0; i < 4; i++){
+            blocks[i] = customBlocks[i];
+            blockList.append(customBlocks[i]);
+        }
         this->board = _board;
     }
 
@@ -104,7 +134,7 @@ public:
 
             // cout << "After XY: (" << blocks[0]->x() << ", " << blocks[0]->y() << ")" << endl;
 
-            if(isHit(0, 0)){
+            if(isHit(0, 0, true)){
                 // cout << "FAIL!" << endl;
                 for(auto& b: blocks){ (*b) -= i; }
                 // cout << "Back to XY: (" << blocks[0]->x() << ", " << blocks[0]->y() << ")" << endl;
@@ -122,8 +152,8 @@ public:
 
     }
 
-    void move(int dx, int dy){
-        if(isHit(dx, dy)) return;
+    void move(int dx, int dy, bool checkCeiling){
+        if(isHit(dx, dy, checkCeiling)) return;
         for(auto& i: blocks){
             if(!i->isStop()){
                 *i += Position(dx, dy);
@@ -163,17 +193,19 @@ public:
 
     void onTick(){
         checkStop() && stop();
-        move(0, -1);
+        move(0, -1, false);
     }
 
     void hardDrop(){
         for(int dy = 0; dy >= (-1 * ROW); dy--){
-            if(isHit(0, dy - 1)){
-                move(0, dy);
+            if(isHit(0, dy - 1, true)){
+                move(0, dy, true);
                 break;
             }
         }
     }
+
+
 };
 
 class Mino_I: public Tetromino{

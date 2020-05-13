@@ -21,6 +21,13 @@ public:
 
     int y();
 
+    int rel_x(){
+        return relative.x();
+    }
+
+    int rel_y(){
+        return relative.y();
+    }
     void setAxis(int x, int y);
 
     void setAxis(Position p){
@@ -49,7 +56,7 @@ public:
 
     Point&operator-=(Position& param);
 
-    Point&operator=(Point param);
+    Point&operator=(const Point& param);
 };
 
 

@@ -15,6 +15,7 @@ public:
     }
     int& x();
     int& y();
+
     void setPosition(int x, int y);
     void setPosition(Position p){
         pos_x = p.x();
@@ -29,7 +30,7 @@ public:
 
     Position& operator+(Position param);
 
-    Position& operator=(Position param);
+    Position& operator=(const Position & param);
 
     Position&operator-(Position param);
 
