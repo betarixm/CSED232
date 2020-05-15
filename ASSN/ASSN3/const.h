@@ -25,6 +25,7 @@
  *
  */
 
+// ANSI 컬러 코드 지정
 #define RED 31
 #define GREEN 32
 #define YELLOW 33
@@ -34,9 +35,11 @@
 #define WHITE 37
 #define RESET 0
 
+// 회전 방향 지정
 #define CW 1
 #define CCW -1
 
+// 테트리미노를 종류에 따른 번호로 지정
 #define MINO_I 0
 #define MINO_O 1
 #define MINO_T 2
@@ -45,11 +48,14 @@
 #define MINO_S 5
 #define MINO_Z 6
 
+// 블록 리스트에서 관리할 수 있는 최대의 블록 개수
 #define MAX_BLOCK 1000
 
+// 게임판의 가로 세로 크기
 #define ROW 20
 #define COL 10
 
+// y 좌표를 렌더 형식에 맞게 변환하는 매크로
 #define CONVERT_Y(Y) (ROW-Y-1)
 
 #endif //CSED232_CONST_H
