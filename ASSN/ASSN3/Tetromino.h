@@ -50,10 +50,10 @@ private:
     /// @brief 테트리미노의 충돌 여부를 확인하는 메서드
     bool isHit(int dx, int dy, bool checkCeiling);
 
-    /// 블럭이 멈춰야 할 상태인지 체크하는 메서드
+    /// @brief 블럭이 멈춰야 할 상태인지 체크하는 메서드
     bool checkStop();
 
-    /// 블럭을 멈추는 메서드
+    /// @brief 블럭을 멈추는 메서드
     int stop();
 
 
