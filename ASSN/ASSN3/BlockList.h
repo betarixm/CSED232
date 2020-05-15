@@ -31,132 +31,38 @@
 template <typename T>
 class Stack;
 
+/**
+ * @brief 블록들을 관리하는 클래스
+ */
 class BlockList {
 private:
-    int size = 0;
-    Block* blockList[MAX_BLOCK] {};
+    int size = 0; /// @brief 블럭 개수
+    Block* blockList[MAX_BLOCK] {}; /// @brief 블럭 주소 배열
+
+    /// @brief 줄 삭제 메서드를 초기화하는 메서드
+    void initRemoveLines(int simulateBoard[][COL], int line_size[ROW]);
 
 public:
-    Block* add(int axis_x = 0, int axis_y = 0, int rel_x = 0, int rel_y = 0, int color = RESET){
-        for(auto & i : blockList){
-            if(i == nullptr){
-                i = new Block(axis_x, axis_y, rel_x, rel_y, color);
-                size++;
-                return i;
-            }
-        }
-        return nullptr;
-    }
+    /// @brief 블록 리스트에 블록을 등록하고 반환하는 메서드
+    Block* add(int axis_x = 0, int axis_y = 0, int rel_x = 0, int rel_y = 0, int color = RESET);
 
-    Block* add(Position axis, Position rel, int color = RESET){
-        for(auto & i : blockList){
-            if(i == nullptr){
-                i = new Block(axis, rel, color);
-                size++;
-                return i;
-            }
-        }
-        return nullptr;
-    }
+    /// @brief 임의의 블록을 리스트에 추가하는 메서드
+    Block* append(Block* target);
 
-    Block* append(Block* target){
-        for(auto&i: blockList){
-            if(i == nullptr){
-                i = target;
-                size++;
-                return target;
-            }
-        }
-        return nullptr;
-    }
+    /// @brief 특정 인덱스의 블록 주소 반환하는 메서드
+    Block* at(int idx);
 
-    Block* at(int idx){
-        return blockList[idx];
-    }
+    /// @brief 그림자 블록을 삭제하는 메서드
+    void removeShadow();
 
-    void remove(Block* target){
-        for(auto & i : blockList){
-            if(i == target){
-                delete i;
-                i = nullptr;
-                break;
-            }
-        }
-    }
+    /// @brief 줄을 삭제하는 메서드
+    int removeLines();
 
-    void removeShadow(){
-        for(auto&i: blockList){
-            if(i != nullptr && i->isShadow()){
-                delete i;
-                i = nullptr;
-            }
-        }
-    }
+    /// @brief 게임 오버인지 확인하는 메서드
+    bool isGameOver();
 
-    void initRemoveLines(int lines[][COL], int sizes[ROW]){
-
-        for(int row = 0; row < ROW; row ++){
-            sizes[row] = 0;
-            for(int col = 0; col < COL; col++){
-                lines[row][col] = MAX_BLOCK;
-            }
-        }
-        for(int i = 0; i < MAX_BLOCK; i++){
-            if(i != MAX_BLOCK && blockList[i] != nullptr) {
-                Block* tmp = blockList[i];
-                int y = tmp->y();
-                int x = tmp->x();
-                if(!(tmp->isShadow()) && 0 <= y && y < ROW && 0 <= x && x < COL) {
-                    lines[y][x] = i;
-                    sizes[y]++;
-                }
-            }
-        }
-    }
-
-    int removeLines(){
-        int num_removed = 0;
-
-        int lines[ROW][COL] = {NULL, };
-        int sizes[ROW] = {0, };
-
-        initRemoveLines(lines, sizes);
-
-        for(int i = 0; i < ROW; i++){
-            if(sizes[i] == COL){
-                for(int j : lines[i]){
-                    delete blockList[j];
-                    blockList[j] = nullptr;
-                }
-
-                for(auto& block: blockList){
-                    if(block != nullptr && block->y() > i && ( !block->isShadow() && block->isStop())){
-                        block->move(0, -1);
-                    }
-                }
-
-                initRemoveLines(lines, sizes);
-                i--, num_removed++;
-            }
-        }
-
-        return num_removed;
-    }
-
-    bool isGameOver(){
-        for(auto& i : blockList){
-            if(i != nullptr && i->isStop() && i->y() >= ROW){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    BlockList() {
-        for(auto&i: blockList){
-            i = nullptr;
-        }
-    };
+    /// @brief 블럭 리스트 생성자
+    BlockList();;
 };
 
 

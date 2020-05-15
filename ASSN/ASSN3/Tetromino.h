@@ -192,7 +192,7 @@ public:
     }
 
     bool checkStop(){
-        board->set();
+        board->setGameBoard();
         for(auto& i: blocks){
             if(i->y() == 0){
                 return true;

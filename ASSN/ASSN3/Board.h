@@ -41,47 +41,47 @@ using namespace std;
 
 class Board {
 private:
-    Block* gameBoard[ROW][COL]{};
-    Tetromino* shadow;
-    Block* shadowBlocks[4];
+    Block* gameBoard[ROW][COL]{}; /// @brief 게임 보드 배열
+    string infoBoard[INFO_ROW][INFO_COL]; /// @brief 정보 보드 배열
 
-    BlockList* blockList;
+    Tetromino* shadow; /// @brief 그림자 테트리미노
+    BlockList* blockList; /// @brief 이 보드에서 사용할 블록 리스트 오브젝트
 
-    string infoboard[INFO_ROW][INFO_COL];
+    bool isShadowOn = true; /// @brief 그림자 출력 여부
 
-    void reset();
+    /// @brief 게임 보드를 초기화 하는 메서드
+    void initGameBoard();
 
-    void printLine(bool isEndl, int num);
-
-    bool isShadowOn = true;
-
-    void getCurrentBlocks(Block* currentBlocks[4]);
-
-    int getHeight(int x);
-
-public:
-    explicit Board(BlockList& list);
-
-    void set();
-
-    void setOneBlock(Block* target, int x, int y);
-
-    void render(Tetromino *currentMino, Tetromino *nextMino, int score, int combo);
-
-    void renderInfoBoard(Tetromino *nextMino, int score, int combo);
-
-    Block* XY(int x, int y);
-
-    void setShadowOn(bool isOn);
-
-    void shadowSwitch();
-
-    void makeShadow(Tetromino* currentMino);
-
-    void deleteShadow();
-
+    /// @brief 정보 보드 배열 초기화
     void initInfoBoard();
 
+    /// @brief 정보 보드를 출력하기 위해 세팅하는 메서드
+    void setInfoBoard(Tetromino *nextMino, int score, int combo);
+
+    /// @brief 줄을 출력하는 메서드
+    void printLine(bool isEndl, int num);
+
+    /// @brief 그림자를 만드는 메서드
+    void makeShadow(Tetromino* currentMino);
+
+    /// @brief 그림자를 삭제하는 메서드
+    void deleteShadow();
+
+public:
+    /// @brief 보드 클래스 생성자
+    explicit Board(BlockList& list);
+
+    /// @brief 보드 배열을 출력하기 위해 세팅하는 메서드
+    void setGameBoard();
+
+    /// @brief 게임을 렌더링하는 메서드
+    void render(Tetromino *currentMino, Tetromino *nextMino, int score, int combo);
+
+    /// @brief 특정 좌표의 블럭 주소 반환
+    Block* XY(int x, int y);
+
+    /// @brief 그림자 표시 모드를 지정하는 메서드
+    void shadowSwitch();
 
 };
 

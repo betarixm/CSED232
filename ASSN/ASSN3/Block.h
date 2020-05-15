@@ -30,6 +30,10 @@
 using namespace std;
 
 class Point;
+
+/**
+ * @brief 블록 클래스
+ */
 class Block {
 private:
     Point p {0, 0, 0, 0}; /// @brief 블럭의 좌표 저장
