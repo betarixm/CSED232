@@ -60,6 +60,9 @@ public:
 
     /// @brief 블럭 리스트 생성자
     BlockList();;
+
+    /// @brief 블럭 리스트 소멸자
+    ~BlockList();
 };
 
 

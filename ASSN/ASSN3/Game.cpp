@@ -97,6 +97,8 @@ Tetromino *Game::getTetromino() {
             break;
     }
 
+    // 테트리미노를 스택에 저장한다. (동적 할당 해제용)
+    minoStack.push(result);
     return result;
 
 }
@@ -105,9 +107,6 @@ Tetromino *Game::getTetromino() {
  * @brief 현재 테트리미노와 다음 테트리미노를 세팅하는 메서드
  */
 void Game::setTetromino() {
-    if(t != nullptr){ // 이미 사용된 테트리미노를 스택에 저장한다. (동적 할당 해제용)
-        minoStack.push(t);
-    }
 
     t = next_t; // 현재 테트리미노 설정
     next_t = getTetromino(); // 다음 테트리미노 설정
@@ -231,7 +230,7 @@ int Game::run() {
             if(parseInput()){ // 인풋 결과가 있다면 렌더링 진행
                 board->render(t, next_t, score, combo);
             }
-            inputTick = 0;
+            inputProcess = 0;
         }
 
         if(gameProcess % (int)(unitTick / coefficient) == 0){ // 게임 틱마다 판정을 진행한다.
@@ -306,5 +305,16 @@ bool Game::checkRestart() {
             cout << "Please press 'y' or 'n'" << endl;
         }
         cout << endl;
+    }
+}
+
+/**
+ * @brief Game 클래스 소멸자
+ */
+Game::~Game() {
+    Tetromino* tmp = nullptr;
+    // 게임에 사용된 테트리미노들을 할당 해제한다.
+    while(minoStack.pop(tmp)){
+        delete(tmp);
     }
 }

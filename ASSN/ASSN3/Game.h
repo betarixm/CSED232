@@ -95,6 +95,9 @@ public:
 
     /// @brief 재시작 여부를 체크하는 메서드
     bool checkRestart();
+
+    /// @brief Game 클래스 소멸자
+    ~Game();
 };
 
 

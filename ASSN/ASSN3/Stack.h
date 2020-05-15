@@ -88,6 +88,16 @@ public:
         }
         return *this;
     }
+
+    /// @brief Stack 클래스 소멸자
+    ~Stack(){
+        Node<T>* tmp;
+        while(top != nullptr){
+            tmp = top->next();
+            delete top;
+            top = tmp;
+        }
+    }
 };
 
 

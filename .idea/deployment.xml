@@ -2,25 +2,28 @@
 <project version="4">
   <component name="PublishConfigData" serverName="MSYS2 (fda90398-efea-49d8-9ec1-f0bbc650f007)">
     <serverData>
-      <paths name="MSYS2 (fda90398-efea-49d8-9ec1-f0bbc650f007)">
+      <paths name="MSYS2 (dfad2354-78e4-4c7b-819d-ef9b063dc098)">
         <serverdata>
           <mappings>
-            <mapping deploy="/beta/CSED232" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host (bd054805-5aff-4f94-aadc-bee1da0ad9d9)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.rTlsWTPMqx" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
-            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-msys2" />
           </excludedPaths>
         </serverdata>
       </paths>
-      <paths name="PLUS-BETA (4643658b-d47c-4b5e-9607-87996c850714)">
+      <paths name="WSL (8aa26564-c2b7-4839-8447-d0b4e661a24a)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.yeLlJ3fYOm" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
-          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>

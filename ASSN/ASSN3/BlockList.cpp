@@ -179,3 +179,13 @@ BlockList::BlockList() {
         i = nullptr;
     }
 }
+
+/**
+ * @brief 블럭 리스트 소멸자
+ */
+BlockList::~BlockList() {
+    // 할당된 블럭들을 해제한다.
+    for(auto& i : blockList){
+        delete(i);
+    }
+}

@@ -104,6 +104,16 @@ public:
         }
         return *this;
     }
+
+    /// @brief Queue 클래스 소멸자
+    ~Queue(){
+        Node<T>* tmp;
+        while(begin != nullptr){
+            tmp = begin->next();
+            delete begin;
+            begin = tmp;
+        }
+    }
 };
 
 
