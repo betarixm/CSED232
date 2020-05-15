@@ -39,6 +39,9 @@ class Tetromino;
 
 using namespace std;
 
+/**
+ * @brief 게임 보드를 렌더링하는 클래스
+ */
 class Board {
 private:
     Block* gameBoard[ROW][COL]{}; /// @brief 게임 보드 배열

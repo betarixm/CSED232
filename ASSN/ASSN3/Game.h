@@ -1,19 +1,11 @@
 #ifndef CSED232_GAME_H
 #define CSED232_GAME_H
 
-#include <mutex>
-#include <iostream>
-#include <random>
-#include "Block.h"
-#include "BlockList.h"
-#include "Board.h"
-#include "Stack.h"
-#include "Tetromino.h"
-#include "const.h"
-#include "Queue.h"
-#include "IO.h"
+
 #define NUM_TETROMINO 7
 
+#include <mutex>
+#include "Stack.h"
 /*
  *
  *  ██╗  ██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗
@@ -39,24 +31,36 @@
 
 using namespace std;
 
+class Board;
+class BlockList;
+class Tetromino;
+
+template<typename T>
+class Stack;
+template<typename V>
+class Queue;
+
+/**
+ * @brief 게임의 진행을 관리하는 클래스
+ */
 class Game {
 private:
-    int unitTick = 100000000;
-    int inputTick = 100000;
-    int score = 0;
-    int combo = 0;
-    unsigned int gameProcess = 0;
-    unsigned int inputProcess = 0;
-    bool isUsed[NUM_TETROMINO] {false, };
-    double coefficient = 1;
+    int unitTick = 100000000; /// @brief 기본 게임 진행 틱
+    int inputTick = 100000; /// @brief 입력 틱
+    int score = 0; /// @brief 점수
+    int combo = 0; /// @brief 콤보
+    unsigned int gameProcess = 0; /// @brief 게임 진행 틱 카운터
+    unsigned int inputProcess = 0; /// @brief 유저 인풋 틱 카운터
+    bool isUsed[NUM_TETROMINO] {false, }; /// @brief 테트리미노 사용 여부를 저장하는 배열
+    double coefficient = 1; /// @brief 게임 속도 배수
 
-    BlockList* blockList;
-    Board* board;
-    Queue<char>* inputQueue;
-    Stack<Tetromino*> minoStack;
-    mutex* m;
-    Tetromino* t;
-    Tetromino* next_t;
+    BlockList* blockList; /// @brief 게임에서 사용할 블럭리스트 오브젝트의 주소
+    Board* board; /// @brief 게임에서 사용할 보드 오브젝트의 주소
+    Queue<char>* inputQueue; /// @brief 공유 인풋 큐 주소
+    Stack<Tetromino*> minoStack; /// @brief 사용한 테트리미노 스택
+    mutex* m; /// @brief 스레드 뮤텍스 주소
+    Tetromino* t; /// @brief 현재 게임 중인 테트리미노
+    Tetromino* next_t; /// @brief 다음 테트리미노
 
     /// @brief 테트리미노의 사용 여부 배열을 초기화 하는 메서드
     void initUsedArray();

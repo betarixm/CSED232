@@ -1,5 +1,8 @@
 #include "BlockList.h"
 
+#include <iostream>
+#include "Block.h"
+
 /*
  *
  *  ██╗  ██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗

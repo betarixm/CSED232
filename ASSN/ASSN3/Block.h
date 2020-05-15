@@ -1,8 +1,8 @@
 #ifndef CSED232_BLOCK_H
 #define CSED232_BLOCK_H
-
-#include "Point.h"
+#include <mutex>
 #include <iostream>
+#include "Point.h"
 
 /*
  *
@@ -30,6 +30,7 @@
 using namespace std;
 
 class Point;
+class Position;
 
 /**
  * @brief 블록 클래스

@@ -1,9 +1,7 @@
 #ifndef CSED232_BLOCKLIST_H
 #define CSED232_BLOCKLIST_H
 
-#include "Block.h"
 #include "const.h"
-#include "Stack.h"
 
 /*
  *
@@ -28,8 +26,7 @@
  *
  */
 
-template <typename T>
-class Stack;
+class Block;
 
 /**
  * @brief 블록들을 관리하는 클래스

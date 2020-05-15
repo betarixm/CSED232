@@ -33,353 +33,204 @@
 class Block;
 class BlockList;
 
+/**
+ * @brief 테트리미노를 관리하는 기본 클래스
+ */
 class Tetromino {
 private:
-    Position SRSDataSet[8][5]{};
-    int color = RESET;
-    int rotate_num = 1;
+    Position SRSDataSet[8][5]{}; /// @brief SRS 오프셋 데이터셋
+    Block* blocks[4]{}; /// @brief 테트리미노의 블럭들 배열
+    Board* board{}; /// @brief 테트리미노가 사용할 보드
 
-    Position blockPosition[4];
+    int color = RESET; /// @brief 테트리미노의 색상
+    int rotate_num = 1; /// @brief 테트리미노의 회전 상태
 
-    bool isHit(int dx, int dy, bool checkCeiling){
-        for(auto& i: blocks){
-            int x = i->x() + dx;
-            int y = i->y() + dy;
+    Position blockPosition[4]; /// @brief 블럭들의 상대 좌표 배열
 
-            if((!((0 <= x && x < COL) && (0 <= y))) || (board->XY(x, y) != nullptr && board->XY(x, y)->isStop())){
-                return !(checkCeiling && y >= ROW);
-            }
-        }
-        return false;
-    }
+    /// @brief 테트리미노의 충돌 여부를 확인하는 메서드
+    bool isHit(int dx, int dy, bool checkCeiling);
+
+    /// 블럭이 멈춰야 할 상태인지 체크하는 메서드
+    bool checkStop();
+
+    /// 블럭을 멈추는 메서드
+    int stop();
+
 
 protected:
-    Block* blocks[4]{};
-    Board* board{};
-    void setSRSDataSet(Position set[][5]){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 5; j++){
-                SRSDataSet[i][j] = set[i][j];
-            }
-        }
-    }
+    /// @brief SRS 오프셋 데이터셋을 저장하는 메서드
+    void setSRSDataSet(Position set[][5]);
 
-    virtual void initTetromino(int x, int y){
-        SRSTestSetGenerator();
-        color = colorGenerator();
-        blockGenerator(blockPosition);
-        for(int i = 0; i < 4; i++){
-            blocks[i]->setAxis(x, y);
-            blocks[i]->setRelative(blockPosition[i]);
-            blocks[i]->setColor(this->color);
-        }
-    }
+    /// @brief 테트로미노를 초기화하는 가상 메서드
+    virtual void initTetromino(int x, int y);
 
-    virtual void SRSTestSetGenerator(){
-        Position virtualSet[8][5] = {
-                {Position( 0, 0), Position(-1, 0), Position(-1,-1), Position( 0,+2), Position(-1,+2)}, // L -> 2
-                {Position( 0, 0), Position(-1, 0), Position(-1,-1), Position( 0,+2), Position(-1,+2)}, // L -> 0
-                {Position( 0, 0), Position(+1, 0), Position(+1,+1), Position( 0,-2), Position(+1,-2)}, // 0 -> L
-                {Position( 0, 0), Position(-1, 0), Position(-1,+1), Position( 0,-2), Position(-1,-2)}, // 0 -> R
-                {Position( 0, 0), Position(+1, 0), Position(+1,-1), Position( 0,+2), Position(+1,+2)}, // R -> 0
-                {Position( 0, 0), Position(+1, 0), Position(+1,-1), Position( 0,+2), Position(+1,+2)}, // R -> 2
-                {Position( 0, 0), Position(-1, 0), Position(-1,+1), Position( 0,-2), Position(-1,-2)}, // 2 -> R
-                {Position( 0, 0), Position(+1, 0), Position(+1,+1), Position( 0,-2), Position(+1,-2)}  // 2 -> L
-        };
+    /// @brief SRS 오프셋 데이터셋을 생성하는 가상 메서드
+    virtual void SRSTestSetGenerator();
 
-        setSRSDataSet(virtualSet);
-    }
+    /// @brief 블록의 상대좌표를 설정하는 가상 메서드
+    virtual void relativePositionGenerator(Position* _blockPosition);
 
-    virtual void blockGenerator(Position* _blockPosition)  {
-        _blockPosition[0].setPosition(1, 1);
-        _blockPosition[1].setPosition(-1, 0);
-        _blockPosition[2].setPosition(0, 0);
-        _blockPosition[3].setPosition(1, 0);
-    }
-
-    virtual int colorGenerator(){
-        return WHITE;
-    }
+    /// @brief 블록의 색상을 설정하는 가상 메서드
+    virtual int colorGenerator();
 
 public:
-    Block& getBlockByIdx(int i){
-        return *blocks[i];
-    }
-    void setStr(string& target){
-        for(auto&i : blocks){
-            i->setStr(target);
-        }
-    }
-    void setShadowMino(bool isShadow){
-        for(auto&i : blocks){
-            i->isShadow() = isShadow;
-        }
-    }
+    /// @brief 인덱스로 블록 주소를 반환 하는 메서드
+    Block& getBlockByIdx(int i);
 
-    Tetromino&operator=(const Tetromino& param){
-        if(&param != this){
-            for(int i = 0; i < 4; i++){
-                *blocks[i] = *(param.blocks[i]);
-                board = param.board;
-            }
-        }
-        return *this;
-    }
+    /// @brief 블럭들의 문자를 설정하는 메서드
+    void setStr(string& target);
+
+    /// @brief 블럭들을 그림자 블럭으로 설정하는 메서드
+    void setShadowMino(bool isShadow);
+
+    /// @brief 테트리미노의 복사 = 오버로딩
+    Tetromino&operator=(const Tetromino& param);
+
+    /// @brief 테트리미노의 디폴트 생성자
     Tetromino() = default;
-    Tetromino(BlockList& blockList, Board* _board){
-        for(auto& i: blocks){
-            i = blockList.add();
-        }
-        this->board = _board;
-    }
 
-    Tetromino(BlockList& blockList, Board* _board, Block* customBlocks[4]) {
-        for(int i = 0; i < 4; i++){
-            blocks[i] = customBlocks[i];
-            blockList.append(customBlocks[i]);
-        }
-        this->board = _board;
-    }
+    /// @brief 테트리미노의 생성자
+    Tetromino(BlockList& blockList, Board* _board);
 
-    virtual void rotate(int direction){
-        int cursor = rotate_num * 2 + (direction + 1) / 2;
+    /// @brief 임의 블록들로 테트리미노를 만드는 생성자
+    Tetromino(BlockList& blockList, Board* _board, Block* customBlocks[4]);
 
-        for(auto& i: blocks){
-            i->rotate(direction);
-        }
+    /// @brief 테트리미노를 회전하는 메서드
+    virtual void rotate(int direction);
 
-        for(auto& i: SRSDataSet[cursor]){
+    /// @brief 테트리미노를 움직이는 메서드
+    void move(int dx, int dy, bool checkCeiling);
 
-            // cout << "Now Testing...: (" << i.x() << ", " << i.y() << ")" <<  endl;
-            // cout << "Before XY: (" << blocks[0]->x() << ", " << blocks[0]->y() << ")" << endl;
+    /// @brief 테트리미노의 멈춤 여부를 반환하는 메서드
+    bool isStop();
 
-            for(auto& b: blocks){ (*b) += i; }
+    /// @brief 게임 틱마다 실행되는 메서드
+    void onTick();
 
-            // cout << "After XY: (" << blocks[0]->x() << ", " << blocks[0]->y() << ")" << endl;
-
-            if(isHit(0, 0, true)){
-                // cout << "FAIL!" << endl;
-                for(auto& b: blocks){ (*b) -= i; }
-                // cout << "Back to XY: (" << blocks[0]->x() << ", " << blocks[0]->y() << ")" << endl;
-
-            } else {
-                rotate_num += direction;
-                rotate_num = (rotate_num < 0) ? (3) : ((3 < rotate_num) ? (0) : (rotate_num));
-                return;
-            }
-        }
-
-        for(auto& i: blocks){
-            i->rotate(-1 * direction);
-        }
-
-    }
-
-    void move(int dx, int dy, bool checkCeiling){
-        if(isHit(dx, dy, checkCeiling)) return;
-        for(auto& i: blocks){
-            if(!i->isStop()){
-                *i += Position(dx, dy);
-            }
-        }
-    }
-
-    int stop(){
-        for(auto& i: blocks){
-            i->isStop() = true;
-        }
-        return 0;
-    }
-
-    bool checkStop(){
-        board->setGameBoard();
-        for(auto& i: blocks){
-            if(i->y() == 0){
-                return true;
-            }
-            Block* test = board->XY(i->x(), i->y() - 1);
-            if(test != nullptr && test->isStop()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    bool isStop(){
-        for(auto& i:blocks){
-            if(i->isStop()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    void onTick(){
-        checkStop() && stop();
-        move(0, -1, false);
-    }
-
-    void hardDrop(){
-        for(int dy = 0; dy >= (-1 * ROW); dy--){
-            if(isHit(0, dy - 1, true)){
-                move(0, dy, true);
-                break;
-            }
-        }
-    }
+    /// @brief 테트리미노를 하드 드롭 하는 메서드
+    void hardDrop();
 
 
 };
 
+/**
+ * @brief I 미노를 관리하는 derived 클래스
+ */
 class Mino_I: public Tetromino{
 private:
-    void SRSTestSetGenerator() override{
-        Position virtualSet[8][5] = {
-                { Position( 1,  0), Position(-1,  0), Position( 2,  0), Position(-1, -1), Position( 2,  2) },
-                { Position( 0,  1), Position( 1,  1), Position(-2,  1), Position( 1, -1), Position(-2,  2) },
-                { Position( 0, -1), Position(-1, -1), Position( 2, -1), Position(-1,  1), Position( 2, -2) },
-                { Position( 1,  0), Position(-1,  0), Position( 2,  0), Position(-1, -1), Position( 2,  2) },
-                { Position(-1,  0), Position( 1,  0), Position(-2,  0), Position( 1,  1), Position(-2, -2) },
-                { Position( 0, -1), Position(-1, -1), Position( 2, -1), Position(-1,  1), Position( 2, -2) },
-                { Position( 0,  1), Position( 1,  1), Position(-2,  1), Position( 1, -1), Position(-2,  2) },
-                { Position(-1,  0), Position( 1,  0), Position(-2,  0), Position( 1,  1), Position(-2, -2) }
-        };
+    /// @brief I 미노의 SRS 오프셋 데이터셋 지정
+    void SRSTestSetGenerator() override;
 
-        setSRSDataSet(virtualSet);
-    }
+    /// @brief I 미노 블럭들의 상대좌표를 지정하는 메서드
+    void relativePositionGenerator(Position* _blockPosition) override;
 
-    void blockGenerator(Position* _blockPosition) override{
-        _blockPosition[0].setPosition(-1, 0);
-        _blockPosition[1].setPosition(0, 0);
-        _blockPosition[2].setPosition(1, 0);
-        _blockPosition[3].setPosition(2, 0);
-    }
-
-    int colorGenerator() override {
-        return CYAN;
-    }
+    /// @brief I 미노의 색상을 지정하는 메서드
+    int colorGenerator() override;
 
 public:
-    Mino_I(int x, int y, BlockList& _blockList, Board* _board): Tetromino(_blockList, _board){
-        Mino_I::initTetromino(x, y);
-    };
+    /// @brief I 테트리미노의 생성자
+    Mino_I(int x, int y, BlockList& _blockList, Board* _board);;
 };
 
-
+/**
+ * @brief O 미노를 관리하는 derived 클래스
+ */
 class Mino_O: public Tetromino{
 
 private:
-    void blockGenerator(Position* _blockPosition) override{
-        _blockPosition[0].setPosition(0,  0);
-        _blockPosition[1].setPosition(1,  0);
-        _blockPosition[2].setPosition(0, -1);
-        _blockPosition[3].setPosition(1, -1);
-    }
+    /// @brief O 미노 블럭들의 상대좌표를 지정하는 메서드
+    void relativePositionGenerator(Position* _blockPosition) override;
 
-    int colorGenerator() override {
-        return YELLOW;
-    }
+    /// @brief O 미노의 색상을 지정하는 메서드
+    int colorGenerator() override;
     
 public:
-    Mino_O(int x, int y, BlockList& _blockList, Board* _board): Tetromino(_blockList, _board){
-        Mino_O::initTetromino(x, y);
-    };;
+    /// @brief O 테트리미노의 생성자
+    Mino_O(int x, int y, BlockList& _blockList, Board* _board);;;
 
+    /// @brief O 테트리미노의 회전 메서드
     void rotate(int direction) override { }
 };
 
-
+/**
+ * @brief T 미노를 관리하는 derived 클래스
+ */
 class Mino_T: public Tetromino{
 private:
-    void blockGenerator(Position* _blockPosition) override{
-        _blockPosition[0].setPosition( 0,  1);
-        _blockPosition[1].setPosition(-1,  0);
-        _blockPosition[2].setPosition( 0,  0);
-        _blockPosition[3].setPosition( 1,  0);
-    }
+    /// @brief T 미노 블럭들의 상대좌표를 지정하는 메서드
+    void relativePositionGenerator(Position* _blockPosition) override;
 
-    int colorGenerator() override {
-        return MAGENTA;
-    }
+    /// @brief T 미노의 색상을 지정하는 메서드
+    int colorGenerator() override;
     
 public:
-    Mino_T(int x, int y, BlockList& _blockList, Board* _board): Tetromino(_blockList, _board){
-        Mino_T::initTetromino(x, y);
-    };
+    /// @brief T 테트리미노의 생성자
+    Mino_T(int x, int y, BlockList& _blockList, Board* _board);;
 
 };
 
+/**
+ * @brief L 미노를 관리하는 derived 클래스
+ */
 class Mino_L: public Tetromino{
 private:
-    void blockGenerator(Position* _blockPosition) override{
-        _blockPosition[0].setPosition( 1,  1);
-        _blockPosition[1].setPosition(-1,  0);
-        _blockPosition[2].setPosition( 0,  0);
-        _blockPosition[3].setPosition( 1,  0);
-    }
+    /// @brief L 미노 블럭들의 상대좌표를 지정하는 메서드
+    void relativePositionGenerator(Position* _blockPosition) override;
 
-    int colorGenerator() override {
-        return WHITE;
-    }
+    /// @brief L 미노의 색상을 지정하는 메서드
+    int colorGenerator() override;
     
 public:
-    Mino_L(int x, int y, BlockList& _blockList, Board* _board): Tetromino(_blockList, _board){
-        Mino_L::initTetromino(x, y);
-    };
+    /// @brief L 테트리미노의 생성자
+    Mino_L(int x, int y, BlockList& _blockList, Board* _board);;
 };
 
+
+/**
+ * @brief J 미노를 관리하는 derived 클래스
+ */
 class Mino_J: public Tetromino{
 private:
-    void blockGenerator(Position* _blockPosition) override{
-        _blockPosition[0].setPosition(-1,  1);
-        _blockPosition[1].setPosition(-1,  0);
-        _blockPosition[2].setPosition( 0,  0);
-        _blockPosition[3].setPosition( 1,  0);
-    }
+    /// @brief J 미노 블럭들의 상대좌표를 지정하는 메서드
+    void relativePositionGenerator(Position* _blockPosition) override;
 
-    int colorGenerator() override {
-        return BLUE;
-    }
+    /// @brief J 미노의 색상을 지정하는 메서드
+    int colorGenerator() override;
 public:
-    Mino_J(int x, int y, BlockList& _blockList, Board* _board): Tetromino(_blockList, _board){
-        Mino_J::initTetromino(x, y);
-    };
+    /// @brief J 테트리미노의 생성자
+    Mino_J(int x, int y, BlockList& _blockList, Board* _board);;
 };
 
+
+/**
+ * @brief S 미노를 관리하는 derived 클래스
+ */
 class Mino_S: public Tetromino{
 private:
-    void blockGenerator(Position* _blockPosition) override{
-        _blockPosition[0].setPosition( 0,  1);
-        _blockPosition[1].setPosition( 1,  1);
-        _blockPosition[2].setPosition(-1,  0);
-        _blockPosition[3].setPosition( 0,  0);
-    }
+    /// @brief S 미노 블럭들의 상대좌표를 지정하는 메서드
+    void relativePositionGenerator(Position* _blockPosition) override;
 
-    int colorGenerator() override {
-        return GREEN;
-    }
+    /// @brief S 미노의 색상을 지정하는 메서드
+    int colorGenerator() override;
 public:
-    Mino_S(int x, int y, BlockList& _blockList, Board* _board): Tetromino(_blockList, _board) {
-        Mino_S::initTetromino(x, y);
-    };
+    /// @brief S 테트리미노의 생성자
+    Mino_S(int x, int y, BlockList& _blockList, Board* _board);;
 };
 
+
+/**
+ * @brief Z 미노를 관리하는 derived 클래스
+ */
 class Mino_Z: public Tetromino{
 private:
-    void blockGenerator(Position* _blockPosition) override{
-        _blockPosition[0].setPosition( -1,  1);
-        _blockPosition[1].setPosition( 0,  1);
-        _blockPosition[2].setPosition( 0,  0);
-        _blockPosition[3].setPosition( 1,  0);
-    }
+    /// @brief Z 미노 블럭들의 상대좌표를 지정하는 메서드
+    void relativePositionGenerator(Position* _blockPosition) override;
 
-    int colorGenerator() override {
-        return RED;
-    }
+    /// @brief Z 미노의 색상을 지정하는 메서드
+    int colorGenerator() override;
 public:
-    Mino_Z(int x, int y, BlockList& _blockList, Board* _board): Tetromino(_blockList, _board){
-        Mino_Z::initTetromino(x, y);
-    };
+    /// @brief Z 테트리미노의 생성자
+    Mino_Z(int x, int y, BlockList& _blockList, Board* _board);;
 
 
 };

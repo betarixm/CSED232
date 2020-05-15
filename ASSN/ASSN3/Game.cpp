@@ -1,5 +1,10 @@
 #include "Game.h"
 
+#include <iostream>
+#include "Tetromino.h"
+#include "Queue.h"
+#include "IO.h"
+
 /*
  *
  *  ██╗  ██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗
