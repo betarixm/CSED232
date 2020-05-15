@@ -54,7 +54,7 @@ public:
 
     Point&operator+=(Position param);
 
-    Point&operator-=(Position& param);
+    Point&operator-=(Position param);
 
     Point&operator=(const Point& param);
 };

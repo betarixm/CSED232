@@ -24,4 +24,9 @@
 
 #define MAX_BLOCK 1000
 
+#define ROW 20
+#define COL 10
+
+#define CONVERT_Y(Y) (ROW-Y-1)
+
 #endif //CSED232_CONST_H

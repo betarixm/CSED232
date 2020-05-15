@@ -76,7 +76,6 @@ void Stream::removeLastLog() {
         _out << strResult;
         _out.close();
     }
-
 }
 
 /**

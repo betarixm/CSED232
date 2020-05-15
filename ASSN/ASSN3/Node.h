@@ -6,10 +6,12 @@ class Node {
 private:
     T node_data;
     Node* node_next;
+    Node* node_prev;
 public:
-    Node(T data, Node* next=nullptr){
+    explicit Node(T data, Node* next=nullptr, Node* prev=nullptr){
         node_data = data;
         node_next = next;
+        node_prev = prev;
     }
 
     Node*& next(){
@@ -18,6 +20,10 @@ public:
 
     T& data(){
         return node_data;
+    }
+
+    Node*& prev(){
+        return node_prev;
     }
 };
 

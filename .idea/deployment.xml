@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData">
+  <component name="PublishConfigData" autoUpload="Always" serverName="MSYS2 (fda90398-efea-49d8-9ec1-f0bbc650f007)">
     <serverData>
       <paths name="MSYS2 (fda90398-efea-49d8-9ec1-f0bbc650f007)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.JEBCKBwrfS" local="$PROJECT_DIR$" />
+            <mapping deploy="/beta/CSED232" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
@@ -24,5 +24,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

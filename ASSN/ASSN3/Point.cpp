@@ -42,7 +42,7 @@ Point &Point::operator+=(Position param) {
     return *this;
 }
 
-Point &Point::operator-=(Position &param) {
+Point &Point::operator-=(Position param) {
     axis -= param;
     return *this;
 }

@@ -28,6 +28,10 @@ public:
         p.setAxis(x, y);
     }
 
+    void move(int dx, int dy){
+        p+=Position(dx, dy);
+    }
+
     void setRelative(int x, int y){
         p.setRelative(x, y);
     }

@@ -2,17 +2,13 @@
 #define CSED232_BOARD_H
 
 #include <iostream>
+#include "const.h"
 
-#define ROW 20
-#define COL 10
 #define SEP ("■")
 #define BLK (" ")
 
-#define INFO_LEN 7
-#define INFO_HEIGHT 5
-
-#define CONVERT_Y(Y) (ROW-Y-1)
-
+#define INFO_COL 9
+#define INFO_ROW 15
 
 class Block;
 class BlockList;
@@ -28,7 +24,7 @@ private:
 
     BlockList* blockList;
 
-    string infoTable[INFO_HEIGHT][INFO_LEN];
+    string infoboard[INFO_ROW][INFO_COL];
 
     void reset();
 
@@ -47,9 +43,9 @@ public:
 
     void setOneBlock(Block* target, int x, int y);
 
-    void render(Tetromino *currentMino, Tetromino *nextMino, int score);
+    void render(Tetromino *currentMino, Tetromino *nextMino, int score, int combo);
 
-    void renderInfoBoard(Tetromino* nextMino, int Score);
+    void renderInfoBoard(Tetromino *nextMino, int score, int combo);
 
     Block* XY(int x, int y);
 
@@ -62,6 +58,8 @@ public:
     void deleteShadow();
 
     void initInfoBoard();
+
+
 };
 
 

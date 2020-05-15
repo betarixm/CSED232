@@ -3,7 +3,7 @@
 #include "Block.h"
 #include "BlockList.h"
 #include "Tetromino.h"
-
+#include "IO.h"
 
 
 void Board::reset() {
@@ -50,7 +50,7 @@ Board::Board(BlockList &list) {
         }
     }
 
-    for(auto&i: infoTable){
+    for(auto&i: infoboard){
         for(auto&j: i){
             j = " ";
         }
@@ -80,12 +80,12 @@ void Board::setOneBlock(Block *target, int x, int y) {
     }
 }
 
-void Board::render(Tetromino *currentMino, Tetromino *nextMino, int score) {
+void Board::render(Tetromino *currentMino, Tetromino *nextMino, int score, int combo) {
     makeShadow(currentMino);
-    renderInfoBoard(nextMino, score);
+    renderInfoBoard(nextMino, score, combo);
     this->set();
-    system("clear");
-    printLine(true, COL + INFO_LEN + 3);
+    clear();
+    printLine(true, COL + INFO_COL + 3);
     int row = 0;
     for(auto& i : gameBoard){
         cout << SEP;
@@ -97,15 +97,15 @@ void Board::render(Tetromino *currentMino, Tetromino *nextMino, int score) {
             }
         }
         cout << SEP;
-        if(row < INFO_HEIGHT){
-            for(auto&k : infoTable[row]){
+        if(row < INFO_ROW){
+            for(auto&k : infoboard[row]){
                 cout << k;
             }
             cout << SEP;
         }
 
-        if(row == INFO_HEIGHT){
-            printLine(false, INFO_LEN + 1);
+        if(row == INFO_ROW){
+            printLine(false, INFO_COL + 1);
         }
 
         cout << endl;
@@ -115,17 +115,39 @@ void Board::render(Tetromino *currentMino, Tetromino *nextMino, int score) {
     deleteShadow();
 }
 
-void Board::renderInfoBoard(Tetromino* nextMino, int Score){
-    Position axis(INFO_LEN / 2, 2);
+void Board::renderInfoBoard(Tetromino *nextMino, int score, int combo) {
+    Position axis(INFO_COL / 2 , 2);
+    string info_text[4] = {
+            " Score",
+            " " + to_string(score),
+            " Combo",
+            " " + to_string(combo)
+    };
+
     initInfoBoard();
     for(int i = 0; i < 4; i++){
         Block& tmp = nextMino->getBlockByIdx(i);
-        infoTable[axis.y() - tmp.rel_y()][axis.x() + tmp.rel_x()] = tmp.toString();
+        infoboard[axis.y() - tmp.rel_y()][axis.x() + tmp.rel_x()] = tmp.toString();
     }
+
+    for(int i = 0; i < INFO_COL; i++){
+        infoboard[INFO_ROW / 3 * 1][i] = SEP;
+        infoboard[INFO_ROW / 3 * 2][i] = SEP;
+    }
+
+    for(int i = 0; i < 4; i++){
+        int tmp_idx = 0;
+        int process = (i < 2)?(1):(2);
+        for(auto& l: infoboard[INFO_ROW / 3 * process + 2 + i % 2]){
+            l = info_text[i][tmp_idx++];
+            if(tmp_idx == info_text[i].length()) break;
+        }
+    }
+
 }
 
 void Board::initInfoBoard(){
-    for(auto&i:infoTable){
+    for(auto&i:infoboard){
         for(auto&j:i){
             j = " ";
         }

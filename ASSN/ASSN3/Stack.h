@@ -33,6 +33,13 @@ public:
         }
         return false;
     }
+    Stack&operator=(Stack const& param){
+        if(this != &param){
+            stack_size = param.stack_size;
+            top = param.top;
+        }
+        return *this;
+    }
 };
 
 
