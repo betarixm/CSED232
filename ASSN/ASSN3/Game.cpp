@@ -231,8 +231,9 @@ int Game::run() {
             if(parseInput(input)){ // 인풋 결과가 있다면 렌더링 진행
                 if(input == ' '){
                     gameProcess = (int)(unitTick / coefficient);
+                } else {
+                    board->render(t, next_t, score, combo);
                 }
-                board->render(t, next_t, score, combo);
             }
             inputProcess = 0;
         }
