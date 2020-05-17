@@ -45,7 +45,7 @@ class Queue;
  */
 class Game {
 private:
-    int unitTick = 100000000; /// @brief 기본 게임 진행 틱
+    int unitTick = 50000000; /// @brief 기본 게임 진행 틱
     int inputTick = 100000; /// @brief 입력 틱
     int score = 0; /// @brief 점수
     int combo = 0; /// @brief 콤보
