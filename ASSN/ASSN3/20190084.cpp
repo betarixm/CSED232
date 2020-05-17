@@ -35,7 +35,6 @@ using namespace std;
 
 int main(){
     showTitle(); // "TETRIS" 타이틀 노출
-
     system("stty cbreak -icanon -echo"); // 입력의 화면 표시를 중단시키고, 터미널로부터 입력을 RAW하게 받아옴.
 
     Queue<char> inputQueue; // 다른 스레드와 공유하는 인풋 큐.

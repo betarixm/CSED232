@@ -200,7 +200,6 @@ void Game::checkScore(int num_lines) {
     }
 
     score += partial_score; // 추가될 점수를 지정한다.
-    coefficient = 1 + ((int)(score/1000))/10; // 점수에 따른 속도 계수를 지정한다.
 }
 
 /**
@@ -226,6 +225,8 @@ Game::Game(BlockList *_blockList, Board *_board, Queue<char> *_inputQueue, mutex
  */
 int Game::run() {
     while(++gameProcess, ++inputProcess){ // 기본 시간 단위인 프로세스를 증가시킨다
+        coefficient = 1.0 + ((double)(score/1000))/10; // 점수에 따른 속도 계수를 지정한다.
+
         if(inputProcess % inputTick == 0){ // 인풋 틱마다 유저의 인풋을 받는다
             if(parseInput()){ // 인풋 결과가 있다면 렌더링 진행
                 board->render(t, next_t, score, combo);
