@@ -136,8 +136,8 @@ char Game::getInput() {
  * @brief 입력을 파싱하는 메서드
  * @return 정상적인 입력 여부
  */
-bool Game::parseInput() {
-    char input = getInput(); // 입력 값을 가져온다
+bool Game::parseInput(char& input) {
+    input = getInput(); // 입력 값을 가져온다
     if(input == 'a'){
         // 왼쪽으로 한칸 이동
         t->move(-1, 0, false);
@@ -226,9 +226,12 @@ Game::Game(BlockList *_blockList, Board *_board, Queue<char> *_inputQueue, mutex
 int Game::run() {
     while(++gameProcess, ++inputProcess){ // 기본 시간 단위인 프로세스를 증가시킨다
         coefficient = 1.0 + ((double)(score/1000))/10; // 점수에 따른 속도 계수를 지정한다.
-
+        char input;
         if(inputProcess % inputTick == 0){ // 인풋 틱마다 유저의 인풋을 받는다
-            if(parseInput()){ // 인풋 결과가 있다면 렌더링 진행
+            if(parseInput(input)){ // 인풋 결과가 있다면 렌더링 진행
+                if(input == ' '){
+                    gameProcess = (int)(unitTick / coefficient);
+                }
                 board->render(t, next_t, score, combo);
             }
             inputProcess = 0;

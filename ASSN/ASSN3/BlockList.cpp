@@ -107,8 +107,8 @@ void BlockList::initRemoveLines(int (*simulateBoard)[10], int *line_size) {
             Block* tmp = blockList[i];
             int y = tmp->y();
             int x = tmp->x();
-            // 블럭이 보드 범위 안에 들어올 경우, 시뮬레이션 보드에 등록한다.=
-            if(!(tmp->isShadow()) && 0 <= y && y < ROW && 0 <= x && x < COL) {
+            // 블럭이 보드 범위 안에 들어올 경우, 시뮬레이션 보드에 등록한다.
+            if((!tmp->isShadow()) && 0 <= y && y < ROW && 0 <= x && x < COL) {
                 simulateBoard[y][x] = i;
                 line_size[y]++; // 해당 줄의 사이즈 증가
             }

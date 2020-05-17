@@ -78,7 +78,7 @@ private:
     char getInput();
 
     /// @brief 입력을 파싱하는 메서드
-    bool parseInput();
+    bool parseInput(char& input);
 
     /// @brief 점수를 계산하는 메서드
     void checkScore(int num_lines);
