@@ -100,7 +100,7 @@ void Board::setGameBoard() {
  * @param combo 콤보 수
  */
 void Board::render(Tetromino *currentMino, Tetromino *nextMino, int score, int combo) {
-    makeShadow(currentMino); // 그림자를 생성한다.
+    if(!currentMino->isStop()) makeShadow(currentMino); // 그림자를 생성한다.
 
     setInfoBoard(nextMino, score, combo); // 정보 보드를 초기화한다.
 
@@ -144,7 +144,7 @@ void Board::render(Tetromino *currentMino, Tetromino *nextMino, int score, int c
 
     // 구분선 출력
     printLine(true, COL + 2);
-    deleteShadow(); // 그림자 삭제
+    if(!currentMino->isStop()) deleteShadow(); // 그림자 삭제
 }
 
 /**
