@@ -19,3 +19,8 @@ add_executable(ASSN2 ASSN/ASSN2/20190084.cpp ${ASSN2_CPP} ${ASSN2_H})
 file(GLOB ASSN3_H ASSN/ASSN3/*.h)
 file(GLOB ASSN3_CPP ASSN/ASSN3/*.cpp)
 add_executable(ASSN3 ${ASSN3_H} ${ASSN3_CPP})
+
+
+file(GLOB ASSN4_H ASSN/ASSN4/*.h)
+file(GLOB ASSN4_CPP ASSN/ASSN4/*.cpp)
+add_executable(ASSN4 ${ASSN4_H} ${ASSN4_CPP})
