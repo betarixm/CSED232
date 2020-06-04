@@ -7,6 +7,29 @@ Do not modify outline of the code.*/
 #include <iostream>
 #include <cassert>
 
+/*
+ *
+ *  ██╗  ██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗
+ *  ██║  ██║██╔═══██╗████╗  ██║██╔═══██╗██╔══██╗
+ *  ███████║██║   ██║██╔██╗ ██║██║   ██║██████╔╝
+ *  ██╔══██║██║   ██║██║╚██╗██║██║   ██║██╔══██╗
+ *  ██║  ██║╚██████╔╝██║ ╚████║╚██████╔╝██║  ██║
+ *  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝
+ *
+ *        ██████╗ ██████╗ ██████╗ ███████╗
+ *       ██╔════╝██╔═══██╗██╔══██╗██╔════╝
+ *       ██║     ██║   ██║██║  ██║█████╗
+ *       ██║     ██║   ██║██║  ██║██╔══╝
+ *       ╚██████╗╚██████╔╝██████╔╝███████╗
+ *        ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝
+ *
+ *
+ * 명예서약 (Honor Code)
+ * 나는 이 프로그래밍 과제를 다른 사람의 부적절한 도움 없이 완수하였습니다.
+ * I completed this programming task without the improper help of others.
+ *
+ */
+
 template<typename ObjectType>
 void Deallocator(ObjectType* ptr)
 {
@@ -76,8 +99,9 @@ public:
 		////////////////////////////////////
 		*/
 
+		// 파라미터의 오브젝트 복사
 		m_ref_object = pointer.m_ref_object;
-		m_ref_object->increase_ref_count();
+		m_ref_object->increase_ref_count(); // 오브젝트 카운트 증가
 	}
 	~SmartPtr()
 	{
@@ -88,6 +112,8 @@ public:
 		////////////////////////////////////
 		*/
 
+		// 참조 카운트 감소
+		// 카운트 감소 시 동적 할당 해제 체크하므로 따로 해제할 필요는 없음
         if(m_ref_object != nullptr) m_ref_object->decrease_ref_count();
 	}
 	SmartPtr& operator=(ObjectType *object)
@@ -99,10 +125,11 @@ public:
 		////////////////////////////////////
 		*/
 
+		// nullptr가 아닌 경우 카운트 감소
 		if(m_ref_object != nullptr) { m_ref_object->decrease_ref_count(); }
-		m_ref_object = new CountedObjectContainer(object);
+		m_ref_object = new CountedObjectContainer(object); // 새로운 컨테이너 할당
 
-		return *this;
+		return *this; // 자기 자신 참조형으로 반환
 	}
 	SmartPtr& operator=(const SmartPtr &ref_pointer)
 	{
@@ -113,17 +140,20 @@ public:
 		////////////////////////////////////
 		*/
 
+		// 자기 자신을 대입하는 경우 반환
 		if(&ref_pointer == this){ return *this; }
+
+		// nullptr이 아닌 경우에만 대입될 카운트 증가
 		if(ref_pointer.m_ref_object != nullptr) { ref_pointer.m_ref_object->increase_ref_count(); }
+
+		// nullptr이 아닌 경우에만 현재 카운트 감소
 		if(m_ref_object != nullptr) { m_ref_object->decrease_ref_count();}
+
+		// 컨테이너 복사
 		m_ref_object = ref_pointer.m_ref_object;
 		return *this;
 	}
 
-	int ref_count()
-	{
-		return m_ref_object->get_ref_count();
-	}
 
 	const ObjectType* operator->() const
 	{
@@ -199,8 +229,11 @@ public:
 		You should implement your code here!
 		////////////////////////////////////
 		*/
+		// 행, 열 개수 정보 복사
 		m_rows = rows;
 		m_cols = cols;
+
+		// 새로운 배열 할당
 		m_values = new T[rows * cols]();
 	}
 	SmartMatrix(const SmartMatrix<T>& mtx)
@@ -211,9 +244,22 @@ public:
 		You should implement your code here!
 		////////////////////////////////////
 		*/
+
+		// 행, 열 개수 복사
 		m_rows = mtx.m_rows;
 		m_cols = mtx.m_cols;
-		m_values = mtx.m_values;
+		// m_values = mtx.m_values;
+
+		// 복사하는 경우 새로운 배열 할당
+		auto tmp = new T[m_rows * m_cols]();
+
+		// 값 딥카피
+		for(int i = 0; i < m_rows * m_cols; i++){
+		    tmp[i] = mtx.m_values[i];
+		}
+
+		// 임시 오브젝트 복사
+		m_values = tmp;
 	}
 	SmartMatrix(int rows, int cols, const T* values)
 	{
@@ -223,14 +269,23 @@ public:
 		You should implement your code here!
 		////////////////////////////////////
 		*/
+
+		// 임시로 사이즈 설정
 		int size = rows * cols;
+
+		// 행렬 사이즈 설정
 		m_rows = rows;
 		m_cols = cols;
+
+		// 임시 배열 설정
         T* tmp = new T[size]();
+
+        // 값 딥카피
         for(int i = 0; i < size; i++){
             tmp[i] = values[i];
         }
 
+        // 임시 배열 대입
         m_values = tmp;
 	}
 	~SmartMatrix() {}
@@ -252,14 +307,22 @@ public:
 		You should implement your code here!
 		////////////////////////////////////
 		*/
-		int counter = 0;
+
+		// 임시 배열 할당
 		T* tmp = new T[m_cols * (m_rows+1)]();
 
-		while(counter < m_cols * m_rows){
-		    tmp[counter] = m_values[counter++];
+		// 기존 값 딥 카피
+		for(int i = 0; i < m_cols * m_rows; i++){
+		    tmp[i] = m_values[i];
 		}
-		memcpy(&(tmp[m_cols * m_rows]), values, m_rows * sizeof(int));
+
+		// 새로운 row 값을 메모리 복사
+		memcpy(&(tmp[m_cols * m_rows]), values, m_rows * sizeof(T));
+
+		// 임시 배열 할당
 		m_values = tmp;
+
+		// 행 수 증가
 		m_rows++;
 	}
 	void AddCol(const T* values)
@@ -270,16 +333,26 @@ public:
 		You should implement your code here!
 		////////////////////////////////////
 		*/
-		int counter = 0;
+
+		int col_counter = 0; // 새로운 칼럼 카운터
+		int counter = 0; // 기존 데이터 카운터
+
+		// 임시 배열 할당
 		T* tmp = new T[(cols())*rows()]();
+
+		// 새로운 값 딥카피
 		for(int i = 0; i < (cols() + 1)*rows(); i++){
-		    if(i % cols() == 0 && i > 0){
-		        tmp[i] = values[counter++];
-		    } else {
-		        tmp[i] = m_values[i];
+		    if(i % (cols() + 1) == cols()){ // 새로운 칼럼에 해당되는 경우
+		        tmp[i] = values[col_counter++];
+		    } else { // 기존 값을 복사하는 경우
+		        tmp[i] = m_values[counter++];
 		    }
 		}
+
+		// 임시 배열 복사
 		m_values = tmp;
+
+		// 칼럼 개수 증가
 		m_cols++;
 	}
 	const SmartMatrix<T> Inverse()
@@ -291,11 +364,20 @@ public:
 		////////////////////////////////////
 		*/
 
+		// 행, 열 개수가 2인지 확인
 		assert(rows() == 2);
 		assert(cols() == 2);
+
+		// determinant 확인
 		T det = (*this)[0][0] * (*this)[1][1] - (*this)[0][1] * (*this)[1][0];
-        assert(det != 0);
-        T tmp[4] = {(*this)[1][1] / det, -(*this)[0][1] / det, -(*this)[1][0] / det, (*this)[1][1] / det};
+
+		// determinant가 0이 아닌지 확인
+		assert(det != 0);
+
+		// 임시 배열 할당
+        T tmp[4] = {(*this)[1][1] / det, -(*this)[0][1] / det, -(*this)[1][0] / det, (*this)[0][0] / det};
+
+        // 역행렬 리턴
         return SmartMatrix<T>(2, 2, tmp);
 	}
 
@@ -345,16 +427,19 @@ const SmartMatrix<T> operator+(const SmartMatrix<T>& a, const SmartMatrix<T>& b)
 	////////////////////////////////////
     */
 
+	// 행, 열 개수 체크
 	assert(a.cols() == b.cols());
 	assert(a.rows() == b.rows());
 
+	// 새로운 행렬 설정
     SmartMatrix<T> ret(a.rows(), a.cols());
 	for(int row = 0; row < a.rows(); row++){
 	    for(int col = 0; col < a.cols(); col++){
-            ret[row][col] = a[row][col] + b[row][col];
+            ret[row][col] = a[row][col] + b[row][col]; // 새로운 배열에 더한 값 설정
 	    }
 	}
 
+	// 새로운 배열 설정
 	return ret;
 
 }
@@ -369,16 +454,20 @@ const SmartMatrix<T> operator-(const SmartMatrix<T>& a, const SmartMatrix<T>& b)
 	You should implement your code here!
 	////////////////////////////////////
      */
+
+	// 행, 열 개수가 같은지 확인
     assert(a.cols() == b.cols());
     assert(a.rows() == b.rows());
 
+    // 새로운 배열 설정
     SmartMatrix<T> ret(a.rows(), a.cols());
     for(int row = 0; row < a.rows(); row++){
         for(int col = 0; col < a.cols(); col++){
-            ret[row][col] = a[row][col] + b[row][col];
+            ret[row][col] = a[row][col] - b[row][col]; // 새로운 배열에 뺀 값 설정
         }
     }
 
+    // 새로운 배열 반환
     return ret;
 
 }
@@ -394,9 +483,10 @@ const SmartMatrix<T> operator*(const SmartMatrix<T>& a, T s)
 	////////////////////////////////////
 	*/
 
+    // 스칼라곱 구현
 	for(int row = 0; row < a.rows(); row++){
 	    for(int col = 0; col < a.cols(); col++){
-	        ret[row][col] = a[row][col] *  s;
+	        ret[row][col] = a[row][col] *  s; // 스칼라 곱 된 결과로 설정
 	    }
 	}
 	return ret;
@@ -422,14 +512,18 @@ inline const SmartMatrix<T> operator*(const SmartMatrix<T>& a, const SmartMatrix
 	////////////////////////////////////
 	*/
 
+	// 앞 파라미터 열 개수와 뒤 파라미터 행 개수가 같은지 확인
 	assert(a.cols() == b.rows());
 
+	// ret 탐색
 	for(int row = 0; row < a.rows(); row++){
 	    for(int col = 0; col < b.cols(); col++){
 	        int entry = 0;
+            // a의 i번째 row b의 i번째 column을 내적
 	        for(int i = 0; i < a.cols(); i++){
 	            entry += (a[row][i] * b[i][col]);
 	        }
+	        // 내적 값으로 새로운 행렬 설정
 	        ret[row][col] = entry;
 	    }
 	}
