@@ -377,6 +377,9 @@ public:
 		// 임시 배열 할당
         T tmp[4] = {(*this)[1][1] / det, -(*this)[0][1] / det, -(*this)[1][0] / det, (*this)[0][0] / det};
 
+        // 기존 행렬도 수정
+        m_values = tmp;
+
         // 역행렬 리턴
         return SmartMatrix<T>(2, 2, tmp);
 	}
