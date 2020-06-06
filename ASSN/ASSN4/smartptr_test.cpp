@@ -31,15 +31,15 @@ void constructortests()
 void calctests()
 {
     cout << "[+] calculation test" << endl;
-    int arr[] = {1, 2, 3, 4};
-    SmartMatrix<int> mat(2, 2, arr);
-    int arr2[] = {1, 1, 2, 2};
-    SmartMatrix<int> mat2(2, 2, arr2);
+    double arr[] = {1.0, 2.0, 3.0, 4.0};
+    SmartMatrix<double> mat(2, 2, arr);
+    double arr2[] = {1.0, 1.0, 2.0, 2.0};
+    SmartMatrix<double> mat2(2, 2, arr2);
     cout << mat << mat2; // 1 2 3 4 1 1 2 2
     cout << "Addition\n" << mat + mat2; //2 3 5 6 //mat+mat2 is freed
     cout << "Subtraction\n" << mat - mat2; // 0 1 1 2 //mat-mat2 is freed
-    cout << "Multiplication\n" << mat * 2; // 2 4 6 8 //mat*2 is freed
-    cout << 3 * mat; //3 6 9 12 //3*mat is freed
+    cout << "Multiplication\n" << mat * 2.0; // 2 4 6 8 //mat*2 is freed
+    cout << 3.0 * mat; //3 6 9 12 //3*mat is freed
     cout << "Matrix Multiplication\n" << mat * mat2; // 5 5 11 11 // mat*mat2 is freed
     cout << "Inverse\n" << mat.Inverse(); //-2 1 1 0 //mat.Inverse() is freed
     cout << mat; //-2 1 1 0
@@ -70,8 +70,10 @@ void othertests()
 int main()
 {
     cout.setf(ios_base::unitbuf);
-    constructortests();
+    // constructortests();
     calctests();
     othertests();
+
+
     return 0;
 }

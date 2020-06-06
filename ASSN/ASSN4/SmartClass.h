@@ -296,7 +296,11 @@ public:
 		//Assignment operator
 		m_rows = mtx.m_rows;
 		m_cols = mtx.m_cols;
-        m_values = mtx.m_values;
+		m_values = new T[m_cols * m_rows]();
+		for(int i = 0; i < m_cols * m_rows; i++){
+		    m_values[i] = mtx.m_values[i];
+		}
+        // m_values = mtx.m_values;
 
 		return *this;
 	}
