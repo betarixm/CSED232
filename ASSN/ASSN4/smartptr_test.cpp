@@ -22,6 +22,8 @@ void constructortests()
     int arr[] = {1, 2, 3, 4};
     SmartMatrix<int> mat4(2, 2, arr);
     cout << mat4;//1 2 3 4
+    mat4 = mat4; // you should not free here!!!!
+    cout << mat4; //1 2 3 4
 }
 //scope exit : mat4 is firstly freed
 //scope exit : none is lastly freed
@@ -39,7 +41,8 @@ void calctests()
     cout << "Multiplication\n" << mat * 2; // 2 4 6 8 //mat*2 is freed
     cout << 3 * mat; //3 6 9 12 //3*mat is freed
     cout << "Matrix Multiplication\n" << mat * mat2; // 5 5 11 11 // mat*mat2 is freed
-    cout << "Inverse\n" << mat.Inverse(); //mat.Inverse() is freed
+    cout << "Inverse\n" << mat.Inverse(); //-2 1 1 0 //mat.Inverse() is freed
+    cout << mat; //-2 1 1 0
 }
 //scope exit : mat2 is freed
 //scope exit : mat is freed

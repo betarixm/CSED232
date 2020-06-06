@@ -296,7 +296,8 @@ public:
 		//Assignment operator
 		m_rows = mtx.m_rows;
 		m_cols = mtx.m_cols;
-		m_values = mtx.m_values;
+        m_values = mtx.m_values;
+
 		return *this;
 	}
 	void AddRow(const T* values)
@@ -312,12 +313,15 @@ public:
 		T* tmp = new T[m_cols * (m_rows+1)]();
 
 		// 기존 값 딥 카피
-		for(int i = 0; i < m_cols * m_rows; i++){
+		int i = 0;
+		for(; i < m_cols * m_rows; i++){
 		    tmp[i] = m_values[i];
 		}
 
 		// 새로운 row 값을 메모리 복사
-		memcpy(&(tmp[m_cols * m_rows]), values, m_rows * sizeof(T));
+		for(int j = 0; j < m_rows; j++){
+		    tmp[i++] = values[j];
+		}
 
 		// 임시 배열 할당
 		m_values = tmp;
@@ -375,13 +379,13 @@ public:
 		assert(det != 0);
 
 		// 임시 배열 할당
-        T tmp[4] = {(*this)[1][1] / det, -(*this)[0][1] / det, -(*this)[1][0] / det, (*this)[0][0] / det};
+        T* tmp = new T[4] {(*this)[1][1] / det, -(*this)[0][1] / det, -(*this)[1][0] / det, (*this)[0][0] / det};
 
         // 기존 행렬도 수정
         m_values = tmp;
 
         // 역행렬 리턴
-        return SmartMatrix<T>(2, 2, tmp);
+        return SmartMatrix<T>(rows(), cols(), tmp);
 	}
 
 	T* operator[](int r)
