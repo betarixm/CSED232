@@ -94,7 +94,7 @@
             \item Function overloading
             \begin{answer}
                 Function overloading은 함수의 이름은 같지만, signature가 다른 여러 함수를 만들 수 있는 기능을 일컫는다.
-                이 함수가 불릴 때, 주어진 매개변수에 대해 가장 적절한 함수가 실행되며, 적절한 함수가 하나도 없을 경우에는 실행되지 않는다.
+                overloading된 함수가 불릴 때, 주어진 매개변수에 대해 일종의 함수 리스트들 중에서 적절한 함수가 존재할 때에만 그것이 실행된다.
             \end{answer}
             \item Function overriding
             \begin{answer}
@@ -127,7 +127,7 @@
         \end{answer}
         \item Has-a relationship 을 구현하기 위한 두 가지 대표적인 방법으로 containment 와 private inheritance 가 있다. Has-a relationship 이 무엇인지 기술하고, 또한 containment 와 private inheritance 의 장단점을 비교하시오. (8 점)
         \begin{answer}
-            Has-a relationship이란 특정 객체가 다른 객체를 소유하는 관계를 말한다.
+            Has-a relationship이란 특정 객체가 다른 객체를 소유하는 관계를 말한다. 예를 들어 Lunch 클래스와 Fruit 클래스가 있다고 해보자. 이때, Lunch로 Fruit를 먹는 것은 적합하지만, 그렇다고 해서 `Lunch is a Fruit'인 것은 아니다. 이들 사이의 관계를 묘사하기에는 `A Lunch has a Fruit'와 같은 문장이 적합하며, 이러한 관계를 has-a 관계로 볼 수 있다.
             이때, containment는 어떤 객체의 멤버로 다른 객체를 포함하여 has-a 관계를 만들고,
             private inheritance는 어떤 클래스가 다른 클래스의 public 멤버들을 private 멤버로 상속함으로써 has-a 관계를 만든다.
             Containment를 통해 has-a 관계를 만들 경우에, contained class의 이름을 명시적으로 지정하고 이용할 수 있기 때문에 더 이해하기 쉽고, 여러 클래스의 상속으로부터 오는 문제가 일어나지 않는다는 장점이 있다. 하지만, containment를 통해서는 다른 클래스의 protected member를 사용할 수 없고, virtual member를 다시 정의할 수 없다는 단점이 있다.
@@ -135,17 +135,22 @@
         \end{answer}
         \item Private inheritance 와 protected inheritance 의 차이점을 자세히 기술하시오. (4 점)
         \begin{answer}
-            base class의 protected, public 멤버들이 Private inheritance의 경우 derived class의 private 멤버로 상속되며, protected inheritance의 경우 derived class의 protected member로 상속된다.
+            base class의 protected, public 멤버들이 Private inheritance의 경우 derived class의 private 멤버로 상속되며,
+            protected inheritance의 경우 derived class의 protected member로 상속된다.
+            즉, protected inheritance인 경우 derived class와 그의 dervied class들이 base class의 public 멤버를 이용할 수 있고,
+            private inheritance인 경우 derived class만 base class의 public 멤버를 이용할 수 있다.
+
         \end{answer}
         \item 다음 코드를 실행시켰을 때 출력되는 내용은 무엇인가? 그리고 왜 그런 출력이 나오는가? 다음 코드를 실행시켰을 때 출력될 내용을 적고, 그 이유를 간단히 기술하시오. (8 점)
               \code{cpp}{05.cpp}{2}{}{15pt}
               \textbf{Answer.}
               \begin{beka}
                   \code{raw}{05.out}{}{}{1pt}
+                  pt의 vptr이 동적할당된 DDerived 오브젝트의 vtable을 가리키기 때문에, 위와 같은 결과가 나온다. 자세한 과정을 살펴보면 아래와 같다.\\
                   우선 DDerived 타입의 오브젝트가 동적할당되는 과정을 살펴보자. Derived1에는 3, pt의 Derived2에는 5가 각자의 생성자에 전달된다.
                   이때, Derived1의 생성자에서는 3을 자신의 n에 저장하고, Derived1의 Base의 생성자에 6을 전달한다. 그러면, Derived1의 Base의 n에 6이 저장된다.
                   Derived2의 생성자에서는 5를 자신의 n에 저장하고, Derived2의 Base의 생성자에 15를 전달한다. 그러면, Derived2의 Base의 n에 15가 저장된다.
-                  Derived1과 Derived2가 가리키는 Base는 각각 다르다는 것에 유의하자. 이 DDerived 타입으로 동적할당된 오브젝트 주소가 Derived1 자료형의 unique\_ptr, pt에 저장된다. \\
+                  Derived1과 Derived2가 가리키는 Base는 각각 다르다는 것에 유의하자. 이 DDerived 타입으로 동적할당된 오브젝트 주소가 Derived1 자료형의 unique\_ptr, 즉 pt에 저장된다. \\
                   그 후, pt를 통해 display 메서드를 부르는 과정을 살펴보자. pt->display()를 할때, pt의 vptr을 이용해 vtable을 참조하게 되며, 이 vtable은 동적할당된 DDerived 오브젝트의 vtable인 것을 알 수 있다.
                   결과적으로, 이때 vtable에서 display()를 찾아서 실행하는 것은, 위에서 동적 할당한 DDerived 오브젝트의 display()를 호출하는 결과를 만든다. 그래서 pt->display()를 할때, 동적할당된 DDerived 오브젝트의 display()가 실행되며, 이때 Derived1의 display가 호출되고, Derived1의 Base의 display가 호출되며 Base: 6이 출력된다.
                   그 후, Derived1의 display에서 Derived1: 3이 출력된다. 다음으로, Derived2의 display가 호출되고, Derived2의 Base의 display가 호출되며 Base: 15가 출력된다. 그 후, Derived2의 display에서 Derived2: 5가 출력된다. 이 과정을 거쳐서, 위의 결과가 출력되고, 프로그램이 종료된다.

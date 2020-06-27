@@ -5,12 +5,12 @@ struct Factorial {
     enum { value = N * Factorial<N-1>::value };
 };
 
-// Answer
+/// Answer ////////////
 template<>
 struct Factorial<0> {
     enum { value = 1 };
 };
-//
+///////////////////////
 
 int main()
 {
