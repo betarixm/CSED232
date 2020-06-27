@@ -37,11 +37,13 @@ add_executable(ASSN5 ${ASSN5_H} ${ASSN5_CPP})
 
 target_link_libraries(ASSN5 Qt5::Widgets)
 
+add_executable(FNL_05 EXAM/final/05.cpp)
 add_executable(FNL_06 EXAM/final/06.cpp)
 add_executable(FNL_07 EXAM/final/07.cpp)
+add_executable(FNL_08 EXAM/final/08.cpp)
+add_executable(FNL_08_SOL EXAM/final/08-sol.cpp)
 add_executable(FNL_09 EXAM/final/09.cpp)
 add_executable(FNL_10 EXAM/final/10.cpp)
-
 add_executable(FNL_11_A EXAM/final/11-A.cpp)
 add_executable(FNL_11_B EXAM/final/11-B.cpp)
 add_executable(FNL_11_C EXAM/final/11-C.cpp)
