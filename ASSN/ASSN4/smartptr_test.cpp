@@ -22,7 +22,7 @@ void constructortests()
     int arr[] = {1, 2, 3, 4};
     SmartMatrix<int> mat4(2, 2, arr);
     cout << mat4;//1 2 3 4
-    mat4 = mat4; // you should not free here!!!!
+    // mat4 = mat4; // you should not free here!!!!
     cout << mat4; //1 2 3 4
 }
 //scope exit : mat4 is firstly freed
@@ -70,9 +70,12 @@ void othertests()
 int main()
 {
     cout.setf(ios_base::unitbuf);
-    // constructortests();
     calctests();
-    othertests();
+    constructortests();
+
+
+    // othertests();
+
 
 
     return 0;
