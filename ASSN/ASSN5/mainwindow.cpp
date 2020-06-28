@@ -107,7 +107,7 @@ void MainWindow::on_stopwatch_btn_start_clicked()
     // 버튼 활성 및 비활성화
     ui->stopwatch_btn_start->setDisabled(true);
     ui->stopwatch_btn_stop->setDisabled(false);
-    ui->stopwatch_btn_reset->setDisabled(true);
+    ui->stopwatch_btn_reset->setDisabled(false);
 
     // 시작 여부 마킹 (시작함)
     stopwatch_is_started = true;
@@ -209,7 +209,7 @@ void MainWindow::on_timer_start_clicked()
     // 버튼 활성 및 비활성화
     ui->timer_start->setDisabled(true);
     ui->timer_stop->setDisabled(false);
-    ui->timer_reset->setDisabled(true);
+    ui->timer_reset->setDisabled(false);
 
     // 타이머 시작 여부 마킹 (시작함)
     timer_is_started = true;
