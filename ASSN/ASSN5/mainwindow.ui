@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>622</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,14 +35,14 @@
       <x>0</x>
       <y>0</y>
       <width>801</width>
-      <height>551</height>
+      <height>581</height>
      </rect>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::South</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="usesScrollButtons">
      <bool>false</bool>
@@ -202,8 +202,8 @@
      <widget class="QPushButton" name="timer_btn_hour_up">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>180</y>
+        <x>260</x>
+        <y>150</y>
         <width>61</width>
         <height>32</height>
        </rect>
@@ -215,8 +215,8 @@
      <widget class="QPushButton" name="timer_btn_sec_up">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>180</y>
+        <x>480</x>
+        <y>150</y>
         <width>61</width>
         <height>32</height>
        </rect>
@@ -229,7 +229,7 @@
       <property name="geometry">
        <rect>
         <x>370</x>
-        <y>180</y>
+        <y>150</y>
         <width>61</width>
         <height>32</height>
        </rect>
@@ -241,8 +241,8 @@
      <widget class="QPushButton" name="timer_btn_hour_down">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>260</y>
+        <x>260</x>
+        <y>270</y>
         <width>61</width>
         <height>32</height>
        </rect>
@@ -254,8 +254,8 @@
      <widget class="QPushButton" name="timer_btn_sec_down">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>260</y>
+        <x>480</x>
+        <y>270</y>
         <width>61</width>
         <height>32</height>
        </rect>
@@ -268,7 +268,7 @@
       <property name="geometry">
        <rect>
         <x>370</x>
-        <y>260</y>
+        <y>270</y>
         <width>61</width>
         <height>32</height>
        </rect>
@@ -281,9 +281,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>210</y>
+        <y>190</y>
         <width>801</width>
-        <height>51</height>
+        <height>66</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -392,6 +392,22 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>3</x>
+      <y>580</y>
+      <width>801</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CSED232 ASSN5: 20190084</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -399,7 +415,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
