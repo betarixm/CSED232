@@ -2,9 +2,7 @@
 [![CSED101@POSTECH](https://img.shields.io/badge/CSED232-POSTECH-c80150)](https://www.postech.ac.kr/eng)
 [![CSED101@POSTECH](https://img.shields.io/badge/Spring-2020-775E64)](https://www.postech.ac.kr/eng)
 
- **Object Oriented Programming** is a OOP class of POSTECH, using C++.
- 
- **객체지향프로그래밍**은 포스텍의 C++ 프로그래밍 수업입니다. 
+**Object Oriented Programming**, a class of POSTECH, is to enable students to understand concepts related to object-oriented programming. The concepts will be made concrete through programming assignments. In this class we use C++ as the programming language. Topics include classes, class hierarchy and inheritance, polymorphism, operator overloading, templates and C++  I/O classes. We use Qt as the graphics user interface library for C++. Students are assumed to be very familiar with C programming.
 
 ## Assignments
 ### Warming up
